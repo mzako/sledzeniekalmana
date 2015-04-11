@@ -1,0 +1,39 @@
+Obiekt z symulacji do filtra
+
+{"sensor": 
+	{
+	"id": <ID>,
+	"objects": 
+	[
+		{
+			"id": <ID>, 
+			"measurement": { "x": <X>, "y": <Y>, "z": <Z>}	
+		}
+	]
+}
+
+Obiekt z symulacji do komapratora
+{"sensor": 
+	{
+	"id": <ID>,
+	"objects": 
+	[
+		{
+			"id": <ID>, 
+			"position": { "x": <X>, "y": <Y>, "z": <Z>}, 
+		}
+	]
+}
+
+Obiekt z filtra do komapratora
+{"sensor": 
+	{
+	"id": <ID>,
+	"objects": 
+	[
+		{
+			"id": <ID>, 
+			"estimation": { "x": <X>, "y": <Y>, "z": <Z>}, 
+		}
+	]
+}
