@@ -1,10 +1,10 @@
-#ifndef _TRACK_HPP
+Ôªø#ifndef _TRACK_HPP
 #define _TRACK_HPP
 
 
 /**
- * \biref Klasa reprezentujπca úlad obiektu oraz stan filtru kalmana potrzebny do estymacji po≥oøenia
- * \author Adam Moúcicki
+ * \biref Class implements target track with data needed to estimate its position
+ * \author Adam Mo≈õcicki
  */
 class track
 {

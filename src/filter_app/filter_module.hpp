@@ -1,10 +1,10 @@
-#ifndef _FILTER_MODULE_HPP
+ï»¿#ifndef _FILTER_MODULE_HPP
 #define _FILTER_MODULE_HPP
 
 /**
- * \brief Klasa modu³u filtru.
- * \details Klasa singleton przechowuj¹ca ca³¹ logikê aplikacji filtru
- * \author Adam Moœcicki
+ * \brief Class filter module
+ * \details Singleton class containing all aplitcation filter logic
+ * \author Adam MoÅ›cicki
  */
 
 #include <vector>

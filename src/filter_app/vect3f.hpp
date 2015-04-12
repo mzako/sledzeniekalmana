@@ -1,9 +1,9 @@
-#ifndef _VECT3_HPP
+Ôªø#ifndef _VECT3_HPP
 #define _VECT3_HPP
 
 /**
- * \brief Klasa reprezentuje po≥oøenie obiektu
- * \author Adam Moúcicki
+ * \brief Class provides a simple point implementation
+ * \author Adam Mo≈õcicki
  */
 class vect3f
 {
