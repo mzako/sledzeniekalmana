@@ -1,4 +1,4 @@
-#ifndef _TARGET_HPP
+﻿#ifndef _TARGET_HPP
 #define _TARGET_HPP
 
 #include "vect3f.hpp"

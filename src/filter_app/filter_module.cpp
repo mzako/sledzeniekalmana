@@ -1,4 +1,4 @@
-#include "filter_module.hpp"
+﻿#include "filter_module.hpp"
 
 
 filter_module* filter_module::instance_ = nullptr;

@@ -1,4 +1,4 @@
-#include "vect3f.hpp"
+﻿#include "vect3f.hpp"
 
 
 vect3f::vect3f(float x, float y, float z) : x_(x), y_(y), z_(z)
