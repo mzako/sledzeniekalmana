@@ -15,7 +15,7 @@ using namespace std;
 */
 void sensor_observer::update(target const* obj)
 {
-    list<target const*>::const_iterator it;
+    list<target const*>::iterator it;
     for (it = targets_.begin(); it != targets_.end(); ++it){
         if (*it == obj)
             break;
