@@ -1,4 +1,6 @@
-﻿#include "filter_module.hpp"
+﻿#include "filter_app.hpp"
+
+using namespace filter_app;
 
 int main()
 {

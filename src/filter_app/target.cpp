@@ -1,5 +1,6 @@
 ﻿#include "target.hpp"
 
+using namespace filter_app;
 
 target::target()
 {

@@ -1,5 +1,6 @@
 ﻿#include "filter_module.hpp"
 
+using namespace filter_app;
 
 filter_module* filter_module::instance_ = nullptr;
 

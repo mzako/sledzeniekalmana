@@ -3,6 +3,13 @@
 
 #include "vect3f.hpp"
 
+namespace filter_app 
+{
+
+/**
+ * \brief Class represents a real object observing by a track
+ * \author Adam Moscicki
+ */
 class target
 {
 public:
@@ -16,5 +23,7 @@ private:
     vect3f point_;
     int id_;
 };
+
+}
 
 #endif //_TARGET_HPP

@@ -11,6 +11,9 @@
 #include "vect3f.hpp"
 #include "kalman_filter.hpp"
 
+namespace filter_app 
+{
+
 class filter_module
 {
 public:
@@ -35,5 +38,6 @@ private:
     static filter_module * instance_;
 };
 
+}
 
 #endif //_FILTER_MODULE_HPP

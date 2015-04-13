@@ -1,6 +1,10 @@
 ﻿#ifndef _VECT3_HPP
 #define _VECT3_HPP
 
+
+namespace filter_app 
+{
+
 /**
  * \brief Class provides a simple point implementation
  * \author Adam Mościcki
@@ -19,5 +23,7 @@ private:
     float y_;
     float z_;
 };
+
+}
 
 #endif //_VECT3F_HPP

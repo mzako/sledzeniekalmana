@@ -1,5 +1,7 @@
 ﻿#include "kalman_filter.hpp"
 
+using namespace filter_app;
+
 kalman_filter::kalman_filter()
 {
     targets = boost::shared_ptr<std::vector<boost::shared_ptr<target>>>(new std::vector<boost::shared_ptr<target>>);

@@ -1,5 +1,6 @@
 ﻿#include "vect3f.hpp"
 
+using namespace filter_app;
 
 vect3f::vect3f(float x, float y, float z) : x_(x), y_(y), z_(z)
 {
