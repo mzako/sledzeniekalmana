@@ -6,6 +6,7 @@
 #include <vector>
 #include "target.hpp"
 using namespace std;
+using namespace generator_app;
 unsigned target::gId_ = 1;
 /**
 * Function update
@@ -20,7 +21,7 @@ void target::update(unsigned time){
 * Notifies all observers by calling their update function
 */
 void target::notify(){
-    vector<sensor_observer*>::iterator it;
+    vector<boost::shared_ptr<sensor_observer>>::iterator it;
     for (it = observers_->begin(); it != observers_->end(); ++it){
         (*it)->update(this);
     }
@@ -29,7 +30,7 @@ void target::notify(){
 * Function set_sensor_observers
 * Sets a pointer to vector to all observers available in current simulation
 */
-void target::set_sensor_observers(std::vector<sensor_observer*>* observers){
+void target::set_sensor_observers(boost::shared_ptr<vector<boost::shared_ptr<sensor_observer>>> observers){
     observers_ = observers;
 }
 /**

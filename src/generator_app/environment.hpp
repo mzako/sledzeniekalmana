@@ -9,18 +9,22 @@
 #include <vector>
 #include <map>
 #include "target.hpp"
-/**
-* Class environment
-* Represents simulation world, contains objects and sensors
-*/
-class environment {
-public:
-    void update(unsigned);
-    std::map<unsigned, vect3f> getPositions() const;
-    void set_sensors(std::vector<sensor_observer*>);
-    void set_targets(std::vector<target*>);
-private:
-    std::vector<sensor_observer *> sensors_;
-    std::vector<target *> targets_;
-};
+#include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
+namespace generator_app {
+    /**
+    * Class environment
+    * Represents simulation world, contains objects and sensors
+    */
+    class environment {
+    public:
+        void update(unsigned);
+        std::map<unsigned, vect3f> getPositions() const;
+        void set_sensors(boost::shared_ptr<std::vector<boost::shared_ptr<sensor_observer>>>);
+        void set_targets(boost::shared_ptr<std::vector<boost::shared_ptr<target>>>);
+    private:
+        boost::shared_ptr<std::vector<boost::shared_ptr<sensor_observer>>> sensors_;
+        boost::shared_ptr<std::vector<boost::shared_ptr<target>>> targets_;
+    };
+}
 #endif
