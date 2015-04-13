@@ -31,7 +31,7 @@ public:
      */
     void run();
 private:
-    kalman_filter* filter_;
+    boost::shared_ptr<kalman_filter> filter_;
     filter_module();
     filter_module(const filter_module &) = delete;
     filter_module & operator=(const filter_module &) = delete;

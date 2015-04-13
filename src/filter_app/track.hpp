@@ -3,6 +3,7 @@
 
 #include <boost/numeric/ublas/matrix.hpp>
 #include "vect3f.hpp"
+#include "target.hpp"
 
 namespace filter_app 
 {
@@ -18,8 +19,9 @@ public:
     ~track();
 private:
     vect3f last_position;
-    vect3f current_position;
     vect3f speed_vectors;
+    //target containts tracked position (and its id)
+    target current_position; 
     boost::numeric::ublas::matrix<double> state_matrix;
 
 };
