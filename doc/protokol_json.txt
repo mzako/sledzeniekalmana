@@ -3,7 +3,7 @@ Obiekt z symulacji do filtra
 {"sensor": 
 	{
 	"id": <ID>,
-	"objects": 
+	"targets": 
 	[
 		{
 			"id": <ID>, 
@@ -16,7 +16,7 @@ Obiekt z symulacji do komapratora
 {"sensor": 
 	{
 	"id": <ID>,
-	"objects": 
+	"targets": 
 	[
 		{
 			"id": <ID>, 
@@ -29,7 +29,7 @@ Obiekt z filtra do komapratora
 {"sensor": 
 	{
 	"id": <ID>,
-	"objects": 
+	"targets": 
 	[
 		{
 			"id": <ID>, 
