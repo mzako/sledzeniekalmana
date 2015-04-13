@@ -29,9 +29,11 @@ void environment::set_targets(std::vector<target*> targets)
 std::map<unsigned, vect3f> environment::getPositions() const
 {
     std::map<unsigned, vect3f> pos;
-    vector<target*>::const_iterator it;
-    for (it = targets_.begin(); it != targets_.end(); ++it){
-        pos.insert(make_pair((*it)->get_id(), (*it)->get_current_position()));
+    vector<sensor_observer*>::const_iterator it;
+    for (it = sensors_.begin(); it != sensors_.end(); ++it){
+        std::map<unsigned, vect3f> sensor_pos = (*it)->get_positions();
+        if (sensor_pos.size())
+            pos.insert(sensor_pos.begin(), sensor_pos.end());
     }
     return pos;
 }

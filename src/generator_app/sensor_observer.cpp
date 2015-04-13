@@ -36,7 +36,7 @@ map<unsigned, vect3f> sensor_observer::get_positions() const
     map<unsigned, vect3f> pos;
     list<target const*>::const_iterator it;
     for (it = targets_.begin(); it != targets_.end(); ++it){
-        pos.insert(make_pair((*it)->get_id(), (*it)->get_current_position()));
+        pos.insert(make_pair((*it)->get_id(), make_noise(*it)));
     }
     return pos;
 }
@@ -52,3 +52,4 @@ vect3f sensor_observer::make_noise(target const* obj) const
     pos.z_ = obj->get_current_position().z_ + deviation_;
     return pos;
 }
+
