@@ -5,7 +5,8 @@
 */
 #include <iostream>
 #include <cmath>
-#include <windows.h>
+#include <chrono>
+#include <thread>
 #include "simulation_module.hpp"
 #include "line.hpp"
 using namespace std;
@@ -43,7 +44,7 @@ void simulation_module::run()
         prepare_environment(targets, sensors);
     }
     while (true){
-        Sleep(1000);
+        this_thread::sleep_for(chrono::milliseconds(1000));
         map<unsigned, vect3f> pos = environment_->getPositions();
         map<unsigned, vect3f>::const_iterator it;
         for (it = pos.begin(); it != pos.end(); ++it){

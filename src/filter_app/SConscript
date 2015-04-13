@@ -1,0 +1,11 @@
+# SConscript sledzeniekalmana/src/filter_app
+# Author: Jan Kumor
+
+Import('env')
+
+import os
+
+sources = Glob('*.cpp', strings=True)
+print sources
+
+env.Program('filter_app', sources)

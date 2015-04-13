@@ -1,0 +1,11 @@
+# SConscript sledzeniekalmana/src/generator_app
+# Author: Jan Kumor
+
+Import('env')
+
+import os
+
+sources = Glob('*.cpp', strings=True)
+print sources
+
+env.Program('generator_app', sources)

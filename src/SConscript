@@ -1,0 +1,7 @@
+# SConscript sledzeniekalmana/src
+# Author: Jan Kumor
+
+Import('env', 'modules')
+
+#for subdir in modules:
+env.SConscript(dirs=['generator_app', 'filter_app', 'comparator_app'], exports='env', duplicate=0)
