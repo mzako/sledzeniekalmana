@@ -2,8 +2,8 @@ import os
 
 # Define build environment
 common_env = Environment()
-common_env.Append(CPPFLAGS=['-std=c++11'])
-common_env.Append(CPPPATH=['/lib','/usr/lib','/usr/local/lib', '/usr/local/boost_1_57_0'])
+common_env.Append(CPPFLAGS=['-std=c++11'])#, '-Wall'])
+common_env.Append(CPPPATH=['/lib','/usr/lib','/usr/local/lib', '/usr/local/boost_1_57_0', '#/include'])
 
 # Support method
 import os.path

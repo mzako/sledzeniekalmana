@@ -1,11 +1,12 @@
 # SConscript sledzeniekalmana/src/comparator_app
 # Author: Jan Kumor
 
-Import('env')
+Import('env', 'module')
 
 import os
 
 sources = Glob('*.cpp', strings=True)
+print 'Source files in module: ' + module
 print sources
 
 env.Program('comparator_app', sources)
