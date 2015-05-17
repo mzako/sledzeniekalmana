@@ -5,6 +5,7 @@
 */
 #include <cmath>
 #include "vect3f.hpp"
+using namespace generator_app;
 /**
 * Function distance
 * Returns Euclidean distance between two points in space

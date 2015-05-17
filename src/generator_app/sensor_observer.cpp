@@ -9,6 +9,7 @@
 #include "target.hpp"
 #include "vect3f.hpp"
 using namespace std;
+using namespace generator_app;
 /**
 * Function update
 * Checks whether targets entered or left sensor's area and inserts or removes target from sensor's target list

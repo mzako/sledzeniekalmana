@@ -5,6 +5,7 @@
 */
 #include "line.hpp"
 #include "vect3f.hpp"
+using namespace generator_app;
 /**
 * Function getPosition
 * Returns relative position of point moving along this line at given time

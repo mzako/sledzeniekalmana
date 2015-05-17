@@ -7,12 +7,14 @@
 #ifndef _CURVE_HPP
 #define _CURVE_HPP
 #include "vect3f.hpp"
-/**
-* Class curve (abstract)
-* Represents curve, which determines objects' path in space
-*/
-class curve {
-public:
-    virtual vect3f get_position(unsigned) const = 0;
-};
+namespace generator_app {
+    /**
+    * Class curve (abstract)
+    * Represents curve, which determines objects' path in space
+    */
+    class curve {
+    public:
+        virtual vect3f get_position(unsigned) const = 0;
+    };
+}
 #endif
