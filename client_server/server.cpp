@@ -20,6 +20,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
+#include "sending_buffer.hpp"
+#include "buffer_queue.hpp"
 
 using namespace boost::asio;
 
@@ -31,77 +33,6 @@ template<typename T> void safePrint(const T &arg)
    std::cout << arg << std::endl;
   cout_mutex.unlock();
 }
-
-//Bufor dla 1 wątku
-class buffer_queue
-{
-    private:
-        boost::mutex safe;
-        std::queue<std::string> messages;
-        boost::mutex lock_empty;
-    public:
-        buffer_queue() {
-            lock_empty.lock(); //Na poczatku wszystko jest puste
-        }
-
-        std::string pop() {
-            std::string result;
-            lock_empty.lock();
-            safe.lock();
-            result = messages.front();
-            messages.pop();
-            if (!messages.empty()) { //Nie doszlismy do 0 to odblokowuje
-                lock_empty.unlock();
-            }
-            safe.unlock();
-            return result;
-        }
-        void push(std::string message) {
-            safe.lock();
-            if (messages.empty()) { //Jesli 0 to odblokuj bo ktos wisi na popie
-                lock_empty.unlock();
-            }
-            messages.push(message);
-            safe.unlock();
-        }
-};
-
-//Klasa sluzy do wysylania do watkow wiadomosci, dla kazdego watku jest trzymany bufor ktory przechowuje to samo (redundcja, ale upraszcza)
-class sending_buffer
-{
-    std::map<boost::thread::id, boost::shared_ptr<buffer_queue>> buffersForThreads;
-    boost::mutex safe;
-    public:
-    sending_buffer(){
-
-    };
-    
-    void addThread(boost::thread::id id) {
-        safe.lock();
-        buffersForThreads[id] = boost::shared_ptr<buffer_queue>(new buffer_queue);
-        safe.unlock();
-    }
-
-    void send(std::string message) {
-        safe.lock();
-        for (auto it = buffersForThreads.begin(); it != buffersForThreads.end(); it++) {
-            it->second->push(message);
-            //safePrint(message);
-        }
-        safe.unlock();
-    }
-
-    std::string pop(boost::thread::id id) {
-        boost::shared_ptr<buffer_queue> threadBuffer;
-        std::string result;
-        safe.lock();
-            threadBuffer = buffersForThreads[id];
-        safe.unlock();
-        return  threadBuffer->pop();
-    }
-
-};
-
 
 
 void send(boost::shared_ptr<ip::tcp::socket> socket, boost::shared_ptr<sending_buffer> sending_buf)
@@ -130,7 +61,7 @@ void sending_thread(boost::shared_ptr<sending_buffer> sending_buf)
     try
     {
         int i = 0;
-        std::string message = "test";
+        std::string message = "aaaa";
         while(true)
         {
             sleep(1);
@@ -143,9 +74,6 @@ void sending_thread(boost::shared_ptr<sending_buffer> sending_buf)
         std::cerr << "Exception in thread:" << e.what() << "\n";
     }
 }
-
-
-
 
 void asioTcpServer(const char * port)
 {
