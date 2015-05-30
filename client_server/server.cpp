@@ -21,7 +21,6 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/thread/thread.hpp> 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "sending_buffer.hpp"
@@ -68,7 +67,6 @@ void sending_thread(boost::shared_ptr<sending_buffer> sending_buf)
         std::string message = "aaaa";
         while(true)
         {
-            sleep(1);
             boost::this_thread::sleep(boost::posix_time::milliseconds(100));
             std::string toSend = message + boost::lexical_cast<std::string>(i++);
             sending_buf->send(toSend);
