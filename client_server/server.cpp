@@ -33,7 +33,7 @@ boost::mutex cout_mutex;
 template<typename T> void safePrint(const T &arg)
 {
   cout_mutex.lock();
-   std::cout << arg << std::endl;
+  std::cout << arg << std::endl;
   cout_mutex.unlock();
 }
 
@@ -67,7 +67,7 @@ void sending_thread(boost::shared_ptr<sending_buffer> sending_buf)
         std::string message = "aaaa";
         while(true)
         {
-            boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+            boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
             std::string toSend = message + boost::lexical_cast<std::string>(i++);
             sending_buf->send(toSend);
         }

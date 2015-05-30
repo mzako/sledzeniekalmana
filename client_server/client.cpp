@@ -15,42 +15,48 @@
 
 using namespace boost::asio;
 
-void asioTcpClient(const char* host, const char *port)
+class client
 {
-  try
-  {
-    io_service aios;
+private:
+    std::string host;
+    std::string port;
+public:
+    client(std::string host, std::string port) : port(port), host(host) {
 
-    ip::tcp::resolver resolver(aios);
-    ip::tcp::resolver::iterator endpoint = resolver.resolve(
-		ip::tcp::resolver::query(host, port));
-	ip::tcp::socket socket(aios);
-    // open the connection for the specified endpoint, or throws a system_error
-    connect(socket, endpoint);
-    for(;;)
-    {
-      std::array<char, 512> buf;
-      boost::system::error_code error;
-      size_t lenghtOfReceived = socket.read_some(buffer(buf), error);
-
-      if (error == error::eof) {
-        break; // Connection closed cleanly by peer
-      } else if(error) {
-        throw boost::system::system_error(error);
-	  }
-      std::cout.write(buf.data(), lenghtOfReceived);
-      std::cout << '|';
-      std::cout.flush();
     }
-    std::cout << std::endl;
-  }
-  catch(std::exception& e)
-  {
-    std::cerr << e.what() << std::endl;
-  }
-}
+    void operator()() {
+        try {
+            io_service aios;
+
+            ip::tcp::resolver resolver(aios);
+            ip::tcp::resolver::iterator endpoint = resolver.resolve(
+                    ip::tcp::resolver::query(host, port));
+            ip::tcp::socket socket(aios);
+            // open the connection for the specified endpoint, or throws a system_error
+            connect(socket, endpoint);
+            for(;;) {
+                std::array<char, 512> buf;
+                boost::system::error_code error;
+                size_t lenghtOfReceived = socket.read_some(buffer(buf), error);
+
+                if (error == error::eof) {
+                    break; // Connection closed cleanly by peer
+                } else if(error) {
+                    throw boost::system::system_error(error);
+                }
+                std::cout.write(buf.data(), lenghtOfReceived);
+                std::cout << '|';
+                std::cout.flush();
+            }
+            std::cout << std::endl;
+        } catch(std::exception& e) {
+            std::cerr << e.what() << std::endl;
+        }
+    }
+};
 
 int main(int argc, char* argv[])
 {
-    asioTcpClient("localhost", argv[1]);
+    client client_("localhost", argv[1]);
+    client_();
 }
