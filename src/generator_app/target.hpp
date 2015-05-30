@@ -6,9 +6,9 @@
 #ifndef _TARGET_HPP
 #define _TARGET_HPP
 #include <vector>
+#include <memory>
 #include "curve.hpp"
 #include "sensor_observer.hpp"
-#include <boost/shared_ptr.hpp>
 namespace generator_app {
     class sensor_observer;
     /**
@@ -18,8 +18,8 @@ namespace generator_app {
     class target {
     public:
         target(curve* curve, vect3f initial_position = vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
-        void update(unsigned);
-        void set_sensor_observers(boost::shared_ptr<std::vector<boost::shared_ptr<sensor_observer>>>);
+        void update(float);
+        void set_sensor_observers(std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
         vect3f get_current_position() const;
         vect3f get_initial_position() const;
         unsigned get_id() const;
@@ -31,7 +31,7 @@ namespace generator_app {
         vect3f initial_position_;
         vect3f current_position_;
         curve* curve_;
-        boost::shared_ptr<std::vector<boost::shared_ptr<sensor_observer>>> observers_;
+        std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>> observers_;
     };
 }
 #endif

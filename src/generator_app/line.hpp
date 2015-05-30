@@ -16,7 +16,7 @@ namespace generator_app {
     class line : public curve {
     public:
         line(vect3f velocity = vect3f()) : velocity_(velocity) {}
-        vect3f get_position(unsigned) const;
+        vect3f get_position(float) const;
     private:
         vect3f velocity_;
     };

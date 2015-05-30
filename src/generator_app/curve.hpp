@@ -14,7 +14,7 @@ namespace generator_app {
     */
     class curve {
     public:
-        virtual vect3f get_position(unsigned) const = 0;
+        virtual vect3f get_position(float) const = 0;
     };
 }
 #endif

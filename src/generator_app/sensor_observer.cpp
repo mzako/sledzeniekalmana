@@ -5,6 +5,7 @@
 */
 #include <map>
 #include <list>
+#include <random>
 #include "sensor_observer.hpp"
 #include "target.hpp"
 #include "vect3f.hpp"
@@ -47,10 +48,13 @@ map<unsigned, vect3f> sensor_observer::get_positions() const
 */
 vect3f sensor_observer::make_noise(target const* obj) const
 {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::normal_distribution<> d(mean_, deviation_);
     vect3f pos;
-    pos.x_ = obj->get_current_position().x_ + deviation_;
-    pos.y_ = obj->get_current_position().y_ + deviation_;
-    pos.z_ = obj->get_current_position().z_ + deviation_;
+    pos.x_ = obj->get_current_position().x_ + d(gen);
+    pos.y_ = obj->get_current_position().y_ + d(gen);
+    pos.z_ = obj->get_current_position().z_ + d(gen);
     return pos;
 }
 

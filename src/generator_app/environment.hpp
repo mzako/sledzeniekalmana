@@ -9,8 +9,6 @@
 #include <vector>
 #include <map>
 #include "target.hpp"
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
 namespace generator_app {
     /**
     * Class environment
@@ -18,13 +16,13 @@ namespace generator_app {
     */
     class environment {
     public:
-        void update(unsigned);
+        void update(float);
         std::map<unsigned, vect3f> getPositions() const;
-        void set_sensors(boost::shared_ptr<std::vector<boost::shared_ptr<sensor_observer>>>);
-        void set_targets(boost::shared_ptr<std::vector<boost::shared_ptr<target>>>);
+        void set_sensors(std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
+        void set_targets(std::shared_ptr<std::vector<std::shared_ptr<target>>>);
     private:
-        boost::shared_ptr<std::vector<boost::shared_ptr<sensor_observer>>> sensors_;
-        boost::shared_ptr<std::vector<boost::shared_ptr<target>>> targets_;
+        std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>> sensors_;
+        std::shared_ptr<std::vector<std::shared_ptr<target>>> targets_;
     };
 }
 #endif

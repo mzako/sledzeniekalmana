@@ -10,7 +10,7 @@ using namespace generator_app;
 * Function getPosition
 * Returns relative position of point moving along this line at given time
 */
-vect3f line::get_position(unsigned time) const
+vect3f line::get_position(float time) const
 {
     return vect3f(velocity_.x_*time, velocity_.y_*time, velocity_.z_*time);
 }

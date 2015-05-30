@@ -7,16 +7,19 @@
 #include <cmath>
 #include <chrono>
 #include <thread>
+#include <memory>
 #include "simulation_module.hpp"
 #include "line.hpp"
+#include "balistic.hpp"
 using namespace std;
 using namespace generator_app;
+const float simulation_module::FREQUENCY_ = 10.0;
 simulation_module* simulation_module::instance_ = nullptr;
 /**
 * Function prepare_environment
 * Prepares environment to simulation by setting targets and sensors. If it isn't first simulation, it deletes old environment
 */
-void simulation_module::prepare_environment(boost::shared_ptr<vector<boost::shared_ptr<target>>> targets, boost::shared_ptr<vector<boost::shared_ptr<sensor_observer>>> sensors)
+void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_ptr<target>>> targets, std::shared_ptr<vector<std::shared_ptr<sensor_observer>>> sensors)
 {
     environment_.reset(new environment);
     environment_->set_targets(targets);
@@ -29,17 +32,19 @@ void simulation_module::prepare_environment(boost::shared_ptr<vector<boost::shar
 void simulation_module::run()
 {
     curve * line1 = new line(vect3f(1.f,1.f,1.f));
-    target * target1 = new target(line1);
-    sensor_observer * sensor1 = new sensor_observer(vect3f(), 100.f, 0.1f);
-    vector<boost::shared_ptr<target>> targets;
-    vector<boost::shared_ptr<sensor_observer>> sensors;
-    targets.push_back(boost::shared_ptr<target>(target1));
-    sensors.push_back(boost::shared_ptr<sensor_observer>(sensor1));
-    target1->set_sensor_observers(boost::shared_ptr<vector<boost::shared_ptr<sensor_observer>>>(&sensors));
+    balistic * balistic1 = new balistic(vect3f(400.f, 80.f, 400.f),1.1);
+    target * target1 = new target(balistic1);
+    sensor_observer * sensor1 = new sensor_observer(vect3f(), 100000.f, 0.f, 0.4f);
+    vector<std::shared_ptr<target>> targets;
+    vector<std::shared_ptr<sensor_observer>> sensors;
+    targets.push_back(std::shared_ptr<target>(target1));
+    sensors.push_back(std::shared_ptr<sensor_observer>(sensor1));
+    target1->set_sensor_observers(std::shared_ptr<vector<std::shared_ptr<sensor_observer>>>(&sensors));
 
-    prepare_environment(boost::shared_ptr<vector<boost::shared_ptr<target>>>(&targets), boost::shared_ptr<vector<boost::shared_ptr<sensor_observer>>>(&sensors));
+    prepare_environment(std::shared_ptr<vector<std::shared_ptr<target>>>(&targets), std::shared_ptr<vector<std::shared_ptr<sensor_observer>>>(&sensors));
 
     while (true){
+        //cout << time_ / FREQUENCY_ << endl;
         this_thread::sleep_for(chrono::milliseconds(1000));
         map<unsigned, vect3f> pos = environment_->getPositions();
         map<unsigned, vect3f>::const_iterator it;
@@ -47,6 +52,6 @@ void simulation_module::run()
             cout << "id: " << (*it).first << " (" << (*it).second.x_ << "," << (*it).second.y_ << "," << (*it).second.z_ << ")" << endl;
         }
         time_ += 1;
-        environment_->update(time_);
+        environment_->update(float(time_ / FREQUENCY_));
     }
 }

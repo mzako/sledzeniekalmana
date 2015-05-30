@@ -4,6 +4,7 @@
 *  \author    Michal Zakowski
 */
 #include <vector>
+#include <memory>
 #include "environment.hpp"
 using namespace std;
 using namespace generator_app;
@@ -11,7 +12,7 @@ using namespace generator_app;
 * Function set_sensors
 * Sets sensors
 */
-void environment::set_sensors(boost::shared_ptr<vector<boost::shared_ptr<sensor_observer>>> sensors)
+void environment::set_sensors(std::shared_ptr<vector<std::shared_ptr<sensor_observer>>> sensors)
 {
     sensors_ = sensors;
 }
@@ -19,7 +20,7 @@ void environment::set_sensors(boost::shared_ptr<vector<boost::shared_ptr<sensor_
 * Function set_sensors
 * Sets targets
 */
-void environment::set_targets(boost::shared_ptr<vector<boost::shared_ptr<target>>> targets)
+void environment::set_targets(std::shared_ptr<vector<std::shared_ptr<target>>> targets)
 {
     targets_ = targets;
 }
@@ -30,7 +31,7 @@ void environment::set_targets(boost::shared_ptr<vector<boost::shared_ptr<target>
 std::map<unsigned, vect3f> environment::getPositions() const
 {
     std::map<unsigned, vect3f> pos;
-    vector<boost::shared_ptr<sensor_observer>>::const_iterator it;
+    vector<std::shared_ptr<sensor_observer>>::const_iterator it;
     for (it = sensors_->begin(); it != sensors_->end(); ++it){
         std::map<unsigned, vect3f> sensor_pos = (*it)->get_positions();
         if (sensor_pos.size())
@@ -42,9 +43,9 @@ std::map<unsigned, vect3f> environment::getPositions() const
 * Function update
 * Updates all targets in simulation
 */
-void environment::update(unsigned time)
+void environment::update(float time)
 {
-    vector<boost::shared_ptr<target>>::iterator it;
+    vector<std::shared_ptr<target>>::iterator it;
     for (it = targets_->begin(); it != targets_->end(); ++it){
         (*it)->update(time);
     }

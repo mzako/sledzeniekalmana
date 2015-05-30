@@ -18,13 +18,14 @@ namespace generator_app {
     */
     class sensor_observer {
     public:
-        sensor_observer(vect3f position = vect3f(), float radius = 0.f, float deviation = 0.f) : position_(position), radius_(radius), deviation_(deviation) {}
+        sensor_observer(vect3f position = vect3f(), float radius = 0.f, float mean = 0.f, float deviation = 1.f) : position_(position), radius_(radius), deviation_(deviation) {}
         void update(target const*);
         std::map<unsigned, vect3f> get_positions() const;
     private:
         vect3f make_noise(target const*) const;
 
         std::list<target const*> targets_;
+        float mean_;
         float deviation_;
         vect3f position_;
         float radius_;
