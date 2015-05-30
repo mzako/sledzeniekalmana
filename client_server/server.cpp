@@ -6,6 +6,7 @@
  *
  * http://www.boost.org/doc/libs/1_54_0/doc/html/boost_asio/tutorial/tutdaytime1.html
  * http://www.boost.org/doc/libs/1_54_0/doc/html/boost_asio/tutorial/tutdaytime2.html
+ *
  */
 
 #include <iostream>
@@ -20,6 +21,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/thread/thread.hpp> 
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 #include "sending_buffer.hpp"
 #include "buffer_queue.hpp"
 
@@ -65,6 +69,7 @@ void sending_thread(boost::shared_ptr<sending_buffer> sending_buf)
         while(true)
         {
             sleep(1);
+            boost::this_thread::sleep(boost::posix_time::milliseconds(100));
             std::string toSend = message + boost::lexical_cast<std::string>(i++);
             sending_buf->send(toSend);
         }
