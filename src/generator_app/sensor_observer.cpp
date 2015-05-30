@@ -11,21 +11,24 @@
 #include "vect3f.hpp"
 using namespace std;
 using namespace generator_app;
+
+unsigned sensor_observer::gId_ = 1;
 /**
 * Function update
 * Checks whether targets entered or left sensor's area and inserts or removes target from sensor's target list
 */
-void sensor_observer::update(target const* obj)
+void sensor_observer::update(std::shared_ptr<target> obj)
 {
-    list<target const*>::iterator it;
+    list<std::shared_ptr<target>>::iterator it;
     for (it = targets_.begin(); it != targets_.end(); ++it){
         if (*it == obj)
             break;
     }
-    if (position_.distance(obj->get_current_position()) <= radius_ && it == targets_.end()){
+    //TODO iterator end!
+    if (position_.distance(obj->get_current_position()) <= radius_ /*&& it == targets_.end()*/){
         targets_.push_back(obj);
     }
-    else if (position_.distance(obj->get_current_position()) > radius_ && it != targets_.end()){
+    else if (position_.distance(obj->get_current_position()) > radius_ /*&& it != targets_.end()*/){
         targets_.erase(it);
     }
 }
@@ -36,7 +39,7 @@ void sensor_observer::update(target const* obj)
 map<unsigned, vect3f> sensor_observer::get_positions() const
 {
     map<unsigned, vect3f> pos;
-    list<target const*>::const_iterator it;
+    list<std::shared_ptr<target>>::const_iterator it;
     for (it = targets_.begin(); it != targets_.end(); ++it){
         pos.insert(make_pair((*it)->get_id(), make_noise(*it)));
     }
@@ -46,7 +49,7 @@ map<unsigned, vect3f> sensor_observer::get_positions() const
 * Function make_noise
 * Returns target's position with noise
 */
-vect3f sensor_observer::make_noise(target const* obj) const
+vect3f sensor_observer::make_noise(std::shared_ptr<target> obj) const
 {
     std::random_device rd;
     std::mt19937 gen(rd());

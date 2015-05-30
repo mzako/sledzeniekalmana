@@ -23,8 +23,8 @@ void target::update(float time){
 */
 void target::notify(){
     vector<std::shared_ptr<sensor_observer>>::iterator it;
-    for (it = observers_->begin(); it != observers_->end(); ++it){
-        (*it)->update(this);
+    for (it = observers_->begin(); it != observers_->end(); ++it) {
+        (*it)->update(std::shared_ptr<target>(this));
     }
 }
 /**

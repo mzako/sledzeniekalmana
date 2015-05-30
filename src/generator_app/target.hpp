@@ -7,6 +7,9 @@
 #define _TARGET_HPP
 #include <vector>
 #include <memory>
+
+#include <cereal/cereal.hpp>
+
 #include "curve.hpp"
 #include "sensor_observer.hpp"
 namespace generator_app {
@@ -17,17 +20,26 @@ namespace generator_app {
     */
     class target {
     public:
+        target() {};
         target(curve* curve, vect3f initial_position = vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
         void update(float);
         void set_sensor_observers(std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
         vect3f get_current_position() const;
         vect3f get_initial_position() const;
         unsigned get_id() const;
+
+        template<class Archive>
+        void serialize(Archive& archive) {
+            archive(
+                    cereal::make_nvp("id", id_),
+                    cereal::make_nvp("position", current_position_)
+            );
+        }
     private:
         void notify();
 
         static unsigned gId_;
-        const unsigned id_;
+        unsigned id_;
         vect3f initial_position_;
         vect3f current_position_;
         curve* curve_;

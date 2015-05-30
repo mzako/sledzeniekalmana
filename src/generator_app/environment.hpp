@@ -8,6 +8,7 @@
 #define _ENVIRONMENT_HPP
 #include <vector>
 #include <map>
+
 #include "target.hpp"
 namespace generator_app {
     /**
@@ -20,6 +21,11 @@ namespace generator_app {
         std::map<unsigned, vect3f> getPositions() const;
         void set_sensors(std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
         void set_targets(std::shared_ptr<std::vector<std::shared_ptr<target>>>);
+
+        std::shared_ptr<std::vector<std::shared_ptr<target>>> getSensors() const {
+            return targets_;
+        }
+
     private:
         std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>> sensors_;
         std::shared_ptr<std::vector<std::shared_ptr<target>>> targets_;
