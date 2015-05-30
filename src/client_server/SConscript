@@ -1,0 +1,12 @@
+# SConscript sledzeniekalmana/src/client_server
+# Author: Adam Moscicki
+
+Import('env_lib', 'module')
+
+import os
+
+sources = Glob('*.cpp', strings=True)
+print 'Source files in module: ' + module
+print sources
+
+env_lib.Library('client_server', sources)

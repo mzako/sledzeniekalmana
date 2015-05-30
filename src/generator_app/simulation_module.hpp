@@ -9,6 +9,7 @@
 #include "environment.hpp"
 #include "target.hpp"
 #include "sensor_observer.hpp"
+#include "../client_server/sending_buffer.hpp"
 namespace generator_app {
     /**
     * Class simulation_module
@@ -22,7 +23,7 @@ namespace generator_app {
             return instance_;
         }
         void prepare_environment(std::shared_ptr<std::vector<std::shared_ptr<target>>>, std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
-        void run();
+        void run(std::shared_ptr<sending_buffer> sending_buf);
 
         const static float FREQUENCY_;
     private:

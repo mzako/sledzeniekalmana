@@ -1,9 +1,12 @@
 # SConscript sledzeniekalmana/src
 # Author: Jan Kumor
 
-Import('env', 'modules')
+Import('env', 'modules', 'env_lib', 'lib_modules')
 
 import os
+
+for module in lib_modules:
+	env.SConscript(module + os.sep + 'SConscript', exports=['env_lib', 'module'], duplicate=0)
 
 for module in modules:
 	env.SConscript(module + os.sep + 'SConscript', exports=['env', 'module'], duplicate=0)
