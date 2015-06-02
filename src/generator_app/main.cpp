@@ -1,16 +1,33 @@
-#include "simulation_module.hpp"
+#include <cstdlib>
+#include <iostream>
 #include <memory>
+#include <boost/thread/thread.hpp>
 #include "../network/server.hpp"
 #include "../network/sending_buffer.hpp"
+#include "simulation_module.hpp"
+
 using namespace generator_app;
 using namespace network;
 int main(int argc, char ** argv){
 
-    std::shared_ptr<sending_buffer> sending_buf(new sending_buffer);
-    server server_(std::atoi(argv[1]), sending_buf);
-    simulation_module * instance = simulation_module::get_instance();
-    boost::thread server_thread(server_);
-    instance->run(sending_buf);
+    if(argc != 4)
+    {
+        std::cout << "Usage: generator_app <filter_port> <comparator_port> <init_file_path>" << std::endl;
+    }
+    else
+    {
+        std::shared_ptr<sending_buffer> filter_sending_buf(new sending_buffer);
+        server filter_server(std::atoi(argv[1]), filter_sending_buf);
+        std::shared_ptr<sending_buffer> comparator_sending_buf(new sending_buffer);
+        server comparator_server(std::atoi(argv[2]), comparator_sending_buf);
+
+        boost::thread filter_server_thread(filter_server);
+        boost::thread comparator_server_thread(comparator_server);
+
+        simulation_module * instance = simulation_module::get_instance();
+        instance->run(filter_sending_buf, comparator_sending_buf, argv[3]);
+    }
+
 
     return 0;
 }

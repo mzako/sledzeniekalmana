@@ -10,6 +10,7 @@
 #include "target.hpp"
 #include "sensor_observer.hpp"
 #include "../network/sending_buffer.hpp"
+
 namespace generator_app {
     /**
     * Class simulation_module
@@ -23,15 +24,17 @@ namespace generator_app {
             return instance_;
         }
         void prepare_environment(std::shared_ptr<std::vector<std::shared_ptr<target>>>, std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
-        void run(std::shared_ptr<network::sending_buffer> sending_buf);
+
+        void run(std::shared_ptr<network::sending_buffer> filter_sending_buf, std::shared_ptr<network::sending_buffer> comparator_sending_buf, std::string init_file_path);
 
         const static float FREQUENCY_;
     private:
         simulation_module(){}
         simulation_module(const simulation_module&) = delete;
         simulation_module& operator=(const simulation_module&) = delete;
-        void sendData();
-        void getData();
+        void sendDataToFilter(std::shared_ptr<network::sending_buffer> sending_buf);
+        void sendDataToComparator(std::shared_ptr<network::sending_buffer> sending_buf);
+        void initialize_simulation(std::string init_file_path);
 
         static simulation_module* instance_;
         unsigned time_;

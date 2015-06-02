@@ -6,12 +6,21 @@
 
 #ifndef _ENVIRONMENT_HPP
 #define _ENVIRONMENT_HPP
-#include <vector>
-#include <map>
-#include <iostream>
 
-#include "target.hpp"
-#include "measurement.hpp"
+#include <memory>
+#include <vector>
+
+#include <cereal/cereal.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+
+#include "sensor_measurement_proxy.hpp"
+#include "sensor_position_proxy.hpp"
+
+namespace generator_app {
+class sensor_observer;
+class target;
+} /* namespace generator_app */
 
 namespace generator_app {
 /**
@@ -28,25 +37,14 @@ public:
         return sensors_;
     }
 
-    std::vector<sensor_measurement_proxy> get_measurements() {
-        std::vector<sensor_measurement_proxy> vect;
-        for(auto it = sensors_->begin(); it != sensors_->end(); it++) {
-            vect.push_back( sensor_proxy_factory::get_measurement_proxy((*it)) );
-        }
-        return vect;
-    };
+    std::vector<sensor_measurement_proxy> get_measurements();
 
-    std::vector<sensor_position_proxy> get_positions() {
-        std::vector<sensor_position_proxy> vect;
-        for(auto it = sensors_->begin(); it != sensors_->end(); it++) {
-            vect.push_back( sensor_proxy_factory::get_position_proxy((*it)) );
-        }
-        return vect;
-    };
+    std::vector<sensor_position_proxy> get_positions();
 
 private:
     std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>> sensors_;
     std::shared_ptr<std::vector<std::shared_ptr<target>>> targets_;
 };
-}
+
+} /* namespace generator_app */
 #endif
