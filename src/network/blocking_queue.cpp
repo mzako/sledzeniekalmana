@@ -1,11 +1,13 @@
-#include "buffer_queue.hpp"
+#include "blocking_queue.hpp"
 
-buffer_queue::buffer_queue() {
+using namespace network;
+
+blocking_queue::blocking_queue() {
             lock_empty.lock(); //Na poczatku wszystko jest puste
 
 }
 
-std::string buffer_queue::pop() {
+std::string blocking_queue::pop() {
             std::string result;
             lock_empty.lock();
             safe.lock();
@@ -19,7 +21,7 @@ std::string buffer_queue::pop() {
 
 }
 
-void buffer_queue::push(std::string message) {
+void blocking_queue::push(std::string message) {
             safe.lock();
             if (messages.empty()) { //Jesli 0 to odblokuj bo ktos wisi na popie
                 lock_empty.unlock();

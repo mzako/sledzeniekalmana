@@ -1,4 +1,4 @@
-# SConscript sledzeniekalmana/src/client_server
+# SConscript sledzeniekalmana/src/network
 # Author: Adam Moscicki
 
 Import('env_lib', 'module')
@@ -9,4 +9,4 @@ sources = Glob('*.cpp', strings=True)
 print 'Source files in module: ' + module
 print sources
 
-env_lib.Library('client_server', sources)
+env_lib.Library('network', sources)

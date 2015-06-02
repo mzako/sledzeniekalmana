@@ -6,21 +6,23 @@
 #ifndef _SENDING_BUFFER_HPP
 #define _SENDING_BUFFER_HPP
 #include <boost/thread.hpp>
-#include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <map>
 #include <string>
-#include "buffer_queue.hpp"
+
+#include "blocking_queue.hpp"
 
 /**
  * \details For every thread keeps a buffer containg messages
  * (WARNING: redundacy, same messages are kept in every buffer, it's much easier)
  *
  */
-class sending_buffer
-{
-    std::map<boost::thread::id, std::shared_ptr<buffer_queue>> buffersForThreads;
+
+namespace network {
+
+class sending_buffer {
+    std::map<boost::thread::id, std::shared_ptr<blocking_queue>> buffersForThreads;
     boost::mutex safe;
     public:
     sending_buffer(){
@@ -37,6 +39,7 @@ class sending_buffer
     std::string pop(boost::thread::id id);
 };
 
+}
 #endif
 
 

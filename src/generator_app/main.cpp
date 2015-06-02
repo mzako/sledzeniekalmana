@@ -1,8 +1,9 @@
 #include "simulation_module.hpp"
 #include <memory>
-#include "../client_server/server.hpp"
-#include "../client_server/sending_buffer.hpp"
+#include "../network/server.hpp"
+#include "../network/sending_buffer.hpp"
 using namespace generator_app;
+using namespace network;
 int main(int argc, char ** argv){
 
     std::shared_ptr<sending_buffer> sending_buf(new sending_buffer);
