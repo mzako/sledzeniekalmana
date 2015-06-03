@@ -48,7 +48,7 @@ private:
     static unsigned gId_;
     unsigned id_;
     std::vector<measurement> measurements_;
-    vect3f make_noise(std::shared_ptr<target>) const;
+    measurement make_measurement(std::shared_ptr<target>) const;
 
     std::list<std::shared_ptr<target>> targets_;
 
@@ -58,47 +58,5 @@ private:
     float radius_;
 };
 
-class sensor_measurement_proxy {
-public:
-    sensor_measurement_proxy( std::shared_ptr<sensor_observer> real) : real_(real) {};
-
-    template<class Archive>
-    void serialize(Archive& archive) {
-        archive(
-                cereal::make_nvp("id", real_->get_id() ),
-                cereal::make_nvp("measurements", real_->get_measurements() )
-        );
-    }
-
-private:
-    std::shared_ptr<sensor_observer> real_;
-};
-
-class sensor_position_proxy {
-public:
-    sensor_position_proxy( std::shared_ptr<sensor_observer> real) : real_(real) {};
-
-    template<class Archive>
-    void serialize(Archive& archive) {
-        archive (
-                cereal::make_nvp("id", real_->get_id() ),
-                cereal::make_nvp("targets", real_->get_targets() )
-        );
-    }
-
-private:
-    std::shared_ptr<sensor_observer> real_;
-};
-
-class sensor_proxy_factory {
-public:
-    static sensor_measurement_proxy get_measurement_proxy(std::shared_ptr<sensor_observer> real) {
-        return sensor_measurement_proxy(real);
-    }
-
-    static sensor_position_proxy get_position_proxy(std::shared_ptr<sensor_observer> real) {
-        return sensor_position_proxy(real);
-    }
-};
 }
 #endif

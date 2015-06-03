@@ -11,7 +11,7 @@
 #include "client.hpp"
 #include <iostream>
 
-client::client(std::string host, std::string port) : port(port), host(host) {
+client::client(std::string host, std::string port) : port_(port), host_(host) {
 
 }
 
@@ -21,7 +21,7 @@ void client::operator()() {
 
         ip::tcp::resolver resolver(aios);
         ip::tcp::resolver::iterator endpoint = resolver.resolve(
-                ip::tcp::resolver::query(host, port));
+                ip::tcp::resolver::query(host_, port_));
         ip::tcp::socket socket(aios);
         // open the connection for the specified endpoint, or throws a system_error
         connect(socket, endpoint);
