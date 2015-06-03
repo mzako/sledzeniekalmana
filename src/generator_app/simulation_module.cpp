@@ -9,8 +9,10 @@
 #include <thread>
 #include <memory>
 #include <sstream>
+#include <fstream>
 
 #include <cereal/archives/json.hpp>
+#include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
 
@@ -56,15 +58,25 @@ void simulation_module::run(shared_ptr<sending_buffer> sending_buf)
     while (true){
         //cout << time_ / FREQUENCY_ << endl;
         this_thread::sleep_for(chrono::milliseconds(1000));
-        map<unsigned, vect3f> pos = environment_->getPositions();
-        map<unsigned, vect3f>::const_iterator it;
+
+        fstream fs;
+        fs.open("test.txt", std::fstream::out);
+        {
+            cereal::BinaryOutputArchive ofarchive(fs);
+            ofarchive(
+                    cereal::make_nvp("sensors", environment_->get_measurements() )
+            );
+        }
+        fs.close();
+
         stringstream ss;
         {
             cereal::JSONOutputArchive oarchive(ss);
             oarchive(
-                    cereal::make_nvp("sensors", *(environment_->getSensors()) )
-            );//
+                    cereal::make_nvp("sensors", environment_->get_measurements() )
+            );
         }
+
         cout << ss.str() << endl;
         sending_buf->send(ss.str());
 

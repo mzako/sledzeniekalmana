@@ -31,19 +31,10 @@ void sensor_observer::update(std::shared_ptr<target> obj)
     else if (position_.distance(obj->get_current_position()) > radius_ /*&& it != targets_.end()*/){
         targets_.erase(it);
     }
-}
-/**
-* Function get_positions
-* Returns map of pairs consisting of target's id and position
-*/
-map<unsigned, vect3f> sensor_observer::get_positions() const
-{
-    map<unsigned, vect3f> pos;
-    list<std::shared_ptr<target>>::const_iterator it;
+    measurements_.clear();
     for (it = targets_.begin(); it != targets_.end(); ++it){
-        pos.insert(make_pair((*it)->get_id(), make_noise(*it)));
+        measurements_.push_back( measurement(make_noise(*it), (*it)->get_id() ));
     }
-    return pos;
 }
 /**
 * Function make_noise

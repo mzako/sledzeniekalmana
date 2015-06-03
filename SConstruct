@@ -2,7 +2,7 @@ import os
 
 # Define build environment
 common_env = Environment()
-common_env.Append(CPPFLAGS=['-std=c++11'])#, '-Wall')
+common_env.Append(CPPFLAGS=['-g', '-std=c++11'])#, '-Wall')
 common_env.Append(LIBS=['-lboost_system','-lpthread' , '-lboost_thread', '-lclient_server'])
 common_env.Append(LIBPATH=['#/build/debug/client_server','/lib','/usr/lib','/usr/local/lib', '/usr/local/boost_1_57_0'])
 common_env.Append(CPPPATH=['/lib','/usr/lib','/usr/local/lib', '/usr/local/boost_1_57_0','#/include'])
@@ -36,7 +36,7 @@ lib_modules = ['client_server']
 
 # Now that all build environment have been defined, let's iterate over
 # them and invoke the lower level SConscript files.
-for mode, env in dict(release=release_env, debug=debug_env).iteritems():
+for mode, env in dict(debug=debug_env).iteritems(): #release=release_env, 
     env.SConscript('build'+ os.sep + mode + os.sep + 'SConscript', {'env': env, 'modules': modules, 'env_lib': lib_env, 'lib_modules': lib_modules}, dupicate=0)
 
 

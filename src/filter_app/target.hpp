@@ -1,6 +1,8 @@
 ﻿#ifndef _TARGET_HPP
 #define _TARGET_HPP
 
+#include <cereal/cereal.hpp>
+
 #include "vect3f.hpp"
 
 namespace filter_app 
@@ -19,6 +21,14 @@ public:
     vect3f get_point() const;
     void set_id(int id);
     int get_id() const;
+
+    template<class Archive>
+    void serialize(Archive& archive) {
+        archive(
+                cereal::make_nvp("id", id_),
+                cereal::make_nvp("position", point_)
+        );
+    }
 private:
     vect3f point_;
     int id_;
