@@ -11,8 +11,8 @@
 #include <sstream>
 #include <fstream>
 
+#include <cereal/types/polymorphic.hpp>
 #include <cereal/archives/json.hpp>
-#include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
 
@@ -20,6 +20,7 @@
 #include "../client_server/sending_buffer.hpp"
 #include "line.hpp"
 #include "balistic.hpp"
+#include "target_prototype.hpp"
 
 using namespace std;
 
@@ -39,19 +40,39 @@ void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_p
     environment_->set_sensors(sensors);
 }
 
-void simulation_module::initialize_simulation() {
-    shared_ptr<curve> line1( new line( vect3f(1.f, 1.f, 1.f) ) );
-    shared_ptr<balistic> balistic1( new balistic(vect3f(400.f, 80.f, 400.f), 1.1 ) );
-    shared_ptr<target> target1( new target(line1) );
-    shared_ptr<target> target2( new target(balistic1) );
+void simulation_module::initialize_simulation(std::string init_file_path) {
+    //TODO: Sensor initialization from file
     shared_ptr<sensor_observer> sensor1( new sensor_observer(vect3f(0, 0, 0), 100000.f, 0.f, 0.4f) );
-    shared_ptr<vector<shared_ptr<target> > > targets( new vector<shared_ptr<target> >);
+    shared_ptr<vector<p_target> > targets( new vector<p_target>);
     shared_ptr<vector<shared_ptr<sensor_observer> > > sensors( new vector<shared_ptr<sensor_observer> > );
-    targets->push_back(target1);
-    targets->push_back(target2);
     sensors->push_back(sensor1);
-    target1->set_sensor_observers(sensors);
-    target2->set_sensor_observers(sensors);
+
+    std::vector<target_prototype> prototypes;
+
+    std::fstream fs;
+    /*fs.open("test.json", std::fstream::out);
+    {
+        cereal::JSONOutputArchive oarchive(fs);
+        oarchive(
+                cereal::make_nvp( "prototypes", prototypes )
+        );
+    }
+    fs.close();*/
+    fs.open(init_file_path, std::fstream::in);
+    {
+        cereal::JSONInputArchive iarchive(fs);
+        iarchive(
+                prototypes
+        );
+    }
+    fs.close();
+
+    for( auto element : prototypes ) {
+        p_target tar = element.get_target();
+        tar->set_sensor_observers(sensors);
+        targets->push_back(tar);
+    }
+
     prepare_environment(targets, sensors);
 }
 
@@ -59,9 +80,9 @@ void simulation_module::initialize_simulation() {
  * Function run
  * Runs main simulation thread
  */
-void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, shared_ptr<sending_buffer> comparator_sending_buf)
+void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, shared_ptr<sending_buffer> comparator_sending_buf, std::string init_file_path)
 {
-    initialize_simulation();
+    initialize_simulation(init_file_path);
 
     while(true)
     {

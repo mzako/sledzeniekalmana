@@ -11,9 +11,9 @@
 using namespace generator_app;
 int main(int argc, char ** argv){
 
-    if(argc != 3)
+    if(argc != 4)
     {
-        std::cout << "Usage: generator_app <filter_port> <comparator_port>" << std::endl;
+        std::cout << "Usage: generator_app <filter_port> <comparator_port> <init_file_path>" << std::endl;
     }
     else
     {
@@ -26,7 +26,7 @@ int main(int argc, char ** argv){
         boost::thread comparator_server_thread(comparator_server);
 
         simulation_module * instance = simulation_module::get_instance();
-        instance->run(filter_sending_buf, comparator_sending_buf);
+        instance->run(filter_sending_buf, comparator_sending_buf, argv[3]);
     }
 
 

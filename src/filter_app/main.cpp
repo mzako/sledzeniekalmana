@@ -21,7 +21,7 @@ int main(int argc, char ** argv)
 
         boost::thread client_thread(client);
 
-        filter_module::get_instance()->run();
+        filter_module::get_instance()->run() ;
 
         return 0;
     }

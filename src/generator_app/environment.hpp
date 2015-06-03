@@ -10,6 +10,10 @@
 #include <memory>
 #include <vector>
 
+#include <cereal/cereal.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/vector.hpp>
+
 #include "sensor_measurement_proxy.hpp"
 #include "sensor_position_proxy.hpp"
 
