@@ -76,5 +76,28 @@
                 ]
             }
         }
-    ]
+    ],
+    "sensors": {
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": [
+                {
+                    "ptr_wrapper": {
+                        "id": 2147483650,
+                        "data": {
+                            "id": 1,
+                            "position": {
+                                "x": 0,
+                                "y": 0,
+                                "z": 0
+                            },
+                            "radius": 100000,
+                            "gauss_mean": 0,
+                            "gauss_deviation": 0.40000000596046448
+                        }
+                    }
+                }
+            ]
+        }
+    }
 }

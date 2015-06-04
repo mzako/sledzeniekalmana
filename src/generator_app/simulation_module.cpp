@@ -42,28 +42,28 @@ void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_p
 }
 
 void simulation_module::initialize_simulation(std::string init_file_path) {
-    //TODO: [JKU] Sensor initialization from file
-    shared_ptr<sensor_observer> sensor1( new sensor_observer(vect3f(0, 0, 0), 100000.f, 0.f, 0.4f) );
     shared_ptr<vector<p_target> > targets( new vector<p_target>);
     shared_ptr<vector<shared_ptr<sensor_observer> > > sensors( new vector<shared_ptr<sensor_observer> > );
-    sensors->push_back(sensor1);
+    /*shared_ptr<sensor_observer> sensor1( new sensor_observer(vect3f(0, 0, 0), 100000.f, 0.f, 0.4f) );
+    sensors->push_back(sensor1);*/
 
     std::vector<target_prototype> target_prototypes;
 
     std::fstream fs;
-    fs.open("sensors.json", std::fstream::out);
+   /* fs.open("sensors.json", std::fstream::out);
     {
         cereal::JSONOutputArchive oarchive(fs);
         oarchive(
                 cereal::make_nvp( "sensors", sensors)
         );
     }
-    fs.close();
+    fs.close();*/
     fs.open(init_file_path, std::fstream::in);
     {
         cereal::JSONInputArchive iarchive(fs);
         iarchive(
-                target_prototypes
+                target_prototypes,
+                sensors
         );
     }
     fs.close();
