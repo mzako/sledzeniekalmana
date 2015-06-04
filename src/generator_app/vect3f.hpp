@@ -8,12 +8,6 @@
 
 #include <cereal/cereal.hpp>
 
-namespace boost {
-namespace serialization {
-class access;
-} /* namespace serialization */
-} /* namespace boost */
-
 namespace generator_app {
 /**
  * Struct vect3f
@@ -24,14 +18,6 @@ struct vect3f {
     float distance(const vect3f&) const;
     vect3f operator+(const vect3f&) const;
 
-    /*   friend class boost::serialization::access;
-        template<class Archive>
-        void serialize(Archive& archive, const unsigned int version)
-        {
-            archive & x_;
-            archive & y_;
-            archive & z_;
-        }*/
     template<class Archive>
     void serialize(Archive& archive)
     {

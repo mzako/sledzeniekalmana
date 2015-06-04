@@ -40,7 +40,10 @@ public:
     {
         archive(
                 cereal::make_nvp("id", id_),
-                cereal::make_nvp("targets", targets_)
+                cereal::make_nvp("position", position_),
+                cereal::make_nvp("radius", radius_),
+                cereal::make_nvp("gauss_mean", mean_),
+                cereal::make_nvp("gauss_deviation", deviation_)
         );
     }
 
