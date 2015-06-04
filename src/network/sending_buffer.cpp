@@ -1,8 +1,10 @@
 #include "sending_buffer.hpp"
 
+using namespace network;
+
 void sending_buffer::addThread(boost::thread::id id) {
     safe.lock();
-    buffersForThreads[id] = boost::shared_ptr<buffer_queue>(new buffer_queue);
+    buffersForThreads[id] = std::shared_ptr<blocking_queue>(new blocking_queue);
     safe.unlock();
 }
 
@@ -19,7 +21,7 @@ void sending_buffer::send(std::string message) {
  * when buffer is empty thread blocks on pop operation in return line
  */
 std::string sending_buffer::pop(boost::thread::id id) {
-    boost::shared_ptr<buffer_queue> threadBuffer;
+    std::shared_ptr<blocking_queue> threadBuffer;
     std::string result;
     safe.lock();
     threadBuffer = buffersForThreads[id];

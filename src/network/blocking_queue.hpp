@@ -3,8 +3,8 @@
  * \author Adam Mościcki
  */
 
-#ifndef _BUFFER_QUEUE_HPP
-#define _BUFFER_QUEUE_HPP
+#ifndef _BLOCKING_QUEUE_HPP
+#define _BLOCKING_QUEUE_HPP
 
 #include <boost/thread/mutex.hpp>
 #include <queue>
@@ -13,16 +13,20 @@
 /**
  * \details Queue of strings with thread safe operations, poping operation on empty buffer blocks thread till to push.
  */
-class buffer_queue
-{
+
+namespace network {
+
+class blocking_queue {
     private:
         boost::mutex safe;
         std::queue<std::string> messages;
         boost::mutex lock_empty;
     public:
-        buffer_queue();
+        blocking_queue();
         std::string pop();
         void push(std::string message);
 };
+
+}
 
 #endif

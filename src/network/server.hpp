@@ -12,18 +12,22 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+#include "blocking_queue.hpp"
 #include "sending_buffer.hpp"
-#include "buffer_queue.hpp"
+#include "connection_commons.hpp"
 
-using namespace boost::asio;
+namespace network {
 
-class server
-{
+class server {
 private:
-    int port;
-    boost::shared_ptr<sending_buffer> sending_buf;
+    int port_;
+    std::shared_ptr<sending_buffer> sending_buf_;
+    volatile bool is_started_;
 public:
-    server(int port, boost::shared_ptr<sending_buffer> ptr);
+    server(int port, std::shared_ptr<sending_buffer> ptr);
     void operator()();
-    static void send(boost::shared_ptr<ip::tcp::socket> socket, boost::shared_ptr<sending_buffer> sending_buf);
+    void send(std::shared_ptr<boost::asio::ip::tcp::socket> socket, std::shared_ptr<sending_buffer> sending_buf);
+    void stop();
 };
+
+}

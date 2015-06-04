@@ -1,14 +1,13 @@
 #include <cstdlib>
 #include <iostream>
 #include <memory>
-
 #include <boost/thread/thread.hpp>
-
-#include "../client_server/sending_buffer.hpp"
-#include "../client_server/server.hpp"
+#include "../network/server.hpp"
+#include "../network/sending_buffer.hpp"
 #include "simulation_module.hpp"
 
 using namespace generator_app;
+using namespace network;
 int main(int argc, char ** argv){
 
     if(argc != 4)

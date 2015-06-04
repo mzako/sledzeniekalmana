@@ -17,14 +17,15 @@
 #include <cereal/types/memory.hpp>
 
 #include "simulation_module.hpp"
-#include "../client_server/sending_buffer.hpp"
 #include "line.hpp"
 #include "balistic.hpp"
 #include "target_prototype.hpp"
 
 using namespace std;
+using namespace network;
 
 namespace generator_app {
+
 
 const float simulation_module::FREQUENCY_ = 10.0;
 
