@@ -19,10 +19,11 @@ class sensor_observer;
  * Class target
  * Represents targets that change position during a simulation, moving along a given curve
  */
-class target {
+class target : public std::enable_shared_from_this<target> {
 public:
     target() {};
     target(std::shared_ptr<curve> curve, vect3f initial_position = vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
+    virtual ~target();
     void update(float);
     void set_sensor_observers(std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
     vect3f get_current_position() const;

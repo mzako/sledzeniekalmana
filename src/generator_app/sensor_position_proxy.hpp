@@ -24,7 +24,7 @@ public:
     void serialize(Archive& archive) {
         archive (
                 cereal::make_nvp("id", real_->get_id() ),
-                cereal::make_nvp("targets", real_->get_targets() )
+                cereal::make_nvp("targets", real_->get_positions() )
         );
     }
 

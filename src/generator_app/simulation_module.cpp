@@ -85,14 +85,11 @@ void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, share
     if(initialized_) {
         while(true)
         {
-            //cout << time_ / FREQUENCY_ << endl;
-            this_thread::sleep_for(chrono::milliseconds(1000));
+            environment_->update(float(time_ / FREQUENCY_));
             sendDataToFilter(filter_sending_buf);
             sendDataToComparator(comparator_sending_buf);
-
+            this_thread::sleep_for(chrono::milliseconds(1000));
             time_ += 1;
-            environment_->update(float(time_ / FREQUENCY_));
-
         }
     }
 }

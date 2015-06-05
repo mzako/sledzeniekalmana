@@ -17,23 +17,33 @@ unsigned sensor_observer::gId_ = 1;
  * Function update
  * Checks whether targets entered or left sensor's area and inserts or removes target from sensor's target list
  */
-void sensor_observer::update(std::shared_ptr<target> obj)
+void sensor_observer::update(p_target obj)
 {
-    list<std::shared_ptr<target>>::iterator it;
-    for (it = targets_.begin(); it != targets_.end(); ++it){
+    list<p_target>::iterator it;
+
+    for (it = targets_.begin(); it != targets_.end(); ++it)
+    {
         if (*it == obj)
+        {
             break;
+        }
     }
-    //TODO iterator end!
-    if (position_.distance(obj->get_current_position()) <= radius_ /*&& it == targets_.end()*/){
-        targets_.push_back(obj);
-    }
-    else if (position_.distance(obj->get_current_position()) > radius_ /*&& it != targets_.end()*/){
-        targets_.erase(it);
+    if( it == targets_.end() )
+    {
+        //TODO iterator end!
+        if (position_.distance(obj->get_current_position()) <= radius_)
+        {
+            targets_.push_back(obj);
+        }
+        else if (position_.distance(obj->get_current_position()) > radius_)
+        {
+            targets_.erase(it);
+        }
+
     }
     measurements_.clear();
     for (it = targets_.begin(); it != targets_.end(); ++it){
-        measurements_.push_back( make_measurement(*it) );
+        measurements_.push_back(make_measurement(*it));
     }
 }
 /**
@@ -52,3 +62,16 @@ measurement_dto sensor_observer::make_measurement(std::shared_ptr<target> obj) c
     return measurement_dto( pos, obj->get_id() );
 }
 
+std::vector<measurement_dto> sensor_observer::get_positions() const {
+    std::vector<measurement_dto> positions;
+    for( auto element : targets_ )
+    {
+        positions.push_back(measurement_dto(element->get_current_position(), element->get_id()));
+    }
+    return positions;
+}
+
+std::vector<measurement_dto> sensor_observer::get_measurements() const
+{
+    return measurements_;
+}
