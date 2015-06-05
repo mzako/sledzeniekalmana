@@ -38,6 +38,9 @@ public:
      * Start a client
      */
     void operator()();
+    /**
+     * Stop a client
+     */
     void stop();
 
 };
