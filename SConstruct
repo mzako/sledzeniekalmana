@@ -4,8 +4,8 @@ import os
 common_env = Environment()
 common_env.Append(CPPFLAGS=['-g', '-std=c++11'])#, '-Wall')
 common_env.Append(LIBS=['-lboost_system','-lpthread' , '-lboost_thread'])
-common_env.Append(LIBPATH=['/lib','/usr/lib','/usr/local/lib', '/usr/local/boost_1_57_0'])
-common_env.Append(CPPPATH=['/lib','/usr/lib','/usr/local/lib', '/usr/local/boost_1_57_0','#/include'])
+common_env.Append(LIBPATH=['/lib','/usr/lib','/usr/local/lib'])
+common_env.Append(CPPPATH=['/lib','/usr/lib','/usr/local/lib','#/include'])
 
 # Support method
 import os.path

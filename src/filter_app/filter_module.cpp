@@ -55,13 +55,24 @@ void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue)
     initialize_target_data(blocking_queue);
     while(true)
     {
-        while (positions_queue_.empty()){
+        std::string first_target_data = blocking_queue->pop();
+#ifdef DEBUG
+        cout << "TARGET_DATA" << endl << first_target_data << endl;
+#endif
+        stringstream ss(first_target_data);
+        {
+            cereal::JSONInputArchive iarchive(ss);
+            iarchive(
+                    sensors_
+            );
+        }
+        /*  while (positions_queue_.empty()){
             this_thread::sleep_for(chrono::milliseconds(1000));
         }
         vector<vect3f> tmp_positions = positions_queue_.front();
         positions_queue_.pop();
         kalman_filter_->compute(tmp_positions);
-        vector<vect3f> res = kalman_filter_->get_current_positions();
+        vector<vect3f> res = kalman_filter_->get_current_positions();*/
     }
 
 
@@ -70,16 +81,29 @@ void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue)
 void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string initial_data = blocking_queue->pop();
 #ifdef DEBUG
-    cout << "SENSOR_DATA" << endl;
+    cout << "SENSOR_DATA" << endl << initial_data << endl;
 #endif
-    cout << initial_data << endl;
+    stringstream ss(initial_data);
+    {
+        cereal::JSONInputArchive iarchive(ss);
+        iarchive(
+                sensor_parameters_
+        );
+    }
 }
 
 void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> blocking_queue) {
+    std::string first_target_data = blocking_queue->pop();
 #ifdef DEBUG
-    cout << "FIRST_TARGET_DATA" << endl;
+    cout << "FIRST_TARGET_DATA" << endl << first_target_data << endl;
 #endif
-    cout << blocking_queue->pop() << endl;
+    stringstream ss(first_target_data);
+    {
+        cereal::JSONInputArchive iarchive(ss);
+        iarchive(
+                sensors_
+        );
+    }
 }
 
 void filter_module::receive_data(std::vector<vect3f> positions, std::vector<std::pair<float, float>> sensors_params)

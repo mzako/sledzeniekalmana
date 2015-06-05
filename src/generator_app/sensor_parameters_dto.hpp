@@ -14,6 +14,7 @@ namespace generator_app {
 
 struct sensor_parameters_dto {
     //TODO: [JKU] to jest OW
+	sensor_parameters_dto() {};
     sensor_parameters_dto( unsigned id, float mn, float pn) : id_(id), measurement_noise_(mn), process_noise_(pn) {};
     virtual ~sensor_parameters_dto() {};
 

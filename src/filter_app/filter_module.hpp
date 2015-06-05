@@ -12,8 +12,10 @@
 #include <vector>
 
 #include "vect3f.hpp"
+#include "sensor.hpp"
 #include "../network/blocking_queue.hpp"
 #include "kalman_filter.hpp"
+#include "../generator_app/sensor_parameters_dto.hpp"
 
 namespace filter_app 
 {
@@ -43,6 +45,10 @@ namespace filter_app
         static std::shared_ptr<filter_module>  instance_;
         std::queue<std::vector<vect3f>> positions_queue_;
         std::vector<std::pair<float,float>> sensors_params_;
+
+        std::vector<generator_app::sensor_parameters_dto> sensor_parameters_;
+        std::vector<sensor> sensors_;
+
         std::unique_ptr<kalman_filter> kalman_filter_;
         void initialize_sensor_data(std::shared_ptr<network::blocking_queue> blocking_queue);
         void initialize_target_data(std::shared_ptr<network::blocking_queue> blocking_queue);
