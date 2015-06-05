@@ -40,24 +40,20 @@ void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_p
     is_started_ = true;
 }
 
-string simulation_module::initialize(std::string init_file_path) {
+string simulation_module::initialize(std::fstream& init_file) {
     shared_ptr<vector<p_target> > targets( new vector<p_target>);
     shared_ptr<vector<p_sensor_observer > > sensors( new vector<p_sensor_observer> );
 
     vector<sensor_load_proxy> sensor_proxies;
     vector<target_load_proxy> target_proxies;
 
-    fstream fs;
-    // load proxy objects from file
-    fs.open(init_file_path, std::fstream::in);
     {
-        cereal::JSONInputArchive iarchive(fs);
+        cereal::JSONInputArchive iarchive(init_file);
         iarchive(
                 target_proxies,
                 sensor_proxies
         );
     }
-    fs.close();
     //populate sensors list
     for( auto element : sensor_proxies ) {
         sensors->push_back(element.get_real());
