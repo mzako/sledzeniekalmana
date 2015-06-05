@@ -6,6 +6,7 @@
 #ifndef _SIMULATION_MODULE_HPP
 #define _SIMULATION_MODULE_HPP
 #include <vector>
+#include <fstream>
 #include <memory>
 
 #include "environment.hpp"
@@ -28,7 +29,7 @@ public:
 
     void prepare_environment(std::shared_ptr<std::vector<std::shared_ptr<target>>>, std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
 
-    std::string initialize(std::string init_file_path);
+    std::string initialize(std::fstream& init_file);
     void run(std::shared_ptr<network::sending_buffer> filter_sending_buf, std::shared_ptr<network::sending_buffer> comparator_sending_buf);
     /**
      * stops the simulation

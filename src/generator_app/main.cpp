@@ -2,8 +2,11 @@
 #include <iostream>
 #include <memory>
 #include <boost/thread/thread.hpp>
+#include <fstream>
+
 #include "../network/server.hpp"
 #include "../network/sending_buffer.hpp"
+
 #include "simulation_module.hpp"
 
 using namespace generator_app;
@@ -23,8 +26,15 @@ int main(int argc, char ** argv){
     }
     else
     {
-        std::string initial_data = simulation_module::get_instance()->initialize(argv[3]);
-
+        std::fstream file;
+        file.open(argv[3], std::fstream::in);
+        if(!file.is_open())
+        {
+            std::cout << "Cannot open file: " << argv[3] << std::endl;
+            return 1;
+        }
+        std::string initial_data = simulation_module::get_instance()->initialize(file);
+        file.close();
         std::shared_ptr<sending_buffer> filter_sending_buf(new sending_buffer);
         server filter_server(std::atoi(argv[1]), filter_sending_buf, initial_data);
         std::shared_ptr<sending_buffer> comparator_sending_buf(new sending_buffer);
@@ -41,7 +51,6 @@ int main(int argc, char ** argv){
         filter_server_thread.join();
         comparator_server_thread.join();
     }
-
 
     return 0;
 }
