@@ -25,6 +25,7 @@ private:
     std::string host_;
     std::string port_;
     std::shared_ptr<blocking_queue> queue_;
+    volatile bool is_started_;
 public:
     /**
      * Creats a client
@@ -37,7 +38,7 @@ public:
      * Start a client
      */
     void operator()();
-
+    void stop();
 
 };
 

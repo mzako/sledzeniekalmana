@@ -14,7 +14,7 @@ using namespace boost::asio;
 using namespace network;
 
 client::client(std::string host, std::string port, std::shared_ptr<blocking_queue> queue)
-                                                : port_(port), host_(host), queue_(queue) {
+                                                : port_(port), host_(host), queue_(queue), is_started_(true) {
 
 }
 
@@ -29,7 +29,7 @@ void client::operator()() {
         // open the connection for the specified endpoint, or throws a system_error
         connect(socket, endpoint);
         std::string message;
-        for(;;) {
+        while(is_started_) {
             while(true) {
                 std::array<char, 512> buf;
                 boost::system::error_code error;
@@ -52,7 +52,17 @@ void client::operator()() {
                 }
             }
         }
+        boost::system::error_code error;
+        socket.close(error);
+        if(error) {
+            std::cerr << "Socket connenction closing problem" << std::endl;
+        }
     } catch(std::exception& e) {
         std::cerr << e.what() << std::endl;
     }
 }
+
+void client::stop() {
+    is_started_ = false;
+}
+
