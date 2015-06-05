@@ -1,7 +1,7 @@
 # SConscript sledzeniekalmana/src/network
 # Author: Adam Moscicki
 
-Import('env_lib', 'module')
+Import('env', 'module')
 
 import os
 
@@ -9,4 +9,6 @@ sources = Glob('*.cpp', strings=True)
 print 'Source files in module: ' + module
 print sources
 
-env_lib.Library('network', sources)
+result = env.Library('network', sources)
+
+Return('result')
