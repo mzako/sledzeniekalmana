@@ -9,6 +9,12 @@
 using namespace generator_app;
 using namespace network;
 
+void stop_simulation(std::shared_ptr<simulation_module> sm) {
+    std::cout << "press enter to end the simulation" << std::endl;
+    std::cin.get();
+    sm->stop();
+}
+
 int main(int argc, char ** argv){
 
     if(argc != 4)
@@ -23,11 +29,17 @@ int main(int argc, char ** argv){
         server filter_server(std::atoi(argv[1]), filter_sending_buf, initial_data);
         std::shared_ptr<sending_buffer> comparator_sending_buf(new sending_buffer);
         server comparator_server(std::atoi(argv[2]), comparator_sending_buf);
-
-        boost::thread filter_server_thread(filter_server);
-        boost::thread comparator_server_thread(comparator_server);
-
+        boost::thread filter_server_thread(boost::bind(&server::operator(), &filter_server));
+        boost::thread comparator_server_thread(boost::bind(&server::operator(), &comparator_server));
+        boost::thread wait_for_stop(boost::bind(stop_simulation, simulation_module::get_instance()));
         simulation_module::get_instance()->run(filter_sending_buf, comparator_sending_buf);
+        std::cout << "asd";
+        filter_server.stop();
+        std::cout << "asd2";
+        comparator_server.stop();
+        std::cout << "asd3";
+        filter_server_thread.join();
+        comparator_server_thread.join();
     }
 
 

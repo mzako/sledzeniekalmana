@@ -7,6 +7,7 @@
 #define _BLOCKING_QUEUE_HPP
 
 #include <boost/thread/mutex.hpp>
+#include <boost/thread/condition_variable.hpp>
 #include <queue>
 #include <string>
 
@@ -18,9 +19,9 @@ namespace network {
 
 class blocking_queue {
     private:
-        boost::mutex safe;
         std::queue<std::string> messages;
-        boost::mutex lock_empty;
+        boost::mutex safe_;
+        boost::condition_variable wait_;
     public:
         /**
          *

@@ -30,7 +30,10 @@ public:
 
     std::string initialize(std::string init_file_path);
     void run(std::shared_ptr<network::sending_buffer> filter_sending_buf, std::shared_ptr<network::sending_buffer> comparator_sending_buf);
-
+    /**
+     * stops the simulation
+     */
+    void stop();
     const static float FREQUENCY_;
 private:
     simulation_module() : initialized_(false) {}
@@ -45,6 +48,7 @@ private:
     unsigned time_;
     std::unique_ptr<environment> environment_;
     bool initialized_;
+    volatile bool is_started_;
 };
 }
 #endif

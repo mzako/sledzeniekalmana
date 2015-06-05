@@ -40,6 +40,7 @@ void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_p
     environment_.reset(new environment);
     environment_->set_targets(targets);
     environment_->set_sensors(sensors);
+    is_started_ = true;
 }
 
 string simulation_module::initialize(std::string init_file_path) {
@@ -83,7 +84,7 @@ string simulation_module::initialize(std::string init_file_path) {
 void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, shared_ptr<sending_buffer> comparator_sending_buf)
 {
     if(initialized_) {
-        while(true)
+        while(is_started_)
         {
             //cout << time_ / FREQUENCY_ << endl;
             this_thread::sleep_for(chrono::milliseconds(1000));
@@ -95,6 +96,11 @@ void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, share
 
         }
     }
+}
+
+void simulation_module::stop()
+{
+    is_started_ = false;
 }
 
 string simulation_module::initial_message() const {
@@ -130,7 +136,7 @@ void simulation_module::sendDataToFilter(shared_ptr<sending_buffer> sending_buf)
         );
     }
 #ifdef DEBUG
-    cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
+    //cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
 #endif
     sending_buf->send(ss.str());
 }
@@ -144,7 +150,7 @@ void simulation_module::sendDataToComparator(shared_ptr<sending_buffer> sending_
         );
     }
 #ifdef DEBUG
-    cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
+    //cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
 #endif
     sending_buf->send(ss.str());
 }

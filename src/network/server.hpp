@@ -37,6 +37,8 @@ private:
     std::string initial_data_;
     std::shared_ptr<boost::thread_group> thread_group_;
     volatile bool is_started_;
+protected:
+    void write_to_socket(std::shared_ptr<boost::asio::ip::tcp::socket> socket,  const std::string & message);
 public:
     /**
      * Constructor
