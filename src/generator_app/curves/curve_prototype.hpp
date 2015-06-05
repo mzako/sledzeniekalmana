@@ -5,23 +5,22 @@
  *      Author: elohhim
  */
 
-#ifndef CURVE_PROTOTYPE_HPP
-#define CURVE_PROTOTYPE_HPP
+#ifndef _CURVE_PROTOTYPE_HPP
+#define _CURVE_PROTOTYPE_HPP
 
-#include <exception>
 #include <map>
 #include <memory>
 #include <string>
-#include <utility>
 
 #include <cereal/cereal.hpp>
 #include <cereal/types/map.hpp>
 
 namespace generator_app {
+namespace curves {
 
 class curve_prototype {
 public:
-    curve_prototype() {};
+    curve_prototype();
     virtual ~curve_prototype();
 
     std::string get_type() const { return type_; }
@@ -55,6 +54,7 @@ private:
 
 typedef std::shared_ptr<curve_prototype> p_curve_prototype;
 
+} /* namespace curve */
 } /* namespace generator_app */
 
-#endif /* CURVE_PROTOTYPE_HPP */
+#endif /* _CURVE_PROTOTYPE_HPP */

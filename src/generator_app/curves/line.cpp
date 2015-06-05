@@ -6,7 +6,9 @@
 #include "line.hpp"
 
 using namespace commons;
+
 namespace generator_app {
+namespace curves {
 
 /**
 * Function getPosition
@@ -17,4 +19,5 @@ vect3f line::get_position(float time) const
     return vect3f(velocity_.x_*time, velocity_.y_*time, velocity_.z_*time);
 }
 
+} /* namespace curve */
 } /* namespace generator_app */

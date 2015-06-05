@@ -9,10 +9,11 @@
 
 #include <memory>
 
+#include "../../commons/vect3f.hpp"
 #include "curve_prototype.hpp"
-#include "../commons/vect3f.hpp"
 
 namespace generator_app {
+namespace curves {
 
 /**
  * Class curve (abstract)
@@ -26,5 +27,6 @@ public:
 
 typedef std::shared_ptr<curve> p_curve;
 
+} /* namespace curve */
 } /* namespace generator_app */
 #endif

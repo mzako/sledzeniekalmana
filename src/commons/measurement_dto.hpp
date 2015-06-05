@@ -1,19 +1,20 @@
 /**
- *  \brief     measurement.hpp
- *  \details   This file contains target class
+ *  \brief     measurement_dto.hpp
+ *  \details   This file contains measurement_dto structure.
  *  \author    Jan Kumor
  */
-#ifndef _MEASUREMENT_HPP
-#define _MEASUREMENT_HPP
+#ifndef _MEASUREMENT_DTO_HPP
+#define _MEASUREMENT_DTO_HPP
 
 #include <cereal/cereal.hpp>
 
 #include "vect3f.hpp"
 
 namespace commons {
+
 /**
- * Class target
- * Represents targets that change position during a simulation, moving along a given curve
+ * Struct measurement_dto
+ * Data transfer object structure representing sampled target position.
  */
 struct measurement_dto {
     measurement_dto() {};
@@ -27,9 +28,8 @@ struct measurement_dto {
                 cereal::make_nvp("measurement", point_)
         );
     }
-
     unsigned id_;
     vect3f point_;
 };
 }
-#endif
+#endif /* _MEASUREMENT_DTO_HPP */

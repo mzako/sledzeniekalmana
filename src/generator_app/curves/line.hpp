@@ -1,56 +1,49 @@
 /**
- *  \brief     balistic.hpp
- *  \details   This file contains balistic class
+ *  \brief     line.hpp
+ *  \details   This file contains Line class
  *  \author    Michal Zakowski
  */
 
-#ifndef _BALISTIC_HPP
-#define _BALISTIC_HPP
+#ifndef _LINE_HPP
+#define _LINE_HPP
 
-#include <memory>
-
+#include "../../commons/vect3f.hpp"
 #include "curve.hpp"
-#include "../commons/vect3f.hpp"
 
 namespace generator_app {
+namespace curves {
 
 /**
  * Class line
  * Represents objects' linear path in space
  */
-class balistic : public curve {
+class line : public curve {
 public:
-    const static float GRAVITY_;
-
-    balistic(commons::vect3f velocity = commons::vect3f(), float air_resistance=1.0) : velocity_(velocity), air_resistance_(air_resistance){};
-    virtual ~balistic() {};
-
+    line(commons::vect3f velocity = commons::vect3f()) : velocity_(velocity) {}
     commons::vect3f get_position(float) const;
 
-    static p_curve create(curve_prototype& proto)
+    static p_curve create( curve_prototype& proto )
     {
-        float air_resistance = proto.find_attribute("air_resistance");
         float vx = proto.find_attribute("velocity.x");
         float vy = proto.find_attribute("velocity.y");
         float vz = proto.find_attribute("velocity.z");
-        return p_curve( new balistic( commons::vect3f(vx, vy, vz), air_resistance));
+        return p_curve( new line( commons::vect3f(vx, vy, vz) ) );
     };
 
     virtual curve_prototype proto() const
     {
         curve_prototype proto;
-        proto.set_type("balistic");
+        proto.set_type("line");
         proto.insert_attribute("velocity.x", velocity_.x_);
         proto.insert_attribute("velocity.y", velocity_.y_);
         proto.insert_attribute("velocity.z", velocity_.z_);
-        proto.insert_attribute("air_resistance", air_resistance_);
         return proto;
     }
 
 private:
     commons::vect3f velocity_;
-    float air_resistance_;
 };
 
+} /* namespace curve */
 } /* generator_app */
 #endif

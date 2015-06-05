@@ -7,9 +7,14 @@
 
 #include "curve_prototype.hpp"
 
-#include "exceptions/no_attribute_exception.hpp"
+#include "../exceptions/no_attribute_exception.hpp"
 
 namespace generator_app {
+namespace curves {
+
+curve_prototype::curve_prototype() {
+    //Do nothing
+}
 
 curve_prototype::~curve_prototype() {
     //Do nothing
@@ -29,4 +34,5 @@ void curve_prototype::insert_attribute(std::string key, float value) {
     attributes_.insert( std::pair<std::string, float>(key, value) );
 }
 
+} /* namespace curve */
 } /* namespace generator_app */

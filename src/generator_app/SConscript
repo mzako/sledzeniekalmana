@@ -6,6 +6,7 @@ Import('env', 'module')
 import os
 
 sources = Glob('*.cpp', strings=True)
+sources.append(Glob(os.path.join('*','*.cpp'), strings=True))
 print 'Source files in module: ' + module
 print sources
 
