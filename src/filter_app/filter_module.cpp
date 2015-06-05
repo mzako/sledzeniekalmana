@@ -51,11 +51,21 @@ void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue)
     sensors_params_.push_back(pair<float, float>(11040, 3000));
 
     kalman_filter_.reset(new kalman_filter);
+    //For each data pop need to check if filtering is till started, otherwise it will block on pop
+    if(!is_started_) {
+        return;
+    }
     initialize_sensor_data(blocking_queue);
+    if(!is_started_) {
+        return;
+    }
     initialize_target_data(blocking_queue);
-    while(true)
+    while(is_started_)
     {
         std::string first_target_data = blocking_queue->pop();
+        if(!is_started_) {
+            break;
+        }
 #ifdef DEBUG
         cout << "TARGET_DATA" << endl << first_target_data << endl;
 #endif
@@ -80,6 +90,9 @@ void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue)
 
 void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string initial_data = blocking_queue->pop();
+    if(!is_started_) {
+        return;
+    }
 #ifdef DEBUG
     cout << "SENSOR_DATA" << endl << initial_data << endl;
 #endif
@@ -94,6 +107,9 @@ void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> block
 
 void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string first_target_data = blocking_queue->pop();
+    if(!is_started_) {
+        return;
+    }
 #ifdef DEBUG
     cout << "FIRST_TARGET_DATA" << endl << first_target_data << endl;
 #endif
@@ -114,6 +130,12 @@ void filter_module::receive_data(std::vector<vect3f> positions, std::vector<std:
 
 void filter_module::send_data()
 {
+}
+
+void filter_module::stop(std::shared_ptr<network::blocking_queue> queue)
+{
+    is_started_ = false;
+    queue->push(""); //unblock if where blocked
 }
 
 }

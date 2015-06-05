@@ -9,6 +9,10 @@
 using namespace filter_app;
 using namespace network;
 
+void start_filter(std::shared_ptr<filter_module> filter_module_, std::shared_ptr<blocking_queue> queue) {
+    filter_module_->run(queue);
+}
+
 int main(int argc, char ** argv){
 
     if(argc != 3)
@@ -17,12 +21,13 @@ int main(int argc, char ** argv){
     }
     else
     {
-        std::shared_ptr<blocking_queue> buf_queue(new blocking_queue);
-        client filter_client(argv[1], argv[2], buf_queue);
+        std::shared_ptr<blocking_queue> queue(new blocking_queue);
+        client filter_client(argv[1], argv[2], queue);
         boost::thread client_thread(filter_client);
-
-        filter_module::get_instance()->run(buf_queue);
-
+        boost::thread filter_thread(boost::bind(start_filter, filter_module::get_instance(), queue));
+        client_thread.join();
+        filter_module::get_instance()->stop(queue); //ugly solution
+        filter_thread.join();
     }
 
 
