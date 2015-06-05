@@ -1,36 +1,36 @@
-﻿#include "vect3f.hpp"
-
+﻿/**
+*  \brief     vect3f.cpp
+*  \details   This file contains vect3f class' functions definitions
+*  \author    Michal Zakowski
+*/
+#include <cmath>
+#include "vect3f.hpp"
 using namespace filter_app;
-
-vect3f::vect3f(float x, float y, float z) : x_(x), y_(y), z_(z)
+/**
+* Function distance
+* Returns Euclidean distance between two points in space
+*/
+float vect3f::distance(const vect3f& vec) const
 {
-
+    float dx, dy, dz;
+    dx = x_ - vec.x_;
+    dy = y_ - vec.y_;
+    dz = z_ - vec.z_;
+    return sqrt(dx*dx + dy*dy + dz*dz);
 }
-
-vect3f& vect3f::operator=(const vect3f & a)
+/**
+* Function operator+
+* Overloads operator+ by adding corresponding fields
+*/
+vect3f vect3f::operator+(const vect3f& vec) const
 {
-    x_ = a.get_x();
-    y_ = a.get_y();
-    z_ = a.get_z();
-    return *this;
+    return vect3f(x_ + vec.x_, y_ + vec.y_, z_ + vec.z_);
 }
-
-
-vect3f::~vect3f()
+/**
+* Function operator-
+* Overloads operator- by subtracting corresponding fields
+*/
+vect3f vect3f::operator-(const vect3f& vec) const
 {
-}
-
-float vect3f::get_x() const
-{
-    return x_;
-}
-
-float vect3f::get_y() const
-{
-    return y_;
-}
-
-float vect3f::get_z() const
-{
-    return z_;
+    return vect3f(x_ - vec.x_, y_ - vec.y_, z_ - vec.z_);
 }

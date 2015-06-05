@@ -1,40 +1,24 @@
-﻿#ifndef _VECT3_HPP
-#define _VECT3_HPP
+﻿/**
+*  \brief     vect3f.hpp
+*  \details   This file contains vect3f structure
+*  \author    Michal Zakowski
+*/
+#ifndef _VECT3F_HPP
+#define _VECT3F_HPP
+namespace filter_app {
+    /**
+    * Struct vect3f
+    * Represents objects' poistion or velocity in 3-dimensional space
+    */
+    struct vect3f {
+        vect3f(float x = 0.f, float y = 0.f, float z = 0.f) : x_(x), y_(y), z_(z) {}
+        float distance(const vect3f&) const;
+        vect3f operator+(const vect3f&) const; 
+        vect3f operator-(const vect3f&) const;
 
-#include <cereal/cereal.hpp>
-
-namespace filter_app 
-{
-
-/**
- * \brief Class provides a simple point implementation
- * \author Adam Mościcki
- */
-class vect3f
-{
-public:
-    vect3f(float = 0.0f, float = 0.0f, float = 0.0f);
-    float get_x() const;
-    float get_y() const;
-    float get_z() const;
-    vect3f& operator=(const vect3f & a);
-    ~vect3f();
-    template<class Archive>
-    void serialize(Archive& archive)
-    {
-        archive(
-                cereal::make_nvp("x",x_),
-                cereal::make_nvp("y",y_),
-                cereal::make_nvp("z",z_)
-        );
-    }
-
-private:
-    float x_;
-    float y_;
-    float z_;
-};
-
+        float x_;
+        float y_;
+        float z_;
+    };
 }
-
-#endif //_VECT3F_HPP
+#endif

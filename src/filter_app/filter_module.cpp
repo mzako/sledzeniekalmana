@@ -1,73 +1,60 @@
-﻿#include "filter_module.hpp"
-
-#include <sstream>
+﻿/**
+*  \brief     filter_module.cpp
+*  \details   This file contains filter_module class' functions definitions
+*  \author    Michal Zakowski
+*/
+#include "filter_module.hpp"
+#include <map>
+#include <thread>
 #include <fstream>
-#include <memory>
-
-#include <cereal/cereal.hpp>
-#include <cereal/archives/json.hpp>
-#include <cereal/types/vector.hpp>
-
-#include "sensor.hpp"
-
 using namespace std;
-
-namespace filter_app {
+using namespace filter_app;
 
 filter_module* filter_module::instance_ = nullptr;
-
-filter_module* filter_module::get_instance()
-{
-    if (instance_ == nullptr){
-        instance_ = new filter_module;
+/**
+* Function prepare_kalman_filter
+* Prepares kalman filter by calling init_targets function. Uses initial positions in queue and sensor parameters
+*/
+bool filter_module::prepare_kalman_filter(){
+    kalman_filter_.reset(new kalman_filter);
+    if (positions_queue_.empty())
+    {
+        return false;
     }
-    return instance_;
+    vector<vect3f> tmp_positions = positions_queue_.front();
+    positions_queue_.pop();
+    kalman_filter_->init_targets(tmp_positions,sensors_params_);
+    return true;
 }
-
-filter_module::filter_module()
-{
-    filter_ = std::shared_ptr<kalman_filter>(new kalman_filter);
-}
-
+/**
+* Function run
+* Runs main filter thread
+*/
 void filter_module::run()
 {
-    vector<sensor> sensors;
-    fstream fs;
-    fs.open("../bufor.txt", fstream::in);
+    sensors_params_.push_back(pair<float, float>(11040, 3000));
+    while (!prepare_kalman_filter())
     {
-
-        cereal::JSONInputArchive farchive(fs);
-        farchive(
-                /*cereal::make_nvp("sensors", */sensors /*)*/
-        );
-    }
-    stringstream ss;
-    {
-        cereal::JSONOutputArchive oarchive(ss);
-        oarchive(
-                cereal::make_nvp("sensors", sensors )
-        );
-    }
-    cout << ss.str() << endl;
-    while(true)
-    {
-        //Code hard to implement with mocking network module
-        //1. Try to lock product_empty sempaphore or block
-        //2. add new snapshot to kalman filter
-        //3. estimate state
-        //4. send_data
-    }
+        this_thread::sleep_for(chrono::milliseconds(1000));
+    }  
+	while(true)
+	{
+        while (positions_queue_.empty()){
+            this_thread::sleep_for(chrono::milliseconds(1000));
+        }
+        vector<vect3f> tmp_positions = positions_queue_.front();
+        positions_queue_.pop();
+        kalman_filter_->compute(tmp_positions);
+        vector<vect3f> res = kalman_filter_->get_current_positions();
+	}
 }
 
-
-void filter_module::receive_data(std::vector<vect3f> point)
+void filter_module::receive_data(std::vector<vect3f> positions, std::vector<std::pair<float, float>> sensors_params)
 {
-    //Get data (async receive_data) save data somewhere  into the buffer (adding protected by lock) and unlock product_empy semaphore
+    positions_queue_.push(positions);
+    sensors_params = sensors_params_;
 }
 
 void filter_module::send_data()
 {
-    //invoke code generating json and sending it furher
 }
-
-} /* namespase filter_app */

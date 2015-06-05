@@ -1,39 +1,32 @@
-﻿#ifndef _TARGET_HPP
+﻿/**
+*  \brief     target.hpp
+*  \details   This file contains target class
+*  \author    Michal Zakowski
+*/
+#ifndef _TARGET_HPP
 #define _TARGET_HPP
-
-#include <cereal/cereal.hpp>
-
-#include "vect3f.hpp"
-
-namespace filter_app 
-{
-
-/**
- * \brief Class represents a real object observing by a track
- * \author Adam Moscicki
- */
-class target
-{
-public:
-    target();
-    ~target();
-    void set_point(const vect3f&);
-    vect3f get_point() const;
-    void set_id(int id);
-    int get_id() const;
-
-    template<class Archive>
-    void serialize(Archive& archive) {
-        archive(
-                cereal::make_nvp("id", id_),
-                cereal::make_nvp("position", point_)
-        );
-    }
-private:
-    vect3f point_;
-    int id_;
-};
-
+#include <vector>
+#include <memory>
+#include "track.hpp"
+#include <boost/numeric/ublas/matrix.hpp>
+namespace filter_app {
+    /**
+    * Class target
+    * Represents targets that change position during a simulation, moving along a given curve
+    */
+    class target {
+    public:
+        target(boost::numeric::ublas::matrix<float> state = boost::numeric::ublas::matrix<float> (6,1,0)) :
+            id_(gId_++), state_(state) {}
+        const boost::numeric::ublas::matrix<float>& get_state() const;
+        void set_state(boost::numeric::ublas::matrix<float>);
+        vect3f get_current_position() const;
+        unsigned get_id() const;
+    private:
+        static unsigned gId_;
+        const unsigned id_;
+        boost::numeric::ublas::matrix<float> state_;
+        track track_;
+    };
 }
-
-#endif //_TARGET_HPP
+#endif
