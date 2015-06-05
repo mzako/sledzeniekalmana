@@ -11,16 +11,13 @@
 #include <sstream>
 #include <fstream>
 
-#include <cereal/types/polymorphic.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
 
 #include "simulation_module.hpp"
-#include "line.hpp"
-#include "balistic.hpp"
 #include "sensor_parameters_dto.hpp"
-#include "target_prototype.hpp"
+#include "target.hpp"
 
 using namespace std;
 using namespace network;
@@ -48,29 +45,30 @@ string simulation_module::initialize(std::string init_file_path) {
     shared_ptr<vector<p_sensor_observer > > sensors( new vector<p_sensor_observer> );
 
     vector<sensor_load_proxy> sensor_proxies;
-    vector<target_prototype> target_prototypes;
+    vector<target_load_proxy> target_proxies;
 
     fstream fs;
-    // load prototypes and proxy objects
+    // load proxy objects from file
     fs.open(init_file_path, std::fstream::in);
     {
         cereal::JSONInputArchive iarchive(fs);
         iarchive(
-                target_prototypes,
+                target_proxies,
                 sensor_proxies
         );
     }
     fs.close();
-    //populate sensor list
+    //populate sensors list
     for( auto element : sensor_proxies ) {
         sensors->push_back(element.get_real());
     }
-    // populate target list
-    for( auto element : target_prototypes ) {
-        p_target tar = element.get_target();
+    //populate targets list
+    for( auto element : target_proxies ) {
+        p_target tar = element.get_real();
         tar->set_sensor_observers(sensors);
         targets->push_back(tar);
     }
+
     prepare_environment(targets, sensors);
 
     initialized_ = true;

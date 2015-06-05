@@ -11,6 +11,8 @@
 #include <cereal/cereal.hpp>
 
 #include "curve.hpp"
+#include "curve_prototype.hpp"
+#include "curve_factory.hpp"
 #include "sensor_observer.hpp"
 
 namespace generator_app {
@@ -31,14 +33,25 @@ public:
     unsigned get_id() const;
     std::shared_ptr<curve> get_curve() const { return curve_; }
 
-    template<class Archive>
-    void serialize(Archive& archive)
+    template <class Archive>
+    void save( Archive& archiver )
     {
-        archive(
-                cereal::make_nvp("id", id_),
-                cereal::make_nvp("position", current_position_)
+        archiver(
+                cereal::make_nvp("initial_position", initial_position_),
+                cereal::make_nvp("curve", curve_->proto() )
         );
-    }
+    };
+    template <class Archive>
+    void load( Archive& archiver )
+    {
+        curve_prototype cp;
+        archiver(
+                cereal::make_nvp("initial_position", initial_position_),
+                cereal::make_nvp("curve", cp )
+        );
+        curve_ = curve_factory::get_instance().create(cp);
+    };
+
 private:
     void notify();
 
@@ -51,5 +64,33 @@ private:
 };
 
 typedef std::shared_ptr<target> p_target;
+
+class target_load_proxy {
+public:
+    target_load_proxy() {}
+    target_load_proxy(p_target real) : real_(real) {}
+    p_target get_real() const { return real_; }
+
+    template<class Archive>
+    void save(Archive& archive) const
+    {
+        archive(
+                cereal::make_nvp("target", *real_)
+        );
+    }
+
+    template<class Archive>
+    void load(Archive& archive)
+    {
+        real_.reset();
+        real_ = p_target( new target() );
+        archive(
+                cereal::make_nvp("target", *real_)
+        );
+    }
+
+private:
+    p_target real_;
+};
 }
 #endif
