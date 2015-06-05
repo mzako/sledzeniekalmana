@@ -4,8 +4,11 @@
 *  \author    Michal Zakowski
 */
 #include <cmath>
+
 #include "vect3f.hpp"
-using namespace filter_app;
+
+namespace filter_app {
+
 /**
 * Function distance
 * Returns Euclidean distance between two points in space
@@ -33,4 +36,6 @@ vect3f vect3f::operator+(const vect3f& vec) const
 vect3f vect3f::operator-(const vect3f& vec) const
 {
     return vect3f(x_ - vec.x_, y_ - vec.y_, z_ - vec.z_);
+}
+
 }

@@ -33,9 +33,7 @@ public:
     void set_sensors(std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
     void set_targets(std::shared_ptr<std::vector<std::shared_ptr<target>>>);
 
-    std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>> getSensors() const {
-        return sensors_;
-    }
+    std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>> get_sensors() const { return sensors_; }
 
     std::vector<sensor_measurement_proxy> get_measurements();
 

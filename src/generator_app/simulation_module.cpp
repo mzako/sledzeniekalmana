@@ -19,6 +19,7 @@
 #include "simulation_module.hpp"
 #include "line.hpp"
 #include "balistic.hpp"
+#include "sensor_parameters_dto.hpp"
 #include "target_prototype.hpp"
 
 using namespace std;
@@ -29,7 +30,7 @@ namespace generator_app {
 
 const float simulation_module::FREQUENCY_ = 10.0;
 
-simulation_module* simulation_module::instance_ = nullptr;
+shared_ptr<simulation_module> simulation_module::instance_;
 /**
  * Function prepare_environment
  * Prepares environment to simulation by setting targets and sensors. If it isn't first simulation, it deletes old environment
@@ -41,61 +42,77 @@ void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_p
     environment_->set_sensors(sensors);
 }
 
-void simulation_module::initialize_simulation(std::string init_file_path) {
+string simulation_module::initialize(std::string init_file_path) {
     shared_ptr<vector<p_target> > targets( new vector<p_target>);
-    shared_ptr<vector<shared_ptr<sensor_observer> > > sensors( new vector<shared_ptr<sensor_observer> > );
-    /*shared_ptr<sensor_observer> sensor1( new sensor_observer(vect3f(0, 0, 0), 100000.f, 0.f, 0.4f) );
-    sensors->push_back(sensor1);*/
+    shared_ptr<vector<p_sensor_observer > > sensors( new vector<p_sensor_observer> );
 
-    std::vector<target_prototype> target_prototypes;
+    vector<sensor_load_proxy> sensor_proxies;
+    vector<target_prototype> target_prototypes;
 
-    std::fstream fs;
-   /* fs.open("sensors.json", std::fstream::out);
-    {
-        cereal::JSONOutputArchive oarchive(fs);
-        oarchive(
-                cereal::make_nvp( "sensors", sensors)
-        );
-    }
-    fs.close();*/
+    fstream fs;
+    // load prototypes and proxy objects
     fs.open(init_file_path, std::fstream::in);
     {
         cereal::JSONInputArchive iarchive(fs);
         iarchive(
                 target_prototypes,
-                sensors
+                sensor_proxies
         );
     }
     fs.close();
-
+    //populate sensor list
+    for( auto element : sensor_proxies ) {
+        sensors->push_back(element.get_real());
+    }
+    // populate target list
     for( auto element : target_prototypes ) {
         p_target tar = element.get_target();
         tar->set_sensor_observers(sensors);
         targets->push_back(tar);
     }
-
     prepare_environment(targets, sensors);
+
+    initialized_ = true;
+    return initial_message();
 }
 
 /**
  * Function run
  * Runs main simulation thread
  */
-void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, shared_ptr<sending_buffer> comparator_sending_buf, std::string init_file_path)
+void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, shared_ptr<sending_buffer> comparator_sending_buf)
 {
-    initialize_simulation(init_file_path);
+    if(initialized_) {
+        while(true)
+        {
+            //cout << time_ / FREQUENCY_ << endl;
+            this_thread::sleep_for(chrono::milliseconds(1000));
+            sendDataToFilter(filter_sending_buf);
+            sendDataToComparator(comparator_sending_buf);
 
-    while(true)
+            time_ += 1;
+            environment_->update(float(time_ / FREQUENCY_));
+
+        }
+    }
+}
+
+string simulation_module::initial_message() const {
+    vector<sensor_parameters_dto> parameters;
+    for( auto sensor : *(environment_->get_sensors()) )
     {
-        //cout << time_ / FREQUENCY_ << endl;
-        this_thread::sleep_for(chrono::milliseconds(1000));
-        sendDataToFilter(filter_sending_buf);
-        sendDataToComparator(comparator_sending_buf);
-
-        time_ += 1;
-        environment_->update(float(time_ / FREQUENCY_));
+        parameters.push_back(sensor->get_parameters() );
+    }
+    stringstream ss;
+    {
+        cereal::JSONOutputArchive oarchive(ss);
+        oarchive(
+                cereal::make_nvp("sensors_parameters", parameters)
+        );
 
     }
+    cout << ss.str() << endl;
+    return ss.str();
 }
 
 void simulation_module::sendDataToFilter(shared_ptr<sending_buffer> sending_buf) {
@@ -109,7 +126,7 @@ void simulation_module::sendDataToFilter(shared_ptr<sending_buffer> sending_buf)
                 cereal::make_nvp("sensors", environment_->get_measurements() )
         );
         farchive(
-                        cereal::make_nvp("sensors", environment_->get_measurements() )
+                cereal::make_nvp("sensors", environment_->get_measurements() )
         );
     }
 #ifdef DEBUG

@@ -5,7 +5,11 @@ Import('env', 'modules')
 
 import os
 
-for module in modules:
-	mod = env.SConscript(module + os.sep + 'SConscript', exports=['env', 'module'], duplicate=0)
+result = []
+
+for module in modules:	
+	result.append(env.SConscript(module + os.sep + 'SConscript', exports=['env', 'module'], duplicate=0))
 	
-Return('mod')
+print 'Targets: '
+print result
+Return('result')

@@ -21,7 +21,7 @@ public:
     line(vect3f velocity = vect3f()) : velocity_(velocity) {}
     vect3f get_position(float) const;
 
-    static p_curve create( curve_proto& proto )
+    static p_curve create( curve_prototype& proto )
     {
         float vx = proto.find_attribute("velocity.x");
         float vy = proto.find_attribute("velocity.y");
@@ -29,9 +29,9 @@ public:
         return p_curve( new line( vect3f(vx, vy, vz) ) );
     };
 
-    virtual curve_proto proto() const
+    virtual curve_prototype proto() const
     {
-        curve_proto proto;
+        curve_prototype proto;
         proto.set_type("line");
         proto.insert_attribute("velocity.x", velocity_.x_);
         proto.insert_attribute("velocity.y", velocity_.y_);

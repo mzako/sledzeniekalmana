@@ -13,7 +13,7 @@
 #include <string>
 
 #include "curve.hpp"
-#include "curve_proto.hpp"
+#include "curve_prototype.hpp"
 
 namespace generator_app {
 
@@ -21,11 +21,11 @@ class curve_factory {
 public:
     static curve_factory& get_instance();
 
-    typedef std::function<p_curve(curve_proto&)> create_curve_function;
+    typedef std::function<p_curve(curve_prototype&)> create_curve_function;
 
     bool register_curve(std::string type, create_curve_function fun);
 
-    p_curve create(curve_proto& proto);
+    p_curve create(curve_prototype& proto);
 
 private:
     // singleton pattern functions

@@ -49,8 +49,12 @@ lib_modules = ['network']
 # Now that all build environment have been defined, let's iterate over
 # them and invoke the lower level SConscript files.
 for mode, envs in dict(debug=[debug_lib_env, debug_env]).iteritems(): #release=[release_lib_env, release_env]
-    libs = envs[0].SConscript('build'+ os.sep + mode + os.sep + 'SConscript', {'env': envs[0], 'modules': lib_modules}, duplicate=0) 
+    print '###Libraries###'
+    libs = envs[0].SConscript('build'+ os.sep + mode + os.sep + 'SConscript', {'env': envs[0], 'modules': lib_modules}, duplicate=0)
+    print '###Applications###' 
     apps = envs[1].SConscript('build'+ os.sep + mode + os.sep + 'SConscript', {'env': envs[1], 'modules': modules}, duplicate=0)
-    Depends(apps, libs)
+    for app in apps:
+        for lib in libs:
+            Depends(app, lib)
 
 

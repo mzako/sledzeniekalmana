@@ -40,15 +40,15 @@ void sensor_observer::update(std::shared_ptr<target> obj)
  * Function measure targets position
  * Returns measurement which is target's position with noise
  */
-measurement sensor_observer::make_measurement(std::shared_ptr<target> obj) const
+measurement_dto sensor_observer::make_measurement(std::shared_ptr<target> obj) const
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::normal_distribution<> d(mean_, deviation_);
+    std::normal_distribution<> d(0, measurement_noise_);
     vect3f pos;
     pos.x_ = obj->get_current_position().x_ + d(gen);
     pos.y_ = obj->get_current_position().y_ + d(gen);
     pos.z_ = obj->get_current_position().z_ + d(gen);
-    return measurement( pos, obj->get_id() );
+    return measurement_dto( pos, obj->get_id() );
 }
 

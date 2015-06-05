@@ -5,23 +5,20 @@
 */
 #ifndef _MEASUREMENT_HPP
 #define _MEASUREMENT_HPP
-#include <vector>
-#include <memory>
 
 #include <cereal/cereal.hpp>
 
-#include "curve.hpp"
-#include "sensor_observer.hpp"
+#include "vect3f.hpp"
+
 namespace generator_app {
-    class sensor_observer;
     /**
     * Class target
     * Represents targets that change position during a simulation, moving along a given curve
     */
-    class measurement {
+    class measurement_dto {
     public:
-        measurement() {};
-        measurement(vect3f point, unsigned id) : point_(point), id_(id) {};
+        measurement_dto() {};
+        measurement_dto(vect3f point, unsigned id) : point_(point), id_(id) {};
         unsigned get_id() const { return id_; }
 
         template<class Archive>

@@ -14,7 +14,8 @@ void server::send(std::shared_ptr<ip::tcp::socket> socket, std::shared_ptr<sendi
     sending_buf->addThread(current_thread);
     try
     {
-        write(*socket, buffer(initial_data_));
+
+        write(*socket, buffer(initial_data_ + connection_commons::END_OF_MESSAGE));
         while(is_started_)
         {
             std::string message = sending_buf->pop(current_thread);

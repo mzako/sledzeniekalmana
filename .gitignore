@@ -30,3 +30,6 @@
 # Build directory
 build/*
 .sconsign.dblite
+/.autotools
+/.cproject
+/.project

@@ -40,7 +40,7 @@ bool curve_factory::register_curve(std::string type, create_curve_function fun) 
     return ( callbacks_.insert( std::pair<std::string, create_curve_function>(type, fun) ) ).second;
 }
 
-p_curve curve_factory::create(curve_proto& proto) {
+p_curve curve_factory::create(curve_prototype& proto) {
     auto it = callbacks_.find(proto.get_type());
     if (it == callbacks_.end()) {
         throw( std::exception() );
