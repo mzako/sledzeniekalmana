@@ -8,9 +8,11 @@
 #include <random>
 #include "sensor_observer.hpp"
 #include "target.hpp"
-#include "vect3f.hpp"
+
 using namespace std;
-using namespace generator_app;
+using namespace commons;
+
+namespace generator_app {
 
 unsigned sensor_observer::gId_ = 1;
 /**
@@ -75,3 +77,5 @@ std::vector<measurement_dto> sensor_observer::get_measurements() const
 {
     return measurements_;
 }
+
+} /* namespace generator_app */

@@ -5,9 +5,13 @@
 */
 #include <vector>
 #include <memory>
+
+#include "../commons/vect3f.hpp"
+
 #include "target.hpp"
 
 using namespace std;
+using namespace commons;
 
 namespace generator_app {
 

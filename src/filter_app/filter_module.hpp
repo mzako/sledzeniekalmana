@@ -15,7 +15,7 @@
 #include "sensor.hpp"
 #include "../network/blocking_queue.hpp"
 #include "kalman_filter.hpp"
-#include "../generator_app/sensor_parameters_dto.hpp"
+#include "../commons/sensor_parameters_dto.hpp"
 
 namespace filter_app 
 {
@@ -50,7 +50,7 @@ namespace filter_app
         std::queue<std::vector<vect3f>> positions_queue_;
         std::vector<std::pair<float,float>> sensors_params_;
 
-        std::vector<generator_app::sensor_parameters_dto> sensor_parameters_;
+        std::vector<commons::sensor_parameters_dto> sensor_parameters_;
         std::vector<sensor> sensors_;
         std::unique_ptr<kalman_filter> kalman_filter_;
         volatile bool is_started_;

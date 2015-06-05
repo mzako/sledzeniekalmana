@@ -12,11 +12,12 @@
 #include <cereal/cereal.hpp>
 #include <cereal/types/list.hpp>
 #include <cereal/types/vector.hpp>
-#include "measurement_dto.hpp"
+
+#include "../commons/measurement_dto.hpp"
+#include "../commons/sensor_parameters_dto.hpp"
+#include "../commons/vect3f.hpp"
 
 #include "target.hpp"
-#include "sensor_parameters_dto.hpp"
-#include "vect3f.hpp"
 
 namespace generator_app {
 class target;
@@ -27,15 +28,15 @@ class target;
 class sensor_observer {
 public:
     //sensor_observer();
-    sensor_observer(vect3f position = vect3f(), float radius = 0.f, float measurement_noise = 1.f, float process_noise = 1.f) : position_(position), radius_(radius), measurement_noise_(measurement_noise), process_noise_(process_noise), id_(gId_++) {}
+    sensor_observer(commons::vect3f position = commons::vect3f(), float radius = 0.f, float measurement_noise = 1.f, float process_noise = 1.f) : position_(position), radius_(radius), measurement_noise_(measurement_noise), process_noise_(process_noise), id_(gId_++) {}
     void update(std::shared_ptr<target>);
     unsigned get_id() const { return id_; }
     float get_measurement_noise() const { return measurement_noise_; }
     float get_process_noise() const { return process_noise_; }
 
-    sensor_parameters_dto get_parameters() const { return sensor_parameters_dto(id_, measurement_noise_, process_noise_); }
-    std::vector<measurement_dto> get_positions() const;
-    std::vector<measurement_dto> get_measurements() const;
+    commons::sensor_parameters_dto get_parameters() const { return commons::sensor_parameters_dto(id_, measurement_noise_, process_noise_); }
+    std::vector<commons::measurement_dto> get_positions() const;
+    std::vector<commons::measurement_dto> get_measurements() const;
 
 
     template<class Archive>
@@ -53,15 +54,15 @@ public:
 private:
     static unsigned gId_;
     unsigned id_;
-    vect3f position_;
+    commons::vect3f position_;
     float radius_;
     float measurement_noise_;
     float process_noise_;
 
-    std::vector<measurement_dto> measurements_;
+    std::vector<commons::measurement_dto> measurements_;
     std::list<std::shared_ptr<target>> targets_;
 
-    measurement_dto make_measurement(std::shared_ptr<target>) const;
+    commons::measurement_dto make_measurement(std::shared_ptr<target>) const;
 
 };
 

@@ -15,12 +15,14 @@
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
 
-#include "simulation_module.hpp"
-#include "sensor_parameters_dto.hpp"
+#include "../commons/sensor_parameters_dto.hpp"
+
 #include "target.hpp"
+#include "simulation_module.hpp"
 
 using namespace std;
 using namespace network;
+using namespace commons;
 
 namespace generator_app {
 

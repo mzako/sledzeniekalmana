@@ -10,7 +10,7 @@
 
 #include "vect3f.hpp"
 
-namespace generator_app {
+namespace commons {
     /**
     * Class target
     * Represents targets that change position during a simulation, moving along a given curve

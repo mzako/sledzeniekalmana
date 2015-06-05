@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "curve_prototype.hpp"
-#include "vect3f.hpp"
+#include "../commons/vect3f.hpp"
 
 namespace generator_app {
 
@@ -20,7 +20,7 @@ namespace generator_app {
  */
 class curve {
 public:
-    virtual vect3f get_position(float) const = 0;
+    virtual commons::vect3f get_position(float) const = 0;
     virtual curve_prototype proto() const = 0;
 };
 
