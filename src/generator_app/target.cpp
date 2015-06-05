@@ -6,14 +6,23 @@
 #include <vector>
 #include <memory>
 #include "target.hpp"
+
 using namespace std;
-using namespace generator_app;
+
+namespace generator_app {
+
 unsigned target::gId_ = 1;
+
+target::~target()
+{
+    //Do nothing
+}
 /**
 * Function update
 * Updates target's position and notifies all observers to let them notice target's position change
 */
-void target::update(float time){
+void target::update(float time)
+{
     current_position_ = curve_->get_position(time) + initial_position_;
     notify();
 }
@@ -22,9 +31,8 @@ void target::update(float time){
 * Notifies all observers by calling their update function
 */
 void target::notify(){
-    vector<std::shared_ptr<sensor_observer>>::iterator it;
-    for (it = observers_->begin(); it != observers_->end(); ++it) {
-        (*it)->update(std::shared_ptr<target>(this));
+    for (auto it = observers_->begin(); it != observers_->end(); ++it) {
+        (*it)->update( shared_from_this() );
     }
 }
 /**
@@ -55,3 +63,5 @@ vect3f target::get_initial_position() const{
 unsigned target::get_id() const{
     return id_;
 }
+
+} /* namespace generator_app */

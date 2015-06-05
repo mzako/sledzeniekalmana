@@ -37,8 +37,8 @@ void environment::set_targets(std::shared_ptr<vector<std::shared_ptr<target>>> t
  */
 void environment::update(float time)
 {
-    vector<std::shared_ptr<target>>::iterator it;
-    for (it = targets_->begin(); it != targets_->end(); ++it){
+    for (auto it = targets_->begin(); it != targets_->end(); ++it)
+    {
         (*it)->update(time);
     }
 }

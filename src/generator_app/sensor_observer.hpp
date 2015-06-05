@@ -32,9 +32,10 @@ public:
     unsigned get_id() const { return id_; }
     float get_measurement_noise() const { return measurement_noise_; }
     float get_process_noise() const { return process_noise_; }
+
     sensor_parameters_dto get_parameters() const { return sensor_parameters_dto(id_, measurement_noise_, process_noise_); }
-    std::list<std::shared_ptr<target>> get_targets() { return targets_; }
-    std::vector<measurement_dto> get_measurements() { return measurements_; }
+    std::vector<measurement_dto> get_positions() const;
+    std::vector<measurement_dto> get_measurements() const;
 
 
     template<class Archive>
