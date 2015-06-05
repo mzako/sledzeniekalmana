@@ -5,11 +5,16 @@
 */
 #include <cfloat>
 #include <iomanip>      
-#include "kalman_filter.hpp"
 #include <fstream>
+
+#include "kalman_filter.hpp"
+
 using namespace std;
-using namespace filter_app;
+using namespace commons;
+
 namespace ublas = boost::numeric::ublas;
+
+namespace filter_app {
 /**
 * Represents measurements time step
 */
@@ -60,7 +65,7 @@ vector<vect3f> kalman_filter::get_current_positions() const{
 * Inits targets in kalman filter by setting states and corresponding process and measurement covariances matrices
 * Sets transition and output matrices
 */
-void kalman_filter::init_targets(vector<pair<int, vect3f>> positions, std::vector<generator_app::sensor_parameters_dto> sensor_parameters)
+void kalman_filter::init_targets(vector<pair<int, vect3f>> positions, std::vector<sensor_parameters_dto> sensor_parameters)
 {
     for (auto it = sensor_parameters.begin(); it != sensor_parameters.end(); ++it)
     {
@@ -158,3 +163,5 @@ void kalman_filter::compute(vector<vect3f> new_positions){
         (*target_it)->set_p_factor(ublas::prod(tmp_matrix, (*target_it)->get_p_factor()));
     }
 }
+
+} /* namespace filter_app */

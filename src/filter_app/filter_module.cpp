@@ -19,10 +19,13 @@
 #include <cereal/cereal.hpp>
 #include <cereal/types/vector.hpp>
 
+#include "../commons/vect3f.hpp"
+#include "../commons/measurement_dto.hpp"
 #include "sensor.hpp"
 
 using namespace std;
 using namespace network;
+using namespace commons;
 
 namespace filter_app {
 
@@ -36,9 +39,10 @@ void filter_module::prepare_kalman_filter(){
     vector<pair<int,vect3f>> initial_positions;
     for (auto it = sensors_measurements_.begin(); it != sensors_measurements_.end(); ++it)
     {
+        vector<measurement_dto> tmp_meas = it->get_measurements();
         for (auto it2 = tmp_meas.begin(); it2 != tmp_meas.end(); ++it2)
         {
-            initial_positions.push_back(pair<int,vect3f>(it->get_id(),it2->get_position()));
+            initial_positions.push_back(pair<int,vect3f>(it->get_id(),it2->point_));
         }
     }
     kalman_filter_->init_targets(initial_positions, sensor_parameters_);
@@ -71,10 +75,10 @@ void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue)
         }
         for (auto it = sensors_measurements_.begin(); it != sensors_measurements_.end(); ++it)
         {
-            vector<measurement> tmp_meas = it->get_measurements();
+            vector<measurement_dto> tmp_meas = it->get_measurements();
             for (auto it2 = tmp_meas.begin(); it2 != tmp_meas.end(); ++it2)
             {
-                new_positions.push_back(it2->get_position());
+                new_positions.push_back(it2->point_);
             }
         }
         kalman_filter_->compute(new_positions);

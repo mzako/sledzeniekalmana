@@ -13,7 +13,7 @@
 #include <cereal/cereal.hpp>
 #include <cereal/types/vector.hpp>
 
-#include "measurement.hpp"
+#include "../commons/measurement_dto.hpp"
 
 namespace filter_app {
 
@@ -21,7 +21,7 @@ class sensor {
 public:
     sensor();
     virtual ~sensor();
-    std::vector<measurement>& get_measurements(){
+    std::vector<commons::measurement_dto>& get_measurements(){
         return measurements_;
     }
     int get_id() const { return id_; }
@@ -35,7 +35,7 @@ public:
 
 private:
     unsigned id_;
-    std::vector<measurement> measurements_;
+    std::vector<commons::measurement_dto> measurements_;
 };
 
 } /* namespace filter_app */

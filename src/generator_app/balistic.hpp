@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "curve.hpp"
-#include "vect3f.hpp"
+#include "../commons/vect3f.hpp"
 
 namespace generator_app {
 
@@ -22,10 +22,10 @@ class balistic : public curve {
 public:
     const static float GRAVITY_;
 
-    balistic(vect3f velocity = vect3f(), float air_resistance=1.0) : velocity_(velocity), air_resistance_(air_resistance){};
+    balistic(commons::vect3f velocity = commons::vect3f(), float air_resistance=1.0) : velocity_(velocity), air_resistance_(air_resistance){};
     virtual ~balistic() {};
 
-    vect3f get_position(float) const;
+    commons::vect3f get_position(float) const;
 
     static p_curve create(curve_prototype& proto)
     {
@@ -33,7 +33,7 @@ public:
         float vx = proto.find_attribute("velocity.x");
         float vy = proto.find_attribute("velocity.y");
         float vz = proto.find_attribute("velocity.z");
-        return p_curve( new balistic( vect3f(vx, vy, vz), air_resistance));
+        return p_curve( new balistic( commons::vect3f(vx, vy, vz), air_resistance));
     };
 
     virtual curve_prototype proto() const
@@ -48,7 +48,7 @@ public:
     }
 
 private:
-    vect3f velocity_;
+    commons::vect3f velocity_;
     float air_resistance_;
 };
 

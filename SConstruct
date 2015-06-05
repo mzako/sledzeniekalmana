@@ -19,8 +19,8 @@ common_env.AddMethod(filtered_glob, "FilteredGlob");
 common_lib_env = common_env.Clone()
 
 # Link network library
-common_env.Append(LIBS=['-lnetwork'])
-common_env.Append(LIBPATH=['#/build/debug/network'])
+common_env.Append(LIBS=['-lnetwork', '-lcommons'])
+common_env.Append(LIBPATH=['#/build/debug/network', '#/build/debug/commons'])
 
 # Release build is derived from the common build environment
 release_env = common_env.Clone()
@@ -44,7 +44,7 @@ debug_lib_env.VariantDir('build/debug/', 'src')
 
 # Defining modules to build
 modules = ['generator_app', 'filter_app', 'comparator_app']
-lib_modules = ['network']
+lib_modules = ['network', 'commons']
 
 # Now that all build environment have been defined, let's iterate over
 # them and invoke the lower level SConscript files.

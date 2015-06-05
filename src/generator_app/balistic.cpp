@@ -5,8 +5,10 @@
 */
 #include <cmath>
 #include "balistic.hpp"
-#include "vect3f.hpp"
-using namespace generator_app;
+
+using namespace commons;
+
+namespace generator_app {
 
 const float balistic::GRAVITY_ = 9.89;
 /**
@@ -26,3 +28,6 @@ vect3f balistic::get_position(float time) const
     pos.z_ = log(1 + air_resistance_*velocity_.z_*time) / air_resistance_;
     return pos;
 }
+
+
+} /* namespace generator_app */

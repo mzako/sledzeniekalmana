@@ -11,11 +11,12 @@
 #include <utility>
 #include <vector>
 
-#include "vect3f.hpp"
-#include "sensor.hpp"
+#include "../commons/sensor_parameters_dto.hpp"
 #include "../network/blocking_queue.hpp"
+
+#include "../commons/vect3f.hpp"
+#include "sensor.hpp"
 #include "kalman_filter.hpp"
-#include "../generator_app/sensor_parameters_dto.hpp"
 
 namespace filter_app 
 {
@@ -36,7 +37,7 @@ namespace filter_app
         }
         void run(std::shared_ptr<network::blocking_queue> blocking_queue);
         void prepare_kalman_filter();
-        void receive_data(std::vector<vect3f>, std::vector<std::pair<float, float>>);
+        void receive_data(std::vector<commons::vect3f>, std::vector<std::pair<float, float>>);
         void send_data();
     private:
         filter_module(){}
@@ -45,7 +46,7 @@ namespace filter_app
         static std::shared_ptr<filter_module>  instance_;
 
 
-        std::vector<generator_app::sensor_parameters_dto> sensor_parameters_;
+        std::vector<commons::sensor_parameters_dto> sensor_parameters_;
         std::vector<sensor> sensors_measurements_;
 
         std::unique_ptr<kalman_filter> kalman_filter_;

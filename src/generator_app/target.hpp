@@ -16,7 +16,10 @@
 #include "sensor_observer.hpp"
 
 namespace generator_app {
+
 class sensor_observer;
+typedef std::shared_ptr<sensor_observer> p_sensor_observer;
+
 /**
  * Class target
  * Represents targets that change position during a simulation, moving along a given curve
@@ -24,12 +27,12 @@ class sensor_observer;
 class target : public std::enable_shared_from_this<target> {
 public:
     target() {};
-    target(std::shared_ptr<curve> curve, vect3f initial_position = vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
+    target(std::shared_ptr<curve> curve, commons::vect3f initial_position = commons::vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
     virtual ~target();
     void update(float);
-    void set_sensor_observers(std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
-    vect3f get_current_position() const;
-    vect3f get_initial_position() const;
+    void set_sensor_observers(std::shared_ptr<std::vector<p_sensor_observer> >);
+    commons::vect3f get_current_position() const;
+    commons::vect3f get_initial_position() const;
     unsigned get_id() const;
     std::shared_ptr<curve> get_curve() const { return curve_; }
 
@@ -57,10 +60,10 @@ private:
 
     static unsigned gId_;
     unsigned id_;
-    vect3f initial_position_;
-    vect3f current_position_;
+    commons::vect3f initial_position_;
+    commons::vect3f current_position_;
     std::shared_ptr<curve> curve_;
-    std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>> observers_;
+    std::shared_ptr<std::vector<p_sensor_observer> > observers_;
 };
 
 typedef std::shared_ptr<target> p_target;

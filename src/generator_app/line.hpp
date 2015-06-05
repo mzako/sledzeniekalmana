@@ -7,7 +7,7 @@
 #ifndef _LINE_HPP
 #define _LINE_HPP
 
-#include "vect3f.hpp"
+#include "../commons/vect3f.hpp"
 #include "curve.hpp"
 
 namespace generator_app {
@@ -18,15 +18,15 @@ namespace generator_app {
  */
 class line : public curve {
 public:
-    line(vect3f velocity = vect3f()) : velocity_(velocity) {}
-    vect3f get_position(float) const;
+    line(commons::vect3f velocity = commons::vect3f()) : velocity_(velocity) {}
+    commons::vect3f get_position(float) const;
 
     static p_curve create( curve_prototype& proto )
     {
         float vx = proto.find_attribute("velocity.x");
         float vy = proto.find_attribute("velocity.y");
         float vz = proto.find_attribute("velocity.z");
-        return p_curve( new line( vect3f(vx, vy, vz) ) );
+        return p_curve( new line( commons::vect3f(vx, vy, vz) ) );
     };
 
     virtual curve_prototype proto() const
@@ -40,7 +40,7 @@ public:
     }
 
 private:
-    vect3f velocity_;
+    commons::vect3f velocity_;
 };
 
 } /* generator_app */

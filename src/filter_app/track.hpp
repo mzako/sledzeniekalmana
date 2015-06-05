@@ -7,7 +7,7 @@
 #define _TRACK_HPP
 
 #include <boost/numeric/ublas/matrix.hpp>
-#include "vect3f.hpp"
+
 #include "target.hpp"
 
 namespace filter_app 

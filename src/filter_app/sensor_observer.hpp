@@ -8,10 +8,11 @@
 #define SENSOROBSERVER_HPP
 #include <map>
 #include <list>
-#include "target.hpp"
-#include "vect3f.hpp"
+
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/lu.hpp>
+
+#include "target.hpp"
 
 namespace filter_app {
     /**

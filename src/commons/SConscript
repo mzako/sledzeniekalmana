@@ -1,0 +1,14 @@
+# SConscript sledzeniekalmana/src/commons
+# Author: Jan Kumor
+
+Import('env', 'module')
+
+import os
+
+sources = Glob('*.cpp', strings=True)
+print 'Source files in module: ' + module
+print sources
+
+result = env.Library('commons', sources)
+
+Return('result')

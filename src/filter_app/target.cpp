@@ -5,10 +5,16 @@
 */
 #include <vector>
 #include <memory>
+
+#include "../commons/vect3f.hpp"
+
 #include "target.hpp"
-#include "vect3f.hpp"
+
 using namespace std;
-using namespace filter_app;
+using namespace commons;
+
+namespace filter_app {
+
 unsigned target::gId_ = 1;
 /**
 * Function get_state
@@ -58,3 +64,5 @@ void target::set_p_factor(boost::numeric::ublas::matrix<float> p_factor)
 {
     p_factor_ = p_factor;
 }
+
+} /* namespace filter_app */

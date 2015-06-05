@@ -11,7 +11,7 @@
 #include "track.hpp"
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/lu.hpp>
-#include "../generator_app/sensor_parameters_dto.hpp"
+#include "../commons/sensor_parameters_dto.hpp"
 #include "sensor_observer.hpp"
 
 namespace filter_app 
@@ -24,9 +24,9 @@ namespace filter_app
     class kalman_filter
     {
     public:
-        void init_targets(std::vector<std::pair<int, vect3f>>, std::vector<generator_app::sensor_parameters_dto>);
-        void compute(std::vector<vect3f>);
-        std::vector<vect3f> get_current_positions() const;
+        void init_targets(std::vector<std::pair<int, commons::vect3f>>, std::vector<commons::sensor_parameters_dto>);
+        void compute(std::vector<commons::vect3f>);
+        std::vector<commons::vect3f> get_current_positions() const;
         void print(boost::numeric::ublas::matrix<float>&);
         template<class T>
         boost::numeric::ublas::matrix<T> invert_matrix(boost::numeric::ublas::matrix<T>&);

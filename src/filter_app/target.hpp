@@ -7,8 +7,13 @@
 #define _TARGET_HPP
 #include <vector>
 #include <memory>
-#include "track.hpp"
+
 #include <boost/numeric/ublas/matrix.hpp>
+
+#include "../commons/vect3f.hpp"
+
+#include "track.hpp"
+
 namespace filter_app {
     /**
     * Class target
@@ -20,7 +25,7 @@ namespace filter_app {
             id_(gId_++),sensor_id_(sensor_id), state_(state), p_factor_(p_factor) {}
         const boost::numeric::ublas::matrix<float>& get_state() const;
         void set_state(boost::numeric::ublas::matrix<float>);
-        vect3f get_current_position() const;
+        commons::vect3f get_current_position() const;
         unsigned get_id() const;
         void set_sensor_id(int id){ sensor_id_ = id; }
         int get_sensor_id(){ return sensor_id_;}

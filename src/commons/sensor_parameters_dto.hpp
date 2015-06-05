@@ -7,13 +7,13 @@
 
 #include <cereal/cereal.hpp>
 
-#ifndef SRC_GENERATOR_APP_SENSOR_PARAMETERS_HPP_
-#define SRC_GENERATOR_APP_SENSOR_PARAMETERS_HPP_
+#ifndef SENSOR_PARAMETERS_HPP
+#define SENSOR_PARAMETERS_HPP
 
-namespace generator_app {
+namespace commons {
 
 struct sensor_parameters_dto {
-    //TODO: [JKU] to jest OW
+
 	sensor_parameters_dto() {};
     sensor_parameters_dto( unsigned id, float mn, float pn) : id_(id), measurement_noise_(mn), process_noise_(pn) {};
     virtual ~sensor_parameters_dto() {};
@@ -36,4 +36,4 @@ struct sensor_parameters_dto {
 
 } /* namespace generator_app */
 
-#endif /* SRC_GENERATOR_APP_SENSOR_PARAMETERS_HPP_ */
+#endif /* SENSOR_PARAMETERS_HPP */
