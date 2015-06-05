@@ -13,6 +13,7 @@
 
 #include "../commons/sensor_parameters_dto.hpp"
 #include "../network/blocking_queue.hpp"
+#include "../network/sending_buffer.hpp"
 
 #include "../commons/vect3f.hpp"
 #include "sensor.hpp"
@@ -35,10 +36,14 @@ namespace filter_app
             }
             return instance_;
         }
-        void run(std::shared_ptr<network::blocking_queue> blocking_queue);
+        void run(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::sending_buffer>);
         void prepare_kalman_filter();
         void receive_data(std::vector<commons::vect3f>, std::vector<std::pair<float, float>>);
         void send_data();
+        /**
+         * Stop the main loop
+         */
+        void stop(std::shared_ptr<network::blocking_queue>);
     private:
         filter_module(){}
         filter_module(const filter_module &) = delete;
@@ -50,6 +55,7 @@ namespace filter_app
         std::vector<sensor> sensors_measurements_;
 
         std::unique_ptr<kalman_filter> kalman_filter_;
+        volatile bool is_started_;
         void initialize_sensor_data(std::shared_ptr<network::blocking_queue> blocking_queue);
         void initialize_target_data(std::shared_ptr<network::blocking_queue> blocking_queue);
     };

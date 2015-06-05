@@ -53,13 +53,19 @@ void filter_module::prepare_kalman_filter(){
  * Function run
  * Runs main filter thread
  */
-void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue)
+void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue, std::shared_ptr<network::sending_buffer> sending_buf)
 {
+    if(!is_started_) {
+        return;
+    }
     initialize_sensor_data(blocking_queue);
+    if(!is_started_) {
+        return;
+    }
     initialize_target_data(blocking_queue);
     prepare_kalman_filter();
 
-    while(true)
+    while(is_started_)
     {
         std::string first_target_data = blocking_queue->pop();
 #ifdef DEBUG
@@ -87,6 +93,9 @@ void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue)
 }
 void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string initial_data = blocking_queue->pop();
+    if(!is_started_) {
+        return;
+    }
 #ifdef DEBUG
     cout << "SENSOR_DATA" << endl << initial_data << endl;
 #endif
@@ -101,6 +110,9 @@ void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> block
 
 void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string first_target_data = blocking_queue->pop();
+    if(!is_started_) {
+        return;
+    }
 #ifdef DEBUG
     cout << "FIRST_TARGET_DATA" << endl << first_target_data << endl;
 #endif
@@ -116,5 +128,12 @@ void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> block
 void filter_module::send_data()
 {
 }
+
+void filter_module::stop(std::shared_ptr<network::blocking_queue> queue)
+{
+    is_started_ = false;
+    queue->push(""); //unblock if where blocked
+}
+
 
 }
