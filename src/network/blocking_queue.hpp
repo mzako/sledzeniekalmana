@@ -22,8 +22,18 @@ class blocking_queue {
         std::queue<std::string> messages;
         boost::mutex lock_empty;
     public:
+        /**
+         *
+         */
         blocking_queue();
+        /**
+         * Pop an element from Queue, if queue is empty it blocks till someone push something into
+         */
         std::string pop();
+        /**
+         * Add an element to Queue
+         * \param message element to add
+         */
         void push(std::string message);
 };
 
