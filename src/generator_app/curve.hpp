@@ -9,7 +9,7 @@
 
 #include <memory>
 
-#include "curve_proto.hpp"
+#include "curve_prototype.hpp"
 #include "vect3f.hpp"
 
 namespace generator_app {
@@ -21,7 +21,7 @@ namespace generator_app {
 class curve {
 public:
     virtual vect3f get_position(float) const = 0;
-    virtual curve_proto proto() const = 0;
+    virtual curve_prototype proto() const = 0;
 };
 
 typedef std::shared_ptr<curve> p_curve;

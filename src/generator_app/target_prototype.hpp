@@ -46,7 +46,7 @@ public:
 
 private:
     vect3f initial_position_;
-    curve_proto curve_proto_;
+    curve_prototype curve_proto_;
 };
 
 } /* namespace generator_app */

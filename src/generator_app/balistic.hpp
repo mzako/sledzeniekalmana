@@ -27,7 +27,7 @@ public:
 
     vect3f get_position(float) const;
 
-    static p_curve create(curve_proto& proto)
+    static p_curve create(curve_prototype& proto)
     {
         float air_resistance = proto.find_attribute("air_resistance");
         float vx = proto.find_attribute("velocity.x");
@@ -36,9 +36,9 @@ public:
         return p_curve( new balistic( vect3f(vx, vy, vz), air_resistance));
     };
 
-    virtual curve_proto proto() const
+    virtual curve_prototype proto() const
     {
-        curve_proto proto;
+        curve_prototype proto;
         proto.set_type("balistic");
         proto.insert_attribute("velocity.x", velocity_.x_);
         proto.insert_attribute("velocity.y", velocity_.y_);
