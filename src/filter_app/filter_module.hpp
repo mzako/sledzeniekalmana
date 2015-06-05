@@ -30,8 +30,8 @@ namespace filter_app
         }
         void run();
         bool prepare_kalman_filter();
-        void filter_module::receive_data(std::vector<vect3f>, std::vector<std::pair<float, float>>);
-        void filter_module::send_data();
+        void receive_data(std::vector<vect3f>, std::vector<std::pair<float, float>>);
+        void send_data();
     private:
         filter_module(){}
         filter_module(const filter_module &) = delete;

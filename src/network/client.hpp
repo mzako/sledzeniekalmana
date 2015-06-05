@@ -3,6 +3,9 @@
  * \author Adam Mościcki
  */
 
+#ifndef _CLIENT_HPP
+#define _CLIENT_HPP
+
 
 #include <exception>
 #include <array>
@@ -39,3 +42,5 @@ public:
 };
 
 }
+
+#endif

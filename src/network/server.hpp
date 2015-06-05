@@ -4,6 +4,9 @@
  */
 
 
+#ifndef _SERVER_HPP
+#define _SERVER_HPP
+
 #include <iostream>
 #include <exception>
 #include <array>
@@ -30,6 +33,7 @@ class server {
 private:
     int port_;
     std::shared_ptr<sending_buffer> sending_buf_;
+    std::string initial_data_;
     volatile bool is_started_;
 public:
     /**
@@ -37,7 +41,7 @@ public:
      * \param port port
      * \param ptr sending_buffer
      */
-    server(int port, std::shared_ptr<sending_buffer> ptr);
+    server(int port, std::shared_ptr<sending_buffer> ptr, std::string initial_data = "");
     /**
      * Main thread of server
      */
@@ -55,3 +59,5 @@ public:
 };
 
 }
+
+#endif

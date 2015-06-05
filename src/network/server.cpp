@@ -3,8 +3,8 @@
 using namespace boost::asio;
 using namespace network;
 
-server::server(int port, std::shared_ptr<sending_buffer> ptr)
-        : port_(port), sending_buf_(ptr), is_started_(true) {
+server::server(int port, std::shared_ptr<sending_buffer> ptr, std::string initial_data)
+        : port_(port), initial_data_(initial_data), sending_buf_(ptr), is_started_(true) {
 }
 
 
@@ -14,11 +14,12 @@ void server::send(std::shared_ptr<ip::tcp::socket> socket, std::shared_ptr<sendi
     sending_buf->addThread(current_thread);
     try
     {
+        write(*socket, buffer(initial_data_));
         while(is_started_)
         {
             std::string message = sending_buf->pop(current_thread);
             message += connection_commons::END_OF_MESSAGE;
-            boost::asio::write(*socket, buffer(message));
+            write(*socket, buffer(message));
         }
     }
     catch (std::exception& e)
