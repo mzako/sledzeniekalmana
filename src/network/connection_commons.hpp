@@ -16,7 +16,13 @@
 
 namespace network {
 
+/**
+ * Structure contains common params for server and client.
+ */
 struct connection_commons {
+    /**
+     * string which marks the end of message
+     */
 	static const std::string END_OF_MESSAGE;
 };
 
