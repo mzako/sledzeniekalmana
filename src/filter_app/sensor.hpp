@@ -21,7 +21,10 @@ class sensor {
 public:
     sensor();
     virtual ~sensor();
-
+    std::vector<measurement>& get_measurements(){
+        return measurements_;
+    }
+    int get_id() const { return id_; }
     template<class Archive>
     void serialize( Archive& archive) {
         archive(

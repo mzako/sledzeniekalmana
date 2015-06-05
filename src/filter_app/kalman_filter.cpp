@@ -6,6 +6,7 @@
 #include <cfloat>
 #include <iomanip>      
 #include "kalman_filter.hpp"
+#include <fstream>
 using namespace std;
 using namespace filter_app;
 namespace ublas = boost::numeric::ublas;
@@ -59,30 +60,30 @@ vector<vect3f> kalman_filter::get_current_positions() const{
 * Inits targets in kalman filter by setting states and corresponding process and measurement covariances matrices
 * Sets transition and output matrices
 */
-void kalman_filter::init_targets(vector<vect3f> positions, vector<pair<float, float> > sensor_noise)
+void kalman_filter::init_targets(vector<pair<int, vect3f>> positions, std::vector<generator_app::sensor_parameters_dto> sensor_parameters)
 {
-    for (auto it = positions.begin(); it != positions.end(); ++it){
-        ublas::matrix<float> tmp(6, 1, 0);
-        tmp(0, 0) = it->x_;
-        tmp(1, 0) = it->y_;
-        tmp(2, 0) = it->z_;
-        targets_.push_back(shared_ptr<target>(new target(tmp)));
-
-        tmp = ublas::matrix<float>(6, 6, 0);
-        float proc_noise = sensor_noise[it - positions.begin()].first;
+    for (auto it = sensor_parameters.begin(); it != sensor_parameters.end(); ++it)
+    {
+        ublas::matrix<float> tmp = ublas::matrix<float>(6, 6, 0);
+        float process_noise = it->process_noise_;
         tmp(0, 0) = tmp(1, 1) = tmp(2, 2) = (PERIOD_*PERIOD_ / 2)*(PERIOD_*PERIOD_ / 2);
         tmp(0, 3) = tmp(1, 4) = tmp(2, 5) = (PERIOD_*PERIOD_*PERIOD_ / 2);
         tmp(3, 0) = tmp(4, 1) = tmp(5, 2) = (PERIOD_*PERIOD_*PERIOD_ / 2);
         tmp(3, 3) = tmp(4, 4) = tmp(5, 5) = PERIOD_*PERIOD_;
-        tmp = proc_noise*proc_noise*tmp;
-        p_factors_.push_back(tmp);
+        tmp = process_noise*process_noise*tmp;
 
-        process_covariances_.push_back(tmp);
+        float measurement_noise = it->measurement_noise_;
+        ublas::matrix<float> tmp2 = measurement_noise*measurement_noise*ublas::identity_matrix<float>(3);
 
-        float meas_noise = sensor_noise[it - positions.begin()].second;
-        tmp = meas_noise*meas_noise*ublas::identity_matrix<float>(3);
-
-        meas_covariances_.push_back(tmp);
+        sensors_.insert(pair<int, shared_ptr<sensor_observer>>(it->id_, shared_ptr<sensor_observer>(new sensor_observer(it->id_, tmp2, tmp))));
+    }
+    for (auto it2 = positions.begin(); it2 != positions.end(); ++it2)
+    {
+        ublas::matrix<float> tmp(6, 1, 0);
+        tmp(0, 0) = it2->second.x_;
+        tmp(1, 0) = it2->second.y_;
+        tmp(2, 0) = it2->second.z_;
+        targets_.push_back(shared_ptr<target>(new target(it2->first, tmp, sensors_[it2->first]->get_process_covariance())));
     }
     //Prepare matrices used in Kalman Filter equations
     transition_ = ublas::identity_matrix<float>(6);
@@ -108,7 +109,8 @@ void kalman_filter::compute(vector<vect3f> new_positions){
     {
         prediction.push_back(ublas::prod(transition_, (*it)->get_state()));
     }
-    for (auto it = prediction.begin(); it != prediction.end(); ++it)
+    auto target_it = targets_.begin();
+    for (auto it = prediction.begin(); it != prediction.end(); ++it, ++target_it)
     {
         //Find closest neighbour in k+1 state measurements
         float min_distance=FLT_MAX;
@@ -123,21 +125,20 @@ void kalman_filter::compute(vector<vect3f> new_positions){
                     closest_pos=*it2;
             }
         }
-
         //Calculate Kalman filter equations
         ublas::matrix<float> k_factor(6, 3, 0), tmp_matrix, tmp_matrix2, inversed, meas_matrix;
         
         //update p factor
-        tmp_matrix = ublas::prod(transition_, p_factors_[it - prediction.begin()]);
-        p_factors_[it - prediction.begin()] = ublas::prod(tmp_matrix, ublas::trans(transition_)) + process_covariances_[it - prediction.begin()];
+        tmp_matrix = ublas::prod(transition_, (*target_it)->get_p_factor());
 
-        tmp_matrix = ublas::trans(output_);
+        (*target_it)->set_p_factor(ublas::prod(tmp_matrix, ublas::trans(transition_)) + sensors_[(*target_it)->get_sensor_id()]->get_process_covariance());
 
         //update kalman factor
-        k_factor = ublas::prod(p_factors_[it - prediction.begin()], tmp_matrix);
         tmp_matrix = ublas::trans(output_);
-        tmp_matrix2 = ublas::prod(output_, p_factors_[it - prediction.begin()]);
-        tmp_matrix = ublas::prod(tmp_matrix2, tmp_matrix) + meas_covariances_[it - prediction.begin()];
+        k_factor = ublas::prod((*target_it)->get_p_factor(), tmp_matrix);
+        tmp_matrix2 = ublas::prod(output_, (*target_it)->get_p_factor());
+        tmp_matrix = ublas::prod(tmp_matrix2, tmp_matrix) + sensors_[(*target_it)->get_sensor_id()]->get_measurement_covariance();
+
         inversed = invert_matrix(tmp_matrix);
         k_factor = ublas::prod(k_factor, inversed);
 
@@ -148,12 +149,12 @@ void kalman_filter::compute(vector<vect3f> new_positions){
         meas_matrix(2, 0) = closest_pos.z_;
 
         //update k+1 state by combining k+1 measurement and k+1 prediction
-        tmp_matrix = meas_matrix - ublas::prod(output_, targets_[it - prediction.begin()]->get_state());
+        tmp_matrix = meas_matrix - ublas::prod(output_, (*target_it)->get_state());
         tmp_matrix = targets_[it - prediction.begin()]->get_state() + ublas::prod(k_factor, tmp_matrix);
-        targets_[it - prediction.begin()]->set_state(tmp_matrix);
+        (*target_it)->set_state(tmp_matrix);
 
         //update p factor
         tmp_matrix = ublas::identity_matrix<float>(6) - ublas::prod(k_factor, output_);
-        p_factors_[it - prediction.begin()] = ublas::prod(tmp_matrix, p_factors_[it - prediction.begin()]);
+        (*target_it)->set_p_factor(ublas::prod(tmp_matrix, (*target_it)->get_p_factor()));
     }
 }

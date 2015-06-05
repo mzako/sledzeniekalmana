@@ -31,16 +31,19 @@ std::shared_ptr<filter_module>  filter_module::instance_;
  * Function prepare_kalman_filter
  * Prepares kalman filter by calling init_targets function. Uses initial positions in queue and sensor parameters
  */
-bool filter_module::prepare_kalman_filter(){
+void filter_module::prepare_kalman_filter(){
     kalman_filter_.reset(new kalman_filter);
-    if (positions_queue_.empty())
+    vector<pair<int,vect3f>> initial_positions;
+    for (auto it = sensors_measurements_.begin(); it != sensors_measurements_.end(); ++it)
     {
-        return false;
+        for (auto it2 = tmp_meas.begin(); it2 != tmp_meas.end(); ++it2)
+        {
+            initial_positions.push_back(pair<int,vect3f>(it->get_id(),it2->get_position()));
+        }
     }
-    vector<vect3f> tmp_positions = positions_queue_.front();
-    positions_queue_.pop();
-    kalman_filter_->init_targets(tmp_positions,sensors_params_);
-    return true;
+    kalman_filter_->init_targets(initial_positions, sensor_parameters_);
+
+
 }
 /**
  * Function run
@@ -48,51 +51,38 @@ bool filter_module::prepare_kalman_filter(){
  */
 void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue)
 {
-    sensors_params_.push_back(pair<float, float>(11040, 3000));
-
-    kalman_filter_.reset(new kalman_filter);
-    //For each data pop need to check if filtering is till started, otherwise it will block on pop
-    if(!is_started_) {
-        return;
-    }
     initialize_sensor_data(blocking_queue);
-    if(!is_started_) {
-        return;
-    }
     initialize_target_data(blocking_queue);
-    while(is_started_)
+    prepare_kalman_filter();
+
+    while(true)
     {
         std::string first_target_data = blocking_queue->pop();
-        if(!is_started_) {
-            break;
-        }
 #ifdef DEBUG
         cout << "TARGET_DATA" << endl << first_target_data << endl;
 #endif
+        std::vector<vect3f> new_positions;
         stringstream ss(first_target_data);
         {
             cereal::JSONInputArchive iarchive(ss);
             iarchive(
-                    sensors_
+                sensors_measurements_
             );
         }
-        /*  while (positions_queue_.empty()){
-            this_thread::sleep_for(chrono::milliseconds(1000));
+        for (auto it = sensors_measurements_.begin(); it != sensors_measurements_.end(); ++it)
+        {
+            vector<measurement> tmp_meas = it->get_measurements();
+            for (auto it2 = tmp_meas.begin(); it2 != tmp_meas.end(); ++it2)
+            {
+                new_positions.push_back(it2->get_position());
+            }
         }
-        vector<vect3f> tmp_positions = positions_queue_.front();
-        positions_queue_.pop();
-        kalman_filter_->compute(tmp_positions);
-        vector<vect3f> res = kalman_filter_->get_current_positions();*/
+        kalman_filter_->compute(new_positions);
+        vector<vect3f> res = kalman_filter_->get_current_positions();
     }
-
-
 }
-
 void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string initial_data = blocking_queue->pop();
-    if(!is_started_) {
-        return;
-    }
 #ifdef DEBUG
     cout << "SENSOR_DATA" << endl << initial_data << endl;
 #endif
@@ -107,9 +97,6 @@ void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> block
 
 void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string first_target_data = blocking_queue->pop();
-    if(!is_started_) {
-        return;
-    }
 #ifdef DEBUG
     cout << "FIRST_TARGET_DATA" << endl << first_target_data << endl;
 #endif
@@ -117,25 +104,13 @@ void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> block
     {
         cereal::JSONInputArchive iarchive(ss);
         iarchive(
-                sensors_
+                sensors_measurements_
         );
     }
 }
 
-void filter_module::receive_data(std::vector<vect3f> positions, std::vector<std::pair<float, float>> sensors_params)
-{
-    positions_queue_.push(positions);
-    sensors_params = sensors_params_;
-}
-
 void filter_module::send_data()
 {
-}
-
-void filter_module::stop(std::shared_ptr<network::blocking_queue> queue)
-{
-    is_started_ = false;
-    queue->push(""); //unblock if where blocked
 }
 
 }

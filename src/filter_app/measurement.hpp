@@ -18,7 +18,10 @@ public:
     measurement() {};
     measurement(vect3f point, unsigned id) : point_(point), id_(id) {};
     unsigned get_id() const { return id_; }
-
+    vect3f get_position() const
+    {
+        return point_;
+    }
     template<class Archive>
     void serialize(Archive& archive) {
         archive(
