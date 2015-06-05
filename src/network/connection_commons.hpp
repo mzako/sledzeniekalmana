@@ -24,6 +24,7 @@ struct connection_commons {
      * string which marks the end of message
      */
 	static const std::string END_OF_MESSAGE;
+	static const std::string CLOSE_CONNECTION;
 };
 
 }

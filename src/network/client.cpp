@@ -21,7 +21,6 @@ client::client(std::string host, std::string port, std::shared_ptr<blocking_queu
 void client::operator()() {
     try {
         io_service aios;
-
         ip::tcp::resolver resolver(aios);
         ip::tcp::resolver::iterator endpoint = resolver.resolve(
                 ip::tcp::resolver::query(host_, port_));
@@ -32,12 +31,13 @@ void client::operator()() {
         while(is_started_) {
             while(true) {
                 std::array<char, 512> buf;
-                boost::system::error_code error;
-                size_t lenghtOfReceived = socket.read_some(buffer(buf), error);
-                if (error == error::eof) {
+                boost::system::error_code er;
+                size_t lenghtOfReceived = socket.read_some(buffer(buf), er);
+                if (er == error::eof || er == error::connection_reset) {
+                    is_started_ = false; //mark as stopped
                     break; // Connection closed cleanly by peer
-                } else if(error) {
-                    throw boost::system::system_error(error);
+                } else if (er) {
+                    throw boost::system::system_error(er);
                 }
                 std::string result = std::string(buf.data()).substr(0, lenghtOfReceived);
                 size_t position = result.find(connection_commons::END_OF_MESSAGE);
@@ -51,10 +51,13 @@ void client::operator()() {
                     message += result;
                 }
             }
+            if(connection_commons::CLOSE_CONNECTION.compare(message) == 0) {
+                is_started_ = false;
+            }
         }
-        boost::system::error_code error;
-        socket.close(error);
-        if(error) {
+        boost::system::error_code er;
+        socket.close(er);
+        if(er) {
             std::cerr << "Socket connenction closing problem" << std::endl;
         }
     } catch(std::exception& e) {

@@ -14,6 +14,7 @@
 #include <map>
 #include <string>
 #include <boost/asio.hpp>
+#include <boost/thread/thread.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/shared_ptr.hpp>
@@ -34,11 +35,12 @@ private:
     int port_;
     std::shared_ptr<sending_buffer> sending_buf_;
     std::string initial_data_;
+    std::shared_ptr<boost::thread_group> thread_group_;
     volatile bool is_started_;
 public:
     /**
      * Constructor
-     * \param port port
+     * \para    m port port
      * \param ptr sending_buffer
      */
     server(int port, std::shared_ptr<sending_buffer> ptr, std::string initial_data = "");
