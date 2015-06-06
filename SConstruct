@@ -3,9 +3,9 @@ import os
 # Define build environment
 common_env = Environment()
 common_env.Append(CPPFLAGS=['-g', '-std=c++11'])#, '-Wall')
-common_env.Append(LIBS=['-lboost_system','-lpthread' , '-lboost_thread'])
-common_env.Append(LIBPATH=['/lib','/usr/lib','/usr/local/lib'])
-common_env.Append(CPPPATH=['/lib','/usr/lib','/usr/local/lib','#/include'])
+common_env.Append(LIBS=['-lnetwork',  '-lcommons', '-lboost_system','-lpthread' , '-lboost_thread']) #fast fixup
+common_env.Append(LIBPATH=['/lib','/usr/lib','/usr/local/lib', '/usr/lib/x86_64-linux-gnu'])
+common_env.Append(CPPPATH=['/lib','/usr/lib','/usr/local/lib',  '/usr/lib/x86_64-linux-gnu', '#/include'])
 
 # Support method
 import os.path
