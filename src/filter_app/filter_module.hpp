@@ -45,7 +45,7 @@ namespace filter_app
          */
         void stop(std::shared_ptr<network::blocking_queue>);
     private:
-        filter_module(){}
+        filter_module() : is_started_(true){}
         filter_module(const filter_module &) = delete;
         filter_module & operator=(const filter_module &) = delete;
         static std::shared_ptr<filter_module>  instance_;
