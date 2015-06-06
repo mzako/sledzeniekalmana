@@ -21,10 +21,14 @@ public:
     sensor_position_proxy( std::shared_ptr<sensor_observer> real) : real_(real) {};
 
     template<class Archive>
-    void serialize(Archive& archive) {
+    void load(Archive& archive) {
+        std::cout << "Loading sensor_position_proxy is illegal." << std::endl;
+    }
+    template<class Archive>
+    void save(Archive& archive) const {
         archive (
                 cereal::make_nvp("id", real_->get_id() ),
-                cereal::make_nvp("targets", real_->get_positions() )
+                cereal::make_nvp("positions", real_->get_positions() )
         );
     }
 

@@ -19,9 +19,10 @@
 #include <cereal/cereal.hpp>
 #include <cereal/types/vector.hpp>
 
+#include "../commons/cout_writer.hpp"
 #include "../commons/vect3f.hpp"
 #include "../commons/measurement_dto.hpp"
-#include "sensor.hpp"
+#include "../commons/sensor_dto.hpp"
 
 using namespace std;
 using namespace network;
@@ -49,6 +50,7 @@ void filter_module::prepare_kalman_filter(){
 
 
 }
+
 /**
  * Function run
  * Runs main filter thread
@@ -65,39 +67,17 @@ void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue, std::sha
     initialize_target_data(blocking_queue);
     prepare_kalman_filter();
 
-    while(is_started_)
-    {
-        std::string first_target_data = blocking_queue->pop();
-#ifdef DEBUG
-        cout << "TARGET_DATA" << endl << first_target_data << endl;
-#endif
-        std::vector<vect3f> new_positions;
-        stringstream ss(first_target_data);
-        {
-            cereal::JSONInputArchive iarchive(ss);
-            iarchive(
-                sensors_measurements_
-            );
-        }
-        for (auto it = sensors_measurements_.begin(); it != sensors_measurements_.end(); ++it)
-        {
-            vector<measurement_dto> tmp_meas = it->get_measurements();
-            for (auto it2 = tmp_meas.begin(); it2 != tmp_meas.end(); ++it2)
-            {
-                new_positions.push_back(it2->point_);
-            }
-        }
-        kalman_filter_->compute(new_positions);
-    }
+    work(blocking_queue, sending_buf);
 }
+
 void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string initial_data = blocking_queue->pop();
+#ifdef DEBUG
+    cout_writer() << "SENSOR_DATA\n" << initial_data << "END_DATA\n";
+#endif
     if(!is_started_) {
         return;
     }
-#ifdef DEBUG
-    cout << "SENSOR_DATA" << endl << initial_data << endl;
-#endif
     stringstream ss(initial_data);
     {
         cereal::JSONInputArchive iarchive(ss);
@@ -109,12 +89,12 @@ void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> block
 
 void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> blocking_queue) {
     std::string first_target_data = blocking_queue->pop();
+#ifdef DEBUG
+    cout_writer() << "FIRST_TARGET_DATA\n" << first_target_data << "END_DATA\n";
+#endif
     if(!is_started_) {
         return;
     }
-#ifdef DEBUG
-    cout << "FIRST_TARGET_DATA" << endl << first_target_data << endl;
-#endif
     stringstream ss(first_target_data);
     {
         cereal::JSONInputArchive iarchive(ss);
@@ -124,8 +104,45 @@ void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> block
     }
 }
 
-void filter_module::send_data()
+void filter_module::work(const std::shared_ptr<blocking_queue> blocking_queue, std::shared_ptr<network::sending_buffer> sending_buf) {
+    while (is_started_) {
+        std::string target_data = blocking_queue->pop();
+#ifdef DEBUG
+        cout_writer() << "TARGET_DATA\n" << target_data << "END_DATA\n";
+#endif
+        stringstream ss(target_data);
+        {
+            cereal::JSONInputArchive iarchive(ss);
+            iarchive(sensors_measurements_);
+        }
+        std::vector<vect3f> new_positions;
+        for (auto it = sensors_measurements_.begin();
+                it != sensors_measurements_.end(); ++it) {
+            vector<measurement_dto> tmp_meas = it->get_measurements();
+            for (auto it2 = tmp_meas.begin(); it2 != tmp_meas.end(); ++it2) {
+                new_positions.push_back(it2->point_);
+            }
+        }
+        kalman_filter_->compute(new_positions);
+        send_data_to_comparator(sending_buf);
+    }
+}
+
+
+
+void filter_module::send_data_to_comparator(std::shared_ptr<network::sending_buffer> sending_buf)
 {
+    stringstream ss;
+    {
+        cereal::JSONOutputArchive oarchive(ss);
+        oarchive(
+                cereal::make_nvp("filter_output", kalman_filter_->get_current_positions() )
+        );
+    }
+#ifdef DEBUG
+    cout_writer() << "SENDING DATA:\n" << ss.str() << "\nEND DATA\n";
+#endif
+    sending_buf->send(ss.str());
 }
 
 void filter_module::stop(std::shared_ptr<network::blocking_queue> queue)

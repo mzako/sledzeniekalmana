@@ -52,5 +52,6 @@ int main(int argc, char ** argv){
         comparator_server_thread.join();
     }
 
+
     return 0;
 }

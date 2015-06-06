@@ -26,8 +26,7 @@ using namespace commons;
 
 namespace generator_app {
 
-
-    const float simulation_module::TIME_STEP_ = 0.1;
+const float simulation_module::TIME_STEP_ = 0.1;
 
 shared_ptr<simulation_module> simulation_module::instance_;
 /**
@@ -83,9 +82,9 @@ void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, share
         while(is_started_)
         {
             environment_->update(float(time_));
-            sendDataToFilter(filter_sending_buf);
-            sendDataToComparator(comparator_sending_buf);
-           
+            send_data_to_filter(filter_sending_buf);
+            send_data_to_comparator(comparator_sending_buf);
+
             this_thread::sleep_for(chrono::milliseconds(1000));
             time_ += TIME_STEP_;
         }
@@ -111,34 +110,37 @@ string simulation_module::initial_message() const {
         );
 
     }
+#ifdef DEBUG
     cout << ss.str() << endl;
+#endif
     return ss.str();
 }
 
-void simulation_module::sendDataToFilter(shared_ptr<sending_buffer> sending_buf) {
+void simulation_module::send_data_to_filter(shared_ptr<sending_buffer> sending_buf) {
     stringstream ss;
     {
         cereal::JSONOutputArchive oarchive(ss);
         oarchive(
-                cereal::make_nvp("sensors", environment_->get_measurements() )
+                cereal::make_nvp("sensors_measurements", environment_->get_measurements() )
         );
     }
 #ifdef DEBUG
-    //cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
+    cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
 #endif
     sending_buf->send(ss.str());
 }
 
-void simulation_module::sendDataToComparator(shared_ptr<sending_buffer> sending_buf) {
+void simulation_module::send_data_to_comparator(shared_ptr<sending_buffer> sending_buf) {
     stringstream ss;
     {
         cereal::JSONOutputArchive oarchive(ss);
         oarchive(
-                cereal::make_nvp("sensors", environment_->get_positions() )
+                cereal::make_nvp("sensors_positions", environment_->get_positions() ),
+                cereal::make_nvp("sensors_measurments", environment_->get_measurements() )
         );
     }
 #ifdef DEBUG
-    //cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
+    cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
 #endif
     sending_buf->send(ss.str());
 }

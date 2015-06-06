@@ -16,6 +16,7 @@ namespace commons {
  * Struct measurement_dto
  * Data transfer object structure representing sampled target position.
  */
+//TODO: [JKU] Maybe change to target_dto?
 struct measurement_dto {
     measurement_dto() {};
     measurement_dto(vect3f point, unsigned id) : point_(point), id_(id) {};
@@ -25,7 +26,7 @@ struct measurement_dto {
     void serialize(Archive& archive) {
         archive(
                 cereal::make_nvp("id", id_),
-                cereal::make_nvp("measurement", point_)
+                cereal::make_nvp("coordinates", point_)
         );
     }
     unsigned id_;

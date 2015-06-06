@@ -41,8 +41,8 @@ private:
     simulation_module(const simulation_module&) = delete;
     simulation_module& operator=(const simulation_module&) = delete;
     std::string initial_message() const;
-    void sendDataToFilter(std::shared_ptr<network::sending_buffer> sending_buf);
-    void sendDataToComparator(std::shared_ptr<network::sending_buffer> sending_buf);
+    void send_data_to_filter(std::shared_ptr<network::sending_buffer> sending_buf);
+    void send_data_to_comparator(std::shared_ptr<network::sending_buffer> sending_buf);
 
 
     static std::shared_ptr<simulation_module> instance_;
