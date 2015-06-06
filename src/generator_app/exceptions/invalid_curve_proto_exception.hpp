@@ -11,6 +11,12 @@
 #include <stdexcept>
 #include <string>
 
+#ifndef _MSC_VER
+#define NOEXCEPT noexcept (true)
+#else
+#define NOEXCEPT
+#endif
+
 namespace generator_app {
 namespace exceptions {
 
@@ -18,7 +24,7 @@ class invalid_curve_proto_exception: public std::runtime_error {
 public:
     invalid_curve_proto_exception(std::string reason) :
         std::runtime_error(("Curve prototype is invalid: "+reason).c_str() ) {};
-    virtual ~invalid_curve_proto_exception() noexcept (true) {};
+    virtual ~invalid_curve_proto_exception() NOEXCEPT {};
 };
 
 } /* namespace exceptions */

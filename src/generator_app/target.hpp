@@ -38,7 +38,7 @@ public:
     curves::p_curve get_curve() const { return curve_; }
 
     template <class Archive>
-    void save( Archive& archiver )
+    void save( Archive& archiver ) const
     {
         archiver(
                 cereal::make_nvp("initial_position", initial_position_),
