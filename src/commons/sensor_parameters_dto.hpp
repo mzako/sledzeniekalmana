@@ -1,17 +1,19 @@
-/*
- * sensor_parameters.hpp
- *
- *  Created on: Jun 5, 2015
- *      Author: elohhim
+/**
+ *  \brief     sensor_parameters_dto.hpp
+ *  \details   This file contains sensor_parameters_dto structure.
+ *  \author    Jan Kumor
  */
 
 #include <cereal/cereal.hpp>
 
-#ifndef SENSOR_PARAMETERS_HPP
-#define SENSOR_PARAMETERS_HPP
+#ifndef _SENSOR_PARAMETERS_HPP
+#define _SENSOR_PARAMETERS_HPP
 
 namespace commons {
-
+/**
+ * Struct sensor_parameters_dto
+ * Data transfer object structure representing parameters of sensor.
+ */
 struct sensor_parameters_dto {
 
 	sensor_parameters_dto() {};
@@ -34,6 +36,6 @@ struct sensor_parameters_dto {
 
 };
 
-} /* namespace generator_app */
+} /* namespace commons */
 
-#endif /* SENSOR_PARAMETERS_HPP */
+#endif /* _SENSOR_PARAMETERS_HPP */

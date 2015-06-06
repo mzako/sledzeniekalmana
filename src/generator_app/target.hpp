@@ -10,9 +10,10 @@
 
 #include <cereal/cereal.hpp>
 
-#include "curve.hpp"
-#include "curve_prototype.hpp"
-#include "curve_factory.hpp"
+#include "curves/curve.hpp"
+#include "curves/curve_factory.hpp"
+#include "curves/curve_prototype.hpp"
+
 #include "sensor_observer.hpp"
 
 namespace generator_app {
@@ -27,14 +28,14 @@ typedef std::shared_ptr<sensor_observer> p_sensor_observer;
 class target : public std::enable_shared_from_this<target> {
 public:
     target() {};
-    target(std::shared_ptr<curve> curve, commons::vect3f initial_position = commons::vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
+    target(curves::p_curve curve, commons::vect3f initial_position = commons::vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
     virtual ~target();
     void update(float);
     void set_sensor_observers(std::shared_ptr<std::vector<p_sensor_observer> >);
     commons::vect3f get_current_position() const;
     commons::vect3f get_initial_position() const;
     unsigned get_id() const;
-    std::shared_ptr<curve> get_curve() const { return curve_; }
+    curves::p_curve get_curve() const { return curve_; }
 
     template <class Archive>
     void save( Archive& archiver )
@@ -47,12 +48,12 @@ public:
     template <class Archive>
     void load( Archive& archiver )
     {
-        curve_prototype cp;
+        curves::curve_prototype cp;
         archiver(
                 cereal::make_nvp("initial_position", initial_position_),
                 cereal::make_nvp("curve", cp )
         );
-        curve_ = curve_factory::get_instance().create(cp);
+        curve_ = curves::curve_factory::get_instance().create(cp);
     };
 
 private:
@@ -62,7 +63,7 @@ private:
     unsigned id_;
     commons::vect3f initial_position_;
     commons::vect3f current_position_;
-    std::shared_ptr<curve> curve_;
+    curves::p_curve curve_;
     std::shared_ptr<std::vector<p_sensor_observer> > observers_;
 };
 

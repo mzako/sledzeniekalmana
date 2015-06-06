@@ -7,13 +7,15 @@
 
 #include "curve_factory.hpp"
 
-#include <exception>
 #include <utility>
 
+#include "../exceptions/invalid_curve_proto_exception.hpp"
+#include "../exceptions/no_attribute_exception.hpp"
 #include "balistic.hpp"
 #include "line.hpp"
 
 namespace generator_app {
+namespace curves {
 
 bool curve_factory::is_initialized_ = false;
 
@@ -43,10 +45,17 @@ bool curve_factory::register_curve(std::string type, create_curve_function fun) 
 p_curve curve_factory::create(curve_prototype& proto) {
     auto it = callbacks_.find(proto.get_type());
     if (it == callbacks_.end()) {
-        throw( std::exception() );
+        throw( std::runtime_error((proto.get_type()+": no such curve type registered in factory.").c_str()) );
     } else {
-        return (it->second)(proto);
+        try
+        {
+            return (it->second)(proto);
+        } catch (exceptions::no_attribute_exception& e) {
+            throw exceptions::invalid_curve_proto_exception( e.what() );
+        }
+
     }
 }
 
+} /* namespace curve */
 } /* namespace generator_app */

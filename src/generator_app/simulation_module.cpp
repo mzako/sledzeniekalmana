@@ -116,15 +116,9 @@ string simulation_module::initial_message() const {
 
 void simulation_module::sendDataToFilter(shared_ptr<sending_buffer> sending_buf) {
     stringstream ss;
-    fstream fs;
-    fs.open("../bufor.txt", fstream::out);
     {
         cereal::JSONOutputArchive oarchive(ss);
-        cereal::JSONOutputArchive farchive(fs);
         oarchive(
-                cereal::make_nvp("sensors", environment_->get_measurements() )
-        );
-        farchive(
                 cereal::make_nvp("sensors", environment_->get_measurements() )
         );
     }

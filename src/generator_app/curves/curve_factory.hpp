@@ -16,6 +16,7 @@
 #include "curve_prototype.hpp"
 
 namespace generator_app {
+namespace curves {
 
 class curve_factory {
 public:
@@ -40,6 +41,7 @@ private:
     static bool is_initialized_;
 };
 
+} /* namespace curve */
 } /* namespace generator_app */
 
 #endif /* CURVE_FACTORY_HPP */
