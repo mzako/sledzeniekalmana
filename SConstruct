@@ -3,7 +3,7 @@ import os
 # Define build environment
 common_env = Environment()
 common_env.Append(CPPFLAGS=['-g', '-std=c++11'])#, '-Wall')
-common_env.Append(LIBS=['-lnetwork',  '-lcommons', '-lboost_system','-lpthread' , '-lboost_thread']) #fast fixup
+common_env.Append(LIBS=['-lboost_system','-lpthread' , '-lboost_thread']) #fast fixup
 common_env.Append(LIBPATH=['/lib','/usr/lib','/usr/local/lib', '/usr/lib/x86_64-linux-gnu'])
 common_env.Append(CPPPATH=['/lib','/usr/lib','/usr/local/lib',  '/usr/lib/x86_64-linux-gnu', '#/include'])
 
@@ -19,7 +19,7 @@ common_env.AddMethod(filtered_glob, "FilteredGlob");
 common_lib_env = common_env.Clone()
 
 # Link network library
-common_env.Append(LIBS=['-lnetwork', '-lcommons'])
+common_env.Prepend(LIBS=['-lnetwork', '-lcommons'])
 common_env.Append(LIBPATH=['#/build/debug/network', '#/build/debug/commons'])
 
 # Release build is derived from the common build environment
