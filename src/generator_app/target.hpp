@@ -27,7 +27,7 @@ typedef std::shared_ptr<sensor_observer> p_sensor_observer;
  */
 class target : public std::enable_shared_from_this<target> {
 public:
-    target() {};
+    target() : id_(++gId_){};
     target(curves::p_curve curve, commons::vect3f initial_position = commons::vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
     virtual ~target();
     void update(float);
