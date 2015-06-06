@@ -7,6 +7,7 @@
 #include <list>
 #include <random>
 #include "sensor_observer.hpp"
+#include "simulation_module.hpp"
 #include "target.hpp"
 
 using namespace std;
@@ -55,11 +56,11 @@ measurement_dto sensor_observer::make_measurement(std::shared_ptr<target> obj) c
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::normal_distribution<> d(0, measurement_noise_);
+    std::normal_distribution<> d(0, simulation_module::TIME_STEP_*simulation_module::TIME_STEP_/2);
     vect3f pos;
-    pos.x_ = obj->get_current_position().x_ + d(gen);
-    pos.y_ = obj->get_current_position().y_ + d(gen);
-    pos.z_ = obj->get_current_position().z_ + d(gen);
+    pos.x_ = obj->get_current_position().x_ + d(gen)*measurement_noise_;
+    pos.y_ = obj->get_current_position().y_ + d(gen)*measurement_noise_;
+    pos.z_ = obj->get_current_position().z_ + d(gen)*measurement_noise_;
     return measurement_dto( pos, obj->get_id() );
 }
 

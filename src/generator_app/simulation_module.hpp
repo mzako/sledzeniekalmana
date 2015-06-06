@@ -35,7 +35,7 @@ public:
      * stops the simulation
      */
     void stop();
-    const static float FREQUENCY_;
+    const static float TIME_STEP_;
 private:
     simulation_module() : initialized_(false) {}
     simulation_module(const simulation_module&) = delete;
@@ -46,7 +46,7 @@ private:
 
 
     static std::shared_ptr<simulation_module> instance_;
-    unsigned time_;
+    float time_;
     std::unique_ptr<environment> environment_;
     bool initialized_;
     volatile bool is_started_;

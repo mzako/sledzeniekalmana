@@ -27,7 +27,7 @@ using namespace commons;
 namespace generator_app {
 
 
-const float simulation_module::FREQUENCY_ = 10.0;
+    const float simulation_module::TIME_STEP_ = 0.1;
 
 shared_ptr<simulation_module> simulation_module::instance_;
 /**
@@ -68,7 +68,7 @@ string simulation_module::initialize(std::fstream& init_file) {
     }
 
     prepare_environment(targets, sensors);
-
+    time_ = 0;
     initialized_ = true;
     return initial_message();
 }
@@ -82,11 +82,12 @@ void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, share
     if(initialized_) {
         while(is_started_)
         {
-            environment_->update(float(time_ / FREQUENCY_));
+            environment_->update(float(time_));
             sendDataToFilter(filter_sending_buf);
             sendDataToComparator(comparator_sending_buf);
+           
             this_thread::sleep_for(chrono::milliseconds(1000));
-            time_ += 1;
+            time_ += TIME_STEP_;
         }
     }
 }

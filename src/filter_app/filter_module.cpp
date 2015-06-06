@@ -88,7 +88,6 @@ void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue, std::sha
             }
         }
         kalman_filter_->compute(new_positions);
-        vector<vect3f> res = kalman_filter_->get_current_positions();
     }
 }
 void filter_module::initialize_sensor_data(std::shared_ptr<blocking_queue> blocking_queue) {
