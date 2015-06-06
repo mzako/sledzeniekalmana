@@ -37,11 +37,10 @@ void sensor_observer::update(p_target obj)
         {
             targets_.push_back(obj);
         }
-        else if (position_.distance(obj->get_current_position()) > radius_)
-        {
-            targets_.erase(it);
-        }
-
+    }
+    else if (position_.distance(obj->get_current_position()) > radius_)
+    {
+        targets_.erase(it);
     }
     measurements_.clear();
     for (it = targets_.begin(); it != targets_.end(); ++it){
