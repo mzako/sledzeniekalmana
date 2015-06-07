@@ -37,5 +37,21 @@ vect3f vect3f::operator-(const vect3f& vec) const
 {
     return vect3f(x_ - vec.x_, y_ - vec.y_, z_ - vec.z_);
 }
+/**
+* Function operator-
+* Overloads operator== by comparing corresponding fields
+*/
+bool vect3f::operator==(const vect3f& vec) const
+{
+    if (this == &vec)
+    {
+        return true;
+    }
+    if (x_ == vec.x_ && y_ == vec.y_ && z_ == vec.z_)
+    {
+        return true;
+    }
+    return false;
+}
 
 } /* namespace commons */

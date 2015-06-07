@@ -23,7 +23,6 @@ unsigned sensor_observer::gId_ = 1;
 void sensor_observer::update(p_target obj)
 {
     list<p_target>::iterator it;
-
     for (it = targets_.begin(); it != targets_.end(); ++it)
     {
         if (*it == obj)
@@ -33,7 +32,6 @@ void sensor_observer::update(p_target obj)
     }
     if( it == targets_.end() )
     {
-        //TODO iterator end!
         if (position_.distance(obj->get_current_position()) <= radius_)
         {
             targets_.push_back(obj);
@@ -41,8 +39,10 @@ void sensor_observer::update(p_target obj)
     }
     else if (position_.distance(obj->get_current_position()) > radius_)
     {
+        cout << "c";
         targets_.erase(it);
     }
+    cout << "d";
     measurements_.clear();
     for (it = targets_.begin(); it != targets_.end(); ++it){
         measurements_.push_back(make_measurement(*it));

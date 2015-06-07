@@ -35,8 +35,11 @@ void target::update(float time)
 * Notifies all observers by calling their update function
 */
 void target::notify(){
-    for (auto it = observers_->begin(); it != observers_->end(); ++it) {
-        (*it)->update( shared_from_this() );
+    if (observers_)
+    {
+        for (auto it = observers_->begin(); it != observers_->end(); ++it) {
+            (*it)->update(shared_from_this());
+        }
     }
 }
 /**

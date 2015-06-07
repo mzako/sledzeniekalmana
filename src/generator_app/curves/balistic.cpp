@@ -14,15 +14,38 @@ namespace curves {
 
 const float balistic::GRAVITY_ = 9.89;
 /**
+* Constructor
+*/
+balistic::balistic(commons::vect3f velocity, float air_resistance) : velocity_(velocity)
+{
+    if (air_resistance < 0)
+    {
+        air_resistance_ = 0;
+    }
+    else
+    {
+        air_resistance_ = air_resistance;
+    }
+}
+/**
  * Function getPosition
  * Returns relative position of point moving along this line at given time
  */
 vect3f balistic::get_position(float time) const
 {
     vect3f pos;
-    pos.x_ = log(1 + air_resistance_*velocity_.x_*time) / air_resistance_;
-    pos.y_ = velocity_.y_*time - GRAVITY_*time*time / 2;
-    pos.z_ = log(1 + air_resistance_*velocity_.z_*time) / air_resistance_;
+    if (air_resistance_ == 0)
+    {
+        pos.x_ = velocity_.x_*time;
+        pos.y_ = velocity_.y_*time - GRAVITY_*time*time / 2;
+        pos.z_ = velocity_.z_*time;
+    }
+    else
+    {
+        pos.x_ = log(1 + air_resistance_*velocity_.x_*time) / air_resistance_;
+        pos.y_ = velocity_.y_*time - GRAVITY_*time*time / 2;
+        pos.z_ = log(1 + air_resistance_*velocity_.z_*time) / air_resistance_;
+    }
     return pos;
 }
 

@@ -2,8 +2,9 @@ import os
 
 # Define build environment
 common_env = Environment()
+common_env.Append(CCFLAGS = '--log_level=all')
 common_env.Append(CPPFLAGS=['/EHsc'])#, '-Wall')
-common_env.Append(LIBS=['boost_system-vc120-mt-1_58.lib','boost_thread-vc120-mt-1_58.lib' ])
+common_env.Append(LIBS=['boost_unit_test_framework-vc120-mt-1_58.lib','boost_system-vc120-mt-1_58.lib','boost_thread-vc120-mt-1_58.lib' ])
 common_env.Append(LIBPATH=[u'C:\\boost_1_58_0\\lib64-msvc-12.0'])
 common_env.Append(CPPPATH=[u'C:\\boost_1_58_0','#/include'])
 

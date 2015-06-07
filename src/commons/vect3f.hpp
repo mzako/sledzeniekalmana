@@ -18,6 +18,7 @@ struct vect3f {
     float distance(const vect3f&) const;
     vect3f operator+(const vect3f&) const;
     vect3f operator-(const vect3f& vec) const;
+    bool operator==(const vect3f& vec) const;
 
     template<class Archive>
     void serialize(Archive& archive)

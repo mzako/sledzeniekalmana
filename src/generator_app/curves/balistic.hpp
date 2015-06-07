@@ -24,7 +24,7 @@ class balistic : public curve {
 public:
     const static float GRAVITY_;
 
-    balistic(commons::vect3f velocity = commons::vect3f(), float air_resistance=1.0) : velocity_(velocity), air_resistance_(air_resistance){};
+    balistic(commons::vect3f velocity = commons::vect3f(), float air_resistance = 1.0);
     virtual ~balistic() {};
 
     commons::vect3f get_position(float) const;

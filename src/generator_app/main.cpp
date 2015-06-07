@@ -1,3 +1,5 @@
+#ifndef TEST
+
 #include <cstdlib>
 #include <iostream>
 #include <memory>
@@ -17,7 +19,6 @@ void stop_simulation(std::shared_ptr<simulation_module> sm) {
     std::cin.get();
     sm->stop();
 }
-
 int main(int argc, char ** argv){
 
     if(argc != 4)
@@ -52,6 +53,7 @@ int main(int argc, char ** argv){
         comparator_server_thread.join();
     }
 
-
     return 0;
 }
+
+#endif

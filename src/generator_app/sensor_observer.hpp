@@ -27,9 +27,8 @@ class target;
  */
 class sensor_observer {
 public:
-    //sensor_observer();
     sensor_observer(commons::vect3f position = commons::vect3f(), float radius = 0.f, float measurement_noise = 1.f, float process_noise = 1.f) : position_(position), radius_(radius), measurement_noise_(measurement_noise), process_noise_(process_noise), id_(gId_++) {}
-    void update(std::shared_ptr<target>);
+    void update(p_target);
     unsigned get_id() const { return id_; }
     float get_measurement_noise() const { return measurement_noise_; }
     float get_process_noise() const { return process_noise_; }
