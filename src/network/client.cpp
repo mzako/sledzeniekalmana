@@ -1,21 +1,20 @@
 /**
- * tcpIpCs.cpp
- *
- * http://thisthread.blogspot.com/2011/02/minimal-asio-tcp-server.html
- * http://thisthread.blogspot.com/2011/02/minimal-asio-tcp-client.html
- *
- * http://www.boost.org/doc/libs/1_54_0/doc/html/boost_asio/tutorial/tutdaytime1.html
- * http://www.boost.org/doc/libs/1_54_0/doc/html/boost_asio/tutorial/tutdaytime2.html
+ * \file client.cpp
+ * \brief This file contains client class' definitions
+ * \author Adam Mościcki
  */
 
 #include "client.hpp"
 
 using namespace boost::asio;
-using namespace network;
+namespace network {
 
 client::client(std::string host, std::string port, std::shared_ptr<blocking_queue> queue)
-                                                : port_(port), host_(host), queue_(queue), is_started_(true) {
-
+: port_(port),
+  host_(host),
+  queue_(queue),
+  is_started_(true) {
+    //Do nothing
 }
 
 void client::operator()() {
@@ -69,3 +68,4 @@ void client::stop() {
     is_started_ = false;
 }
 
+} /* namespace network */

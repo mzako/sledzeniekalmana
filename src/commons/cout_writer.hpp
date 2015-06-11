@@ -3,6 +3,7 @@
  *  \details    This file contains cout_writer class
  *  \author     Jan Kumor
  */
+
 #ifndef _COUT_WRITER_HPP
 #define _COUT_WRITER_HPP
 

@@ -1,7 +1,12 @@
+/**
+ * \file server.cpp
+ * \brief This file contains client class' definitions
+ * \author Adam Mościcki
+ */
 #include "server.hpp"
 
 using namespace boost::asio;
-using namespace network;
+namespace network {
 
 server::server(int port, std::shared_ptr<sending_buffer> ptr, std::string initial_data)
         : port_(port), initial_data_(initial_data), sending_buf_(ptr), thread_group_(new boost::thread_group), is_started_(true) {
@@ -74,3 +79,5 @@ void server::stop() {
     connect(socket, endpoint);
     socket.close();
 }
+
+} /* namespace network */

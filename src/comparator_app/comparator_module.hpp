@@ -1,7 +1,7 @@
 /**
- *  \brief     comparator_module.hpp
- *  \details   This file contains comparator_module class
- *  \author    Adam Mościcki
+ *  \file       comparator_module.hpp
+ *  \details    This file contains comparator_module class
+ *  \author     Adam Mościcki, Jan Kumor
  */
 #ifndef _COMPARATOR_MODULE_HPP
 #define _COMPARATOR_MODULE_HPP
@@ -24,7 +24,9 @@ class comparator_module
 {
 public:
     /**
-     * Returns an instance of comparator_module class
+     * \brief comparator_module singleton class instance access
+     *
+     * \return smart pointer to instance of comparator_module
      */
     static std::shared_ptr<comparator_module> get_instance()
     {
@@ -35,11 +37,14 @@ public:
         return instance_;
     }
     /**
-     * Starts comparating thread
+     * \brief Starts comparator module computation loop.
+     *
+     * \param generator_queue pointer to blocking queue of \ref client listening for data from GeneratorModule
+     * \param filter_queue pointer to blocking queue of \ref client listening for data from FilterModule
      */
-    void run(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::blocking_queue>);
+    void run(std::shared_ptr<network::blocking_queue> generator_queue, std::shared_ptr<network::blocking_queue> filter_queue);
     /**
-     * Stops comparing thread
+     * \brief Breaks comparato module computation loop.
      */
     void stop(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::blocking_queue>);
     
@@ -57,7 +62,6 @@ private:
 
     std::vector<commons::vect3f> filter_output_;
     std::vector<commons::sensor_dto> measurements_;
-    //std::vector<commons::sensor_dto> positions_;
     std::vector<commons::measurement_dto> positions2_;
 
     void get_filter_data(std::shared_ptr<network::blocking_queue> filter_queue);
@@ -66,7 +70,7 @@ private:
     void meas_plot_string(std::ostringstream& plot_stream);
     void track_plot_string(std::ostringstream& plot_stream);
     void send_plot_data();
-    /**
+    /*
      * Counts cumulated error
      */
     double count_error();

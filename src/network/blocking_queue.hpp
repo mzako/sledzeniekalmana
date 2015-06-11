@@ -11,12 +11,11 @@
 #include <queue>
 #include <string>
 
-
 namespace network {
-
-
 /**
- * \details Queue of strings with thread safe operations, poping operation on empty buffer blocks thread till to push.
+ * \brief Synchronised blocking queue of string.
+ *
+ * Queue of strings with thread safe operations, poping operation on empty buffer blocks thread till to push.
  */
 class blocking_queue {
     private:
@@ -25,15 +24,19 @@ class blocking_queue {
         boost::condition_variable wait_;
     public:
         /**
-         *
+         * \defcon
          */
         blocking_queue();
         /**
-         * Pop an element from Queue, if queue is empty it blocks till someone push something into
+         * \brief Pop an element from Queue.
+         *
+         * If queue is empty function blocks till someone push something into it.
+         * \return std::string value in queue
          */
         std::string pop();
         /**
-         * Add an element to Queue
+         * \brief Add an element to Queue.
+         *
          * \param message element to add
          */
         void push(std::string message);

@@ -1,6 +1,11 @@
+/**
+ * \file sending_buffer.cpp
+ * \brief This file contains sending_buffer class' definitions
+ * \author Adam Mościcki
+ */
 #include "sending_buffer.hpp"
 
-using namespace network;
+namespace network {
 
 void sending_buffer::addThread(boost::thread::id id) {
     safe.lock();
@@ -29,3 +34,4 @@ std::string sending_buffer::pop(boost::thread::id id) {
     return  threadBuffer->pop();
 }
 
+} /* namespace network */

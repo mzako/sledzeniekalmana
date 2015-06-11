@@ -13,7 +13,7 @@
 namespace network {
 
 /**
- * \details Structure contains common params for server and client.
+ * \brief Structure contains common parameters for server and client.
  */
 struct connection_commons {
     /**

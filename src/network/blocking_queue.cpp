@@ -1,3 +1,9 @@
+/**
+ * \file blocking_queue.cpp
+ * \brief This file contains blocking_queue class' functions definitions
+ * \author Adam Mościcki
+ */
+
 #include "blocking_queue.hpp"
 
 using namespace network;

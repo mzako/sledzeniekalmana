@@ -1,7 +1,7 @@
 /**
- *  \brief     comparator_module.cpp
+ *  \file comparator_module.cpp
  *  \details   This file contains comparator_module class' functions definitions
- *  \author    Adam Mościcki
+ *  \author    Adam Mościcki, Jan Kumor
  */
 
 #include "comparator_module.hpp"

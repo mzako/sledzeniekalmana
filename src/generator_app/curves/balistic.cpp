@@ -1,7 +1,7 @@
 /**
  *  \brief     balistic.cpp
  *  \details   This file contains balistic class' functions definitions
- *  \author    Michal Zakowski
+ *  \author    Michal Zakowski, Jan Kumor
  */
 #include "balistic.hpp"
 
@@ -13,9 +13,7 @@ namespace generator_app {
 namespace curves {
 
 const float balistic::GRAVITY_ = 9.89;
-/**
-* Constructor
-*/
+
 balistic::balistic(commons::vect3f velocity, float air_resistance) : velocity_(velocity)
 {
     if (air_resistance < 0)
@@ -27,10 +25,7 @@ balistic::balistic(commons::vect3f velocity, float air_resistance) : velocity_(v
         air_resistance_ = air_resistance;
     }
 }
-/**
- * Function getPosition
- * Returns relative position of point moving along this line at given time
- */
+
 vect3f balistic::get_position(float time) const
 {
     vect3f pos;

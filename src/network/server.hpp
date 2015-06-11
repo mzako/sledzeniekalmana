@@ -2,8 +2,6 @@
  * \file server.hpp
  * \author Adam Mościcki
  */
-
-
 #ifndef _SERVER_HPP
 #define _SERVER_HPP
 
@@ -29,7 +27,7 @@
 namespace network {
 
 /**
- * Server implementation
+ * \brief TCP server
  */
 class server {
 private:
@@ -42,23 +40,25 @@ protected:
     void write_to_socket(std::shared_ptr<boost::asio::ip::tcp::socket> socket,  const std::string & message);
 public:
     /**
-     * Constructor
-     * \param prt port
-     * \param ptr sending_buffer
+     * Creates server on given port with given sending buffer
+     * \param pprt given port, on which server will listen
+     * \param ptr smart pointer to sending_buffer which server will use to propagate messages
      */
     server(int port, std::shared_ptr<sending_buffer> ptr, std::string initial_data = "");
     /**
-     * Main thread of server
+     * \brief Main listening loop of server, for thread usage
      */
     void operator()();
     /**
-     * Thread method, starting when new connection was accepted
-     * \param socket assing connection socket
-     * \param sending_buf buffer with messages to send
+     * \brief Start working loop new connection is accepted.
+     *
+     * Should be started in new thread.
+     * \param socket assign connection socket
+     * \param sending_buf buffer which server uses for with messages to send
      */
     void send(std::shared_ptr<boost::asio::ip::tcp::socket> socket, std::shared_ptr<sending_buffer> sending_buf);
     /**
-     * Stops the serwer
+     * \brief Stops the server
      */
     void stop();
 };

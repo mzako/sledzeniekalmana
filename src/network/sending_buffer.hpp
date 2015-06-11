@@ -14,30 +14,39 @@
 #include "blocking_queue.hpp"
 
 namespace network {
-
-
-
 /**
- * \details For every thread keeps a buffer containg messages
- * (WARNING: redundacy, same messages are kept in every buffer, it's much easier)
+ * \brief Keeps a buffer containg messages for every thread
  *
+ * \b WARNING: redundacy, same messages are kept in every buffer, but it's much easier)
  */
 class sending_buffer {
-    std::map<boost::thread::id, std::shared_ptr<blocking_queue>> buffersForThreads;
-    boost::mutex safe;
-    public:
-    sending_buffer(){
-    };
-    
-    void addThread(boost::thread::id id);
-
-    void send(std::string message);
-
+public:
     /**
-     * Every thread use this method to get message from a buffer, 
-     * when buffer is empty thread blocks on pop operation in return line
+     * \defcon
+     */
+    sending_buffer() {};
+    /**
+     * \brief Add thread to buffer thread pool
+     *
+     * \param id thread id which will be added to pool of threads receiving messages from buffer
+     */
+    void addThread(boost::thread::id id);
+    /**
+     * \brief Send message to all threads in pool.
+     *
+     * \param message message to broadcast
+     */
+    void send(std::string message);
+    /**
+     * \brief Get message from buffer.
+     *
+     * Threads use this method to get message from a buffer,
+     * when buffer is empty thread function blocks on pop operation.
      */
     std::string pop(boost::thread::id id);
+private:
+    std::map<boost::thread::id, std::shared_ptr<blocking_queue>> buffersForThreads;
+    boost::mutex safe;
 };
 
 }
