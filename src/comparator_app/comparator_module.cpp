@@ -178,8 +178,7 @@ void comparator_module::stop(std::shared_ptr<blocking_queue> compartaor_queue, s
 
 double comparator_module::count_error()
 {
-    /** CHECK THIS OUT JKU **/
-    cout_writer() << positions2_.size() << filter_output_.size();
+     //cout_writer() << positions2_.size() << filter_output_.size();
     double error = 0.0f;
     for(auto it = positions2_.begin(); it != positions2_.end(); ++it) { //foreach point in real points
         if(filter_output_.size() > 0) {
