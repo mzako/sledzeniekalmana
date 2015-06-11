@@ -22,22 +22,72 @@
 namespace generator_app {
 class target;
 /**
- * Class sensor_observer
+ * \brief Represents real  measuring sensor
+ *
  * Represents sensor gathering data about objects' position during simulation
+ * Designed as observer pattern
+ *
  */
 class sensor_observer {
 public:
+
+    /**
+     *  \stdcon
+     */
     sensor_observer(commons::vect3f position = commons::vect3f(), float radius = 0.f, float measurement_noise = 1.f, float process_noise = 1.f) : position_(position), radius_(radius), measurement_noise_(measurement_noise), process_noise_(process_noise), id_(gId_++) {}
+
+    /**
+     * \brief update targets positions
+     *
+     * Checks whether targets entered or left sensor's area and inserts or removes target from sensor's target list
+     */
     void update(std::shared_ptr<target>);
+
+    /**
+     * \getter{id_}
+     */
     unsigned get_id() const { return id_; }
+
+    /**
+     * \getter{measurement_noise_}
+     */
     float get_measurement_noise() const { return measurement_noise_; }
+
+    /**
+     * \getter{process_noise_}
+     *
+     * Needed by Kalman filter to calculate how far we trust process
+     */
     float get_process_noise() const { return process_noise_; }
 
-    commons::sensor_parameters_dto get_parameters() const { return commons::sensor_parameters_dto(id_, measurement_noise_, process_noise_, radius_, position_); }
+    /**
+     * \brief Encapsulate sensor parameter
+     *
+     * \sa {sensor_parametrs_dto}
+     */
+    commons::sensor_parameters_dto get_parameters() const {
+        return commons::sensor_parameters_dto(id_, measurement_noise_, process_noise_, radius_, position_);
+    }
+
+    /**
+     * \brief real targets posions
+     *
+     * Return real targets position
+     */
     std::vector<commons::measurement_dto> get_positions() const;
+
+    /**
+     * \brief measure targets position
+     *
+     * Returns measurement which is target's position with noise
+     */
     std::vector<commons::measurement_dto> get_measurements() const;
 
-
+    /**
+     * \brief serializing method
+     *
+     * Serialize template needed by Cereal to serialize sensor object
+     */
     template<class Archive>
     void serialize(Archive& archive)
     {
@@ -94,5 +144,5 @@ public:
 private:
     p_sensor_observer real_;
 };
-}
+} /* namespace generator_app */
 #endif

@@ -16,10 +16,7 @@ using namespace commons;
 namespace generator_app {
 
 unsigned sensor_observer::gId_ = 1;
-/**
- * Function update
- * Checks whether targets entered or left sensor's area and inserts or removes target from sensor's target list
- */
+
 void sensor_observer::update(p_target obj)
 {
     list<p_target>::iterator it;
@@ -48,10 +45,7 @@ void sensor_observer::update(p_target obj)
         measurements_.push_back(make_measurement(*it));
     }
 }
-/**
- * Function measure targets position
- * Returns measurement which is target's position with noise
- */
+
 measurement_dto sensor_observer::make_measurement(std::shared_ptr<target> obj) const
 {
     std::random_device rd;
