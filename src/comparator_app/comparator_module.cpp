@@ -33,9 +33,11 @@ void comparator_module::run(std::shared_ptr<blocking_queue> generator_queue, std
      * wiadomość z filtra??*/
     cout_writer() << filter_queue->pop();
     cout_writer() << generator_queue->pop();
+    int iteration = 0;
     while(is_started_) {
         get_filter_data(filter_queue);
         get_generator_data(generator_queue);
+        cout_writer() << "Cumulated eror" << iteration++ << count_error() << "\n";
         send_plot_data();
     }
 }
@@ -139,12 +141,16 @@ void comparator_module::stop(std::shared_ptr<blocking_queue> compartaor_queue, s
 
 double comparator_module::count_error()
 {
+    /** CHECK THIS OUT JKU **/
     double error = 0.0f;
-    for(auto it = positions2_.begin(); it != positions2_.end(); ++it) {
+    for(auto it = positions2_.begin(); it != positions2_.end(); ++it) { //foreach point in real points
         auto closest = filter_output_.begin();
-        for(auto itt = filter_output_.begin() + 1; itt != filter_output_.end(); ++itt) {
-            //TODO
+        for(auto itt = filter_output_.begin() + 1; itt != filter_output_.end(); ++itt) { //find the closest
+            if (it->point_.distance(*itt) < it->point_.distance(*closest)) {
+                closest = itt;
+            }
         }
+        error += closest->distance(it->point_);
     }
     return error;
 }

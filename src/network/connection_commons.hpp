@@ -10,14 +10,10 @@
 #include <queue>
 #include <string>
 
-/**
- * \details Same setting for client and server
- */
-
 namespace network {
 
 /**
- * Structure contains common params for server and client.
+ * \details Structure contains common params for server and client.
  */
 struct connection_commons {
     /**

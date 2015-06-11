@@ -11,12 +11,13 @@
 #include <queue>
 #include <string>
 
-/**
- * \details Queue of strings with thread safe operations, poping operation on empty buffer blocks thread till to push.
- */
 
 namespace network {
 
+
+/**
+ * \details Queue of strings with thread safe operations, poping operation on empty buffer blocks thread till to push.
+ */
 class blocking_queue {
     private:
         std::queue<std::string> messages;

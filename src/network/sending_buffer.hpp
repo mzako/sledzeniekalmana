@@ -13,14 +13,15 @@
 
 #include "blocking_queue.hpp"
 
+namespace network {
+
+
+
 /**
  * \details For every thread keeps a buffer containg messages
  * (WARNING: redundacy, same messages are kept in every buffer, it's much easier)
  *
  */
-
-namespace network {
-
 class sending_buffer {
     std::map<boost::thread::id, std::shared_ptr<blocking_queue>> buffersForThreads;
     boost::mutex safe;

@@ -18,7 +18,7 @@
 namespace network {
 
 /**
- * Client
+ * Client implementation
  */
 class client {
 private:

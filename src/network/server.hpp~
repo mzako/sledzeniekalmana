@@ -27,9 +27,8 @@
 #include "connection_commons.hpp"
 
 namespace network {
-
 /**
- * Server implementation
+ * Server
  */
 class server {
 private:
@@ -43,7 +42,7 @@ protected:
 public:
     /**
      * Constructor
-     * \param prt port
+     * \param port port
      * \param ptr sending_buffer
      */
     server(int port, std::shared_ptr<sending_buffer> ptr, std::string initial_data = "");
