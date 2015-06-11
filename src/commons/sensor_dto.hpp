@@ -1,10 +1,8 @@
-/*
- * sensor_dto.hpp
- *
- *  Created on: Jun 4, 2015
- *      Author: elohhim
+/**
+ *  \file       sensor_dto.hpp
+ *  \details    This file contains sensor_dto structure
+ *  \author     Jan Kumor
  */
-
 #ifndef _SENSOR_DTO_HPP
 #define _SENSOR_DTO_HPP
 
@@ -16,16 +14,39 @@
 #include "measurement_dto.hpp"
 
 namespace commons {
-
+/**
+ * \brief Data transfer object representing sensor and positions of all targets seen by it.
+ *
+ * Contains information about sensors's id and targets positions.
+ * \dto
+ */
 struct sensor_dto {
-public:
+    /**
+     * \defcon
+     */
     sensor_dto() {};
+    /**
+     * \defdtr
+     */
     virtual ~sensor_dto() {};
-
-    std::vector<measurement_dto>& get_measurements(){
+    /**
+     * \refgetter{#measurements_}
+     */
+    std::vector<measurement_dto>& get_measurements() {
         return measurements_;
     }
+    /**
+     * \getter{#id_}
+     */
     int get_id() const { return id_; }
+    /**
+     * \cerealbrief
+     *
+     * \cerealdoc{
+     * - #id_ as "id" nvp\n
+     * - #measurements_\n
+     * }
+     */
     template<class Archive>
     void serialize( Archive& archive) {
         archive(
@@ -34,9 +55,14 @@ public:
                 measurements_
         );
     }
-
-private:
+    /**
+     * Id of represented sensor
+     */
     unsigned id_;
+    /**
+     * Vector of targets seen by sensor representations.
+     * \sa measurement_dto
+     */
     std::vector<measurement_dto> measurements_;
 };
 

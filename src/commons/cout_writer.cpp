@@ -1,8 +1,7 @@
-/*
- * cout_writer.cpp
- *
- *  Created on: 6 Jun 2015
- *      Author: Jan Kumor
+/**
+ *  \file       cout_writer.cpp
+ *  \details    This file contains cout_writer class methods implementation
+ *  \author     Jan Kumor
  */
 
 #include "cout_writer.hpp"
