@@ -1,6 +1,6 @@
 /**
- *  \brief     filter_module.hpp
- *  \details   This file contains filter_module class
+ *  \brief     comparator_module.hpp
+ *  \details   This file contains comparator_module class
  *  \author    Adam Mościcki
  */
 #ifndef _COMPARATOR_MODULE_HPP
