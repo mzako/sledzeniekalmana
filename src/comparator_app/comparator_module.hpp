@@ -42,10 +42,8 @@ public:
      * Stops comparing thread
      */
     void stop(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::blocking_queue>);
-    /**
-     * Returns plot data as vector of floats.
-     */
-
+    
+    
 private:
     comparator_module() : is_started_(true){}
     comparator_module(const comparator_module &) = delete;
@@ -68,6 +66,10 @@ private:
     void meas_plot_string(std::ostringstream& plot_stream);
     void track_plot_string(std::ostringstream& plot_stream);
     void send_plot_data();
+    /**
+     * Counts cumulated error
+     */
+    double count_error();
 };
 }
 

@@ -42,7 +42,7 @@ protected:
 public:
     /**
      * Constructor
-     * \para    m port port
+     * \param prt port
      * \param ptr sending_buffer
      */
     server(int port, std::shared_ptr<sending_buffer> ptr, std::string initial_data = "");

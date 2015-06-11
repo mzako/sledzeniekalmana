@@ -1,5 +1,5 @@
 /**
- *  \brief     filter_module.cpp
+ *  \brief     comparator_module.cpp
  *  \details   This file contains comparator_module class' functions definitions
  *  \author    Adam Mościcki
  */
@@ -132,10 +132,21 @@ void comparator_module::track_plot_string(ostringstream& plot_stream) {
 }
 
 
-
 void comparator_module::stop(std::shared_ptr<blocking_queue> compartaor_queue, std::shared_ptr<blocking_queue> filter_queue)
 {
     is_started_ = false;
+}
+
+double comparator_module::count_error()
+{
+    double error = 0.0f;
+    for(auto it = positions2_.begin(); it != positions2_.end(); ++it) {
+        auto closest = filter_output_.begin();
+        for(auto itt = filter_output_.begin() + 1; itt != filter_output_.end(); ++itt) {
+            //TODO
+        }
+    }
+    return error;
 }
 
 } /* namespace comparator_app */
