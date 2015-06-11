@@ -42,16 +42,32 @@ public:
      * Stops comparing thread
      */
     void stop(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::blocking_queue>);
+    /**
+     * Returns plot data as vector of floats.
+     */
+
 private:
     comparator_module() : is_started_(true){}
     comparator_module(const comparator_module &) = delete;
     comparator_module & operator=(const comparator_module &) = delete;
     static std::shared_ptr<comparator_module>  instance_;
+
+    static const char sep_ = ',';
+    static const char line_sep_ = ';';
+    static const char set_sep_ = '#';
     volatile bool is_started_;
 
     std::vector<commons::vect3f> filter_output_;
     std::vector<commons::sensor_dto> measurements_;
-    std::vector<commons::sensor_dto> positions_;
+    //std::vector<commons::sensor_dto> positions_;
+    std::vector<commons::measurement_dto> positions2_;
+
+    void get_filter_data(std::shared_ptr<network::blocking_queue> filter_queue);
+    void get_generator_data(std::shared_ptr<network::blocking_queue> qenerator_queue);
+    void real_plot_string(std::ostringstream& plot_stream);
+    void meas_plot_string(std::ostringstream& plot_stream);
+    void track_plot_string(std::ostringstream& plot_stream);
+    void send_plot_data();
 };
 }
 

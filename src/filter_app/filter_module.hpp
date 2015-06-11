@@ -52,9 +52,10 @@ private:
 
     std::vector<commons::sensor_parameters_dto> sensor_parameters_;
     std::vector<commons::sensor_dto> sensors_measurements_;
-
+    std::string target_data_;
     std::unique_ptr<kalman_filter> kalman_filter_;
     volatile bool is_started_;
+
     void initialize_sensor_data(std::shared_ptr<network::blocking_queue> blocking_queue);
     void initialize_target_data(std::shared_ptr<network::blocking_queue> blocking_queue);
     void work(const std::shared_ptr<network::blocking_queue> blocking_queue, std::shared_ptr<network::sending_buffer>);

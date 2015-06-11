@@ -12,6 +12,7 @@
 #include "sensor_proxy_factory.hpp"
 
 using namespace std;
+using namespace commons;
 
 namespace generator_app {
 
@@ -57,6 +58,15 @@ std::vector<sensor_position_proxy> environment::get_positions() {
         vect.push_back(sensor_proxy_factory::get_position_proxy((*it)));
     }
     return vect;
+}
+
+std::vector<measurement_dto> environment::get_positions2() {
+    std::vector<measurement_dto> positions;
+    for( auto element : *targets_ )
+    {
+        positions.push_back(measurement_dto(element->get_current_position(), element->get_id()));
+    }
+    return positions;
 }
 
 

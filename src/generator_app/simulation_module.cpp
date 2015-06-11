@@ -16,6 +16,7 @@
 #include <cereal/types/memory.hpp>
 
 #include "../commons/sensor_parameters_dto.hpp"
+#include "../commons/cout_writer.hpp"
 
 #include "target.hpp"
 #include "simulation_module.hpp"
@@ -26,7 +27,7 @@ using namespace commons;
 
 namespace generator_app {
 
-const float simulation_module::TIME_STEP_ = 0.1;
+const float simulation_module::TIME_STEP_ = 1;
 
 shared_ptr<simulation_module> simulation_module::instance_;
 /**
@@ -111,7 +112,7 @@ string simulation_module::initial_message() const {
 
     }
 #ifdef DEBUG
-    cout << ss.str() << endl;
+    cout_writer() << "SENDING DATA:\n" << ss.str() << "\nEND DATA\n";
 #endif
     return ss.str();
 }
@@ -125,7 +126,7 @@ void simulation_module::send_data_to_filter(shared_ptr<sending_buffer> sending_b
         );
     }
 #ifdef DEBUG
-    cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
+    cout_writer() << "SENDING DATA:\n" << ss.str() << "\nEND DATA\n";
 #endif
     sending_buf->send(ss.str());
 }
@@ -135,12 +136,13 @@ void simulation_module::send_data_to_comparator(shared_ptr<sending_buffer> sendi
     {
         cereal::JSONOutputArchive oarchive(ss);
         oarchive(
-                cereal::make_nvp("sensors_positions", environment_->get_positions() ),
+                //cereal::make_nvp("sensors_positions", environment_->get_positions() ),
+                cereal::make_nvp("target_positions", environment_->get_positions2() ),
                 cereal::make_nvp("sensors_measurments", environment_->get_measurements() )
         );
     }
 #ifdef DEBUG
-    cout << "SENDING DATA:\n" << ss.str() << "\nEND DATA" << endl;
+    cout_writer() << "SENDING DATA:\n" << ss.str() << "\nEND DATA\n";
 #endif
     sending_buf->send(ss.str());
 }

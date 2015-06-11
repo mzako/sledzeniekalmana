@@ -30,7 +30,6 @@ struct vect3f {
         );
     }
 
-
     float x_;
     float y_;
     float z_;

@@ -106,11 +106,11 @@ void filter_module::initialize_target_data(std::shared_ptr<blocking_queue> block
 
 void filter_module::work(const std::shared_ptr<blocking_queue> blocking_queue, std::shared_ptr<network::sending_buffer> sending_buf) {
     while (is_started_) {
-        std::string target_data = blocking_queue->pop();
+        target_data_ = blocking_queue->pop();
 #ifdef DEBUG
-        cout_writer() << "TARGET_DATA\n" << target_data << "END_DATA\n";
+        cout_writer() << "TARGET_DATA\n" << target_data_ << "END_DATA\n";
 #endif
-        stringstream ss(target_data);
+        stringstream ss(target_data_);
         {
             cereal::JSONInputArchive iarchive(ss);
             iarchive(sensors_measurements_);

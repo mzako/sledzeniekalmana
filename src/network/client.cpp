@@ -30,7 +30,7 @@ void client::operator()() {
         std::string message;
         while(is_started_) {
             while(true) {
-                std::array<char, 512> buf;
+                std::array<char, 1024*16> buf;
                 boost::system::error_code er;
                 size_t lenghtOfReceived = socket.read_some(buffer(buf), er);
                 if (er == error::eof || er == error::connection_reset) {

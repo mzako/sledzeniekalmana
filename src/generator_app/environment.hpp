@@ -10,12 +10,11 @@
 #include <memory>
 #include <vector>
 
-#include <cereal/cereal.hpp>
-#include <cereal/types/memory.hpp>
-#include <cereal/types/vector.hpp>
-
 #include "sensor_measurement_proxy.hpp"
 #include "sensor_position_proxy.hpp"
+#include "target.hpp"
+
+#include "../commons/measurement_dto.hpp"
 
 namespace generator_app {
 class sensor_observer;
@@ -38,6 +37,7 @@ public:
     std::vector<sensor_measurement_proxy> get_measurements();
 
     std::vector<sensor_position_proxy> get_positions();
+    std::vector<commons::measurement_dto> get_positions2();
 
 private:
     std::shared_ptr<std::vector<p_sensor_observer>> sensors_;

@@ -37,14 +37,14 @@ vect3f balistic::get_position(float time) const
     if (air_resistance_ == 0)
     {
         pos.x_ = velocity_.x_*time;
-        pos.y_ = velocity_.y_*time - GRAVITY_*time*time / 2;
-        pos.z_ = velocity_.z_*time;
+        pos.y_ = velocity_.y_*time;
+        pos.z_ = velocity_.z_*time - GRAVITY_*time*time / 2;
     }
     else
     {
         pos.x_ = log(1 + air_resistance_*velocity_.x_*time) / air_resistance_;
-        pos.y_ = velocity_.y_*time - GRAVITY_*time*time / 2;
-        pos.z_ = log(1 + air_resistance_*velocity_.z_*time) / air_resistance_;
+        pos.y_ = log(1 + air_resistance_*velocity_.y_*time) / air_resistance_;
+        pos.z_ = velocity_.z_*time - GRAVITY_*time*time / 2;
     }
     return pos;
 }
