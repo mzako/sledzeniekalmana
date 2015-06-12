@@ -27,7 +27,7 @@ using namespace commons;
 
 namespace generator_app {
 
-const float simulation_module::TIME_STEP_ = 1;
+const float simulation_module::TIME_STEP_ = 0.1;
 
 shared_ptr<simulation_module> simulation_module::instance_;
 

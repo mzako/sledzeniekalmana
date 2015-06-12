@@ -29,17 +29,21 @@ balistic::balistic(commons::vect3f velocity, float air_resistance) : velocity_(v
 vect3f balistic::get_position(float time) const
 {
     vect3f pos;
+    short vxm, vym, vzm;
+    vxm = (velocity_.x_ < 0) ? -1 : 1;
+    vym = (velocity_.y_ < 0) ? -1 : 1;
+    vzm = (velocity_.z_ < 0) ? -1 : 1;
     if (air_resistance_ == 0)
     {
         pos.x_ = velocity_.x_*time;
         pos.y_ = velocity_.y_*time;
-        pos.z_ = velocity_.z_*time - GRAVITY_*time*time / 2;
+        pos.z_ = velocity_.z_*time - vzm*GRAVITY_*time*time / 2;
     }
     else
     {
-        pos.x_ = log(1 + air_resistance_*velocity_.x_*time) / air_resistance_;
-        pos.y_ = log(1 + air_resistance_*velocity_.y_*time) / air_resistance_;
-        pos.z_ = velocity_.z_*time - GRAVITY_*time*time / 2;
+        pos.x_ = vxm*log(1 + air_resistance_*vxm*velocity_.x_*time) / air_resistance_;
+        pos.y_ = vym*log(1 + air_resistance_*vym*velocity_.y_*time) / air_resistance_;
+        pos.z_ = velocity_.z_*time - vzm*GRAVITY_*time*time / 2;
     }
     return pos;
 }
