@@ -1,5 +1,5 @@
 ﻿/**
-*  \brief     kalman_filter.cpp
+*  \file     kalman_filter.cpp
 *  \details   This file contains kalman_filter class' functions definitions
 *  \author    Michal Zakowski
 */

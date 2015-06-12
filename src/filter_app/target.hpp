@@ -1,5 +1,5 @@
 ﻿/**
-*  \brief     target.hpp
+*  \file     target.hpp
 *  \details   This file contains target class
 *  \author    Michal Zakowski
 */

@@ -1,5 +1,5 @@
 ﻿/**
-*  \brief     kalman_filter.hpp
+*  \file     kalman_filter.hpp
 *  \details   This file contains kalman_filter class
 *  \author    Michal Zakowski
 */

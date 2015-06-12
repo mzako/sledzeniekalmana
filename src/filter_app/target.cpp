@@ -1,5 +1,5 @@
 ﻿/**
-*  \brief     target.cpp
+*  \file     target.cpp
 *  \details   This file contains target class' functions definitions
 *  \author    Michal Zakowski
 */
