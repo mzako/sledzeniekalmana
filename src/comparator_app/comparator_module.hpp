@@ -12,6 +12,7 @@
 #include "../commons/vect3f.hpp"
 #include "../commons/measurement_dto.hpp"
 #include "../commons/sensor_dto.hpp"
+#include "../commons/sensor_parameters_dto.hpp"
 
 namespace comparator_app
 {
@@ -47,8 +48,8 @@ public:
      * \brief Breaks comparato module computation loop.
      */
     void stop(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::blocking_queue>);
-    
-    
+
+
 private:
     comparator_module() : is_started_(true){}
     comparator_module(const comparator_module &) = delete;
@@ -63,17 +64,23 @@ private:
     std::vector<commons::vect3f> filter_output_;
     std::vector<commons::sensor_dto> measurements_;
     std::vector<commons::measurement_dto> positions2_;
+    std::vector<commons::sensor_parameters_dto> sensors_;
 
+    void get_initial_generator_data(std::shared_ptr<network::blocking_queue> generator_queue);
     void get_filter_data(std::shared_ptr<network::blocking_queue> filter_queue);
     void get_generator_data(std::shared_ptr<network::blocking_queue> qenerator_queue);
+    void send_initial_plot_data();
+    void send_plot_data();
+    void send_to_vis(std::string data);
     void real_plot_string(std::ostringstream& plot_stream);
     void meas_plot_string(std::ostringstream& plot_stream);
     void track_plot_string(std::ostringstream& plot_stream);
-    void send_plot_data();
+    void sensors_plot_string(std::ostringstream& plot_stream);
     /*
      * Counts cumulated error
      */
     double count_error();
+
 };
 }
 

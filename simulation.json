@@ -3,8 +3,8 @@
         {
     	"target" : {
 	            "initial_position": {
-	                "x": -2200,
-	                "y": 0,
+	                "x": -5000,
+	                "y": -5000,
 	                "z": 0
 	            },
 	            "curve": {
@@ -16,11 +16,11 @@
 	                	},
 	                    {
 	                        "key": "velocity.x",
-	                        "value": -240
+	                        "value": 300
 	                    },
 	                    {
 	                        "key": "velocity.y",
-	                        "value": 14
+	                        "value": 300
 	                    },
 	                    {
 	                        "key": "velocity.z",
@@ -29,63 +29,8 @@
 	                ]
 	            }
             }
-        },
-        {
-    	"target" : {
-	            "initial_position": {
-	                "x": 1000,
-	                "y": 1000,
-	                "z": 0
-	            },
-	            "curve": {
-	                "type": "balistic",
-	                "attributes": [
-	                    {
-	                        "key": "air_resistance",
-	                        "value": 0
-	                    },
-	                    {
-	                        "key": "velocity.x",
-	                        "value": 600
-	                    },
-	                    {
-	                        "key": "velocity.y",
-	                        "value": 0
-	                    },
-	                    {
-	                        "key": "velocity.z",
-	                        "value": 200
-	                    }
-	                ]
-	            }
-            }
-        },
-        {
-    	"target" : {
-	            "initial_position": {
-	                "x": 1000,
-	                "y": -5000,
-	                "z": 1000
-	            },
-	            "curve": {
-	                "type": "line",
-	                "attributes": [
-	                    {
-	                        "key": "velocity.x",
-	                        "value": -200
-	                    },
-	                    {
-	                        "key": "velocity.y",
-	                        "value": -30
-	                    },
-	                    {
-	                        "key": "velocity.z",
-	                        "value": 140
-	                    }
-	                ]
-	            }
-            }
         }
+
     ],
 	"sensors": [
         {
@@ -97,21 +42,47 @@
                     "z": 0
                 },
                 "radius": 10000,
-                "measurement_noise": 0.4,
-                "process_noise": 0.4
+                "measurement_noise": 500,
+                "process_noise": 11040
             }
         },
         {
             "sensor": {
                 "id": 2,
                 "position": {
-                    "x": 20000,
+                    "x": 10000,
                     "y": 0,
                     "z": 0
                 },
                 "radius": 10000,
-                "measurement_noise": 0.4,
-                "process_noise": 0.4
+                "measurement_noise": 500,
+                "process_noise": 11040
+            }
+        },
+        {
+            "sensor": {
+                "id": 3,
+                "position": {
+                    "x": 10000,
+                    "y": 10000,
+                    "z": 0
+                },
+                "radius": 10000,
+                "measurement_noise": 500,
+                "process_noise": 11040
+            }
+        },
+        {
+            "sensor": {
+                "id": 4,
+                "position": {
+                    "x": 0,
+                    "y": 10000,
+                    "z": 0
+                },
+                "radius": 10000,
+                "measurement_noise": 500,
+                "process_noise": 11040
             }
         }
     ]

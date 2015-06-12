@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <iterator>
+#include <array>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 
@@ -26,13 +27,17 @@ namespace comparator_app {
 
 std::shared_ptr<comparator_module>  comparator_module::instance_;
 
-void comparator_module::run(std::shared_ptr<blocking_queue> generator_queue, std::shared_ptr<blocking_queue> filter_queue)
+void comparator_module::run(shared_ptr<blocking_queue> generator_queue, shared_ptr<blocking_queue> filter_queue)
 {
-    /*TODO: [JKU] initial messages
-     * wiadomość z generatora możnaby wykorzystać do narysowaniu zasięgu sensorów
-     * wiadomość z filtra??*/
-    cout_writer() << filter_queue->pop();
-    cout_writer() << generator_queue->pop();
+    if(is_started_) {
+        get_initial_generator_data(generator_queue);
+        //TODO: [JKU] connection needed not UDP
+        //send_initial_plot_data();
+    }
+    /*TODO: [JKU] filter initial messages*/
+#ifdef DEBUG
+    cout_writer() << "FILTER INIT DATA\n" << filter_queue->pop() << "\nEND DATA\n";
+#endif
     int iteration = 0;
     while(is_started_) {
         get_filter_data(filter_queue);
@@ -42,6 +47,17 @@ void comparator_module::run(std::shared_ptr<blocking_queue> generator_queue, std
     }
 }
 
+void comparator_module::get_initial_generator_data(shared_ptr<blocking_queue> generator_queue) {
+    string g_init_out = generator_queue->pop();
+#ifdef DEBUG
+    cout_writer() << "GENERATOR INIT DATA\n" << g_init_out << "\nEND DATA\n";
+#endif
+    stringstream ss(g_init_out);
+    {
+        cereal::JSONInputArchive iarchive(ss);
+        iarchive(sensors_);
+    }
+}
 void comparator_module::get_filter_data(shared_ptr<blocking_queue> filter_queue) {
     string f_out = filter_queue->pop();
 #ifdef DEBUG
@@ -67,8 +83,19 @@ void comparator_module::get_generator_data(shared_ptr<blocking_queue> generator_
     }
 }
 
+void comparator_module::send_initial_plot_data() {
+    ostringstream plot_stream;
+    sensors_plot_string(plot_stream);
+#ifdef DEBUG
+    cout_writer() << "INITIAL PLOT DATA:\n" << plot_stream.str() << "\nEND DATA\n";
+#endif
+    send_to_vis(plot_stream.str());
+}
+
 void comparator_module::send_plot_data() {
     ostringstream plot_stream;
+    sensors_plot_string(plot_stream);
+    plot_stream << set_sep_;
     real_plot_string(plot_stream);
     plot_stream << set_sep_;
     meas_plot_string(plot_stream);
@@ -78,17 +105,7 @@ void comparator_module::send_plot_data() {
 #ifdef DEBUG
     cout_writer() << "PLOT DATA:\n" << plot_stream.str() << "\nEND DATA\n";
 #endif
-    try {
-        boost::asio::io_service io_service;
-        udp::resolver resolver(io_service);
-        udp::resolver::iterator endpoint = resolver.resolve(
-                udp::resolver::query("127.0.0.1", "30001"));
-        udp::socket socket(io_service);
-        socket.open(udp::v4());
-        socket.send_to(boost::asio::buffer(plot_stream.str()), *endpoint);
-    } catch (std::exception& e) {
-        std::cerr << e.what() << std::endl;
-    }
+    send_to_vis(plot_stream.str());
 }
 
 void comparator_module::real_plot_string(ostringstream& plot_stream) {
@@ -112,28 +129,48 @@ void comparator_module::meas_plot_string(ostringstream& plot_stream) {
                     plot_stream << line_sep_;
                 }
                 plot_stream << it2->point_.x_ << sep_ << it2->point_.y_ << sep_ << it2->point_.z_;
-                /*if(std::next(it2) != meas.end()) {
-                plot_stream << line_sep_;
-            }*/
             }
         }
-        /*if(std::next(it1) != measurements_.end()) {
-            plot_stream << line_sep_;
-        }*/
     }
 }
 
-
 void comparator_module::track_plot_string(ostringstream& plot_stream) {
     for( auto it = filter_output_.begin(); it != filter_output_.end(); ++it) {
-        plot_stream << (*it).x_ << sep_ << (*it).y_ << sep_ << (*it).z_;
+        plot_stream << it->x_ << sep_ << it->y_ << sep_ << it->z_;
         if( std::next(it) != filter_output_.end() ) {
             plot_stream << line_sep_;
         }
     }
 }
 
+void comparator_module::sensors_plot_string(ostringstream& plot_stream) {
+    for (auto it = sensors_.begin(); it != sensors_.end(); ++it) {
+        plot_stream << it->radius_ << sep_ << it->position_.x_ << sep_
+                << it->position_.y_ << sep_ << it->position_.z_;
+        if (std::next(it) != sensors_.end()) {
+            plot_stream << line_sep_;
+        }
+    }
+}
 
+void comparator_module::send_to_vis(string data) {
+    try {
+        boost::asio::io_service io_service;
+        udp::resolver resolver(io_service);
+        udp::resolver::iterator endpoint = resolver.resolve(
+                udp::resolver::query("127.0.0.1", "30001"));
+        udp::socket socket(io_service);
+        socket.open(udp::v4());
+        socket.send_to(boost::asio::buffer(data), *endpoint);
+        /*std::array<char, 1> ack;
+        socket.receive(boost::asio::buffer(ack));
+        if( ack[0] != 0) {
+            throw std::runtime_error("No ACK from vis");
+        }*/
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
+}
 void comparator_module::stop(std::shared_ptr<blocking_queue> compartaor_queue, std::shared_ptr<blocking_queue> filter_queue)
 {
     is_started_ = false;

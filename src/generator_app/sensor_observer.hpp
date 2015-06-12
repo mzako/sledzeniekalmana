@@ -33,7 +33,7 @@ public:
     float get_measurement_noise() const { return measurement_noise_; }
     float get_process_noise() const { return process_noise_; }
 
-    commons::sensor_parameters_dto get_parameters() const { return commons::sensor_parameters_dto(id_, measurement_noise_, process_noise_); }
+    commons::sensor_parameters_dto get_parameters() const { return commons::sensor_parameters_dto(id_, measurement_noise_, process_noise_, radius_, position_); }
     std::vector<commons::measurement_dto> get_positions() const;
     std::vector<commons::measurement_dto> get_measurements() const;
 
