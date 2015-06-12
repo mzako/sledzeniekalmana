@@ -124,15 +124,38 @@ private:
     curves::p_curve curve_;
     std::shared_ptr<std::vector<p_sensor_observer> > observers_;
 };
-
+/**
+ * \brief Abbreviation for std::shared_ptr<\ref target>
+ */
 typedef std::shared_ptr<target> p_target;
-
+/**
+ * \brief Proxy to target class allowing loading from JSON format.
+ */
 class target_load_proxy {
 public:
+    /**
+     * \defctr
+     */
     target_load_proxy() {}
+    /**
+     * \brief creates proxy to pointed \ref target
+     *
+     * \param real smart pointer to object which will be proxied
+     */
     target_load_proxy(p_target real) : real_(real) {}
+    /**
+     * \brief get pointer to proxied \ref target
+     *
+     * \return smart pointer to \ref target which is proxied by this
+     */
     p_target get_real() const { return real_; }
-
+    /**
+     * \cerealbrief_save
+     *
+     * \cerealdoc_save{
+     * - proxied object as "target" nvp\n
+     * }
+     */
     template<class Archive>
     void save(Archive& archive) const
     {
@@ -140,7 +163,14 @@ public:
                 cereal::make_nvp("target", *real_)
         );
     }
-
+    /**
+     * \cerealbrief_save
+     *
+     * \cerealdoc_save{
+     * - new proxied object as "target" nvp\n
+     * }
+     * Existing pointer will be override.
+     */
     template<class Archive>
     void load(Archive& archive)
     {
