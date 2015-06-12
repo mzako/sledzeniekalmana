@@ -196,6 +196,10 @@ TAB_SIZE = 4
 ALIASES += dto="\nDTO (Data transfer object) does not provide any other logic besides serialization."
 ALIASES += cerealbrief="\brief Template of cereal serialize method."
 ALIASES += cerealdoc{1}="Provides into given archive:\n\1.\n\b Note: Should not be used directly.\nFor more informations go to <a href="http://uscilab.github.io/cereal/" target="_blank">cereal documentation</a>."
+ALIASES += cerealbrief_save="\brief Template of cereal save method."
+ALIASES += cerealdoc_save{1}="Provides into given archive:\n\1.\n\b Note: Should not be used directly.\nFor more informations go to <a href="http://uscilab.github.io/cereal/" target="_blank">cereal documentation</a>."
+ALIASES += cerealbrief_load="\brief Template of cereal load method."
+ALIASES += cerealdoc_load{1}="Extracts from given archive:\n\1.\n\b Note: Should not be used directly.\nFor more informations go to <a href="http://uscilab.github.io/cereal/" target="_blank">cereal documentation</a>.
 ALIASES += defcon="\brief Default unparametrized constructor."
 ALIASES += defdtr="\brief Default virtual destructor."
 ALIASES += getter{1}="\1 getter.\return \1 value"

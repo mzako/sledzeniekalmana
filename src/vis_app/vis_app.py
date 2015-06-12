@@ -49,9 +49,9 @@ class Worker(QtCore.QObject):
 				self.greenStr+= ";"+dataSplit[2]
 			if dataSplit[3] != "":
 				self.blueStr+= ";"+dataSplit[3]
-			print "RPLOT " + self.redStr
-			print "GPLOT " + self.greenStr
-			print "BPLOT " + self.blueStr
+			#print "RPLOT " + self.redStr
+			#print "GPLOT " + self.greenStr
+			#print "BPLOT " + self.blueStr
 		finished.sen()
 
 	def plotInit(self):

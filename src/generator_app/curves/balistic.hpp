@@ -35,15 +35,23 @@ public:
      */
     virtual ~balistic() {};
     /**
-     * \brief implementation of pure virtual curve::get_position(float) const.
+     * \brief compute position
      *
-     * \param time given time
-     * \return position at given time
+     * \sa commons::vect3f curve::get_position(float time) const
      */
     virtual commons::vect3f get_position(float time) const;
-
+    /**
+     * \brief factory method
+     *
+     * \param proto reference to prototype from which line will be created
+     * \return smart pointer to created instance of line
+     */
     static p_curve create(curve_prototype& proto);
-
+    /**
+     * \brief create prototype of ballistic curve
+     *
+     * \sa virtual curve_prototype curve::proto() const
+     */
     virtual curve_prototype proto() const;
 
 private:

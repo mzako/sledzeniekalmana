@@ -1,8 +1,7 @@
-/*
- * curve_prototype.cpp
- *
- *  Created on: Jun 3, 2015
- *      Author: Jan Kumor
+/**
+ *  \file       curve_prototype.cpp
+ *  \details    This file contains curve_prototype class' functions definitions
+ *  \author     Jan Kumor
  */
 
 #include "curve_prototype.hpp"

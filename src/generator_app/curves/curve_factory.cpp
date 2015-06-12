@@ -1,9 +1,9 @@
-/*
- * curve_factory.cpp
- *
- *  Created on: Jun 3, 2015
- *      Author: Jan Kumor
+/**
+ *  \file       curve_factory.cpp
+ *  \details    This file contains curve_factory class' functions definitions
+ *  \author     Jan Kumor
  */
+
 
 #include "curve_factory.hpp"
 

@@ -1,5 +1,5 @@
 ﻿/**
- *  \brief     filter_module.hpp
+ *  \file     filter_module.hpp
  *  \details   This file contains filter_module class
  *  \author    Michal Zakowski
  */
@@ -22,8 +22,9 @@
 namespace filter_app 
 {
 /**
- * Class filter_module
- * Manages whole filter module
+ * \brief filter module main class
+ *
+ * Manages whole filter module. Realised as singleton pattern.
  */
 class filter_module
 {

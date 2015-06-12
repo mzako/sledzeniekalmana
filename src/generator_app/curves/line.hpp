@@ -1,7 +1,7 @@
 /**
- *  \brief     line.hpp
+ *  \file     line.hpp
  *  \details   This file contains Line class
- *  \author    Michal Zakowski
+ *  \author    Michal Zakowski, Jan Kumor
  */
 
 #ifndef _LINE_HPP
@@ -14,14 +14,25 @@ namespace generator_app {
 namespace curves {
 
 /**
- * Class line
+ * \brief 3D line representation
+ *
  * Represents objects' linear path in space
  */
 class line : public curve {
 public:
     line(commons::vect3f velocity = commons::vect3f()) : velocity_(velocity) {}
-    commons::vect3f get_position(float) const;
-
+    /**
+    * \brief compute position
+    *
+    * \sa commons::vect3f curve::get_position(float time) const
+    */
+    commons::vect3f get_position(float time) const;
+    /**
+     * \brief factory method
+     *
+     * \param proto reference to prototype from which line will be created
+     * \return smart pointer to created instance of line
+     */
     static p_curve create( curve_prototype& proto )
     {
         float vx = proto.find_attribute("velocity.x");
@@ -29,7 +40,11 @@ public:
         float vz = proto.find_attribute("velocity.z");
         return p_curve( new line( commons::vect3f(vx, vy, vz) ) );
     };
-
+    /**
+     * \brief create prototype of line
+     *
+     * \sa virtual curve_prototype curve::proto() const
+     */
     virtual curve_prototype proto() const
     {
         curve_prototype proto;

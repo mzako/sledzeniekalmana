@@ -1,5 +1,5 @@
 ﻿/**
- *  \brief     filter_module.cpp
+ *  \file     filter_module.cpp
  *  \details   This file contains filter_module class' functions definitions
  *  \author    Michal Zakowski
  */

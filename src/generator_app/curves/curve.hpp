@@ -1,5 +1,5 @@
 /**
- *  \brief     curve.hpp
+ *  \file     curve.hpp
  *  \details   This file contains curve class
  *  \author    Michal Zakowski
  */
@@ -16,12 +16,25 @@ namespace generator_app {
 namespace curves {
 
 /**
- * Class curve (abstract)
- * Represents curve, which determines objects' path in space
+ * \brief abstract representation of curve
+ *
+ * Represents curve, which determines objects' path in space.
+ * Allows computation of position in given time.
  */
 class curve {
 public:
-    virtual commons::vect3f get_position(float) const = 0;
+    /**
+     * \brief computation of position in given time
+     *
+     * \param time given time
+     * \return relative position of point moving along this curve at given time
+     */
+    virtual commons::vect3f get_position(float time) const = 0;
+    /**
+     * \brief create prototype of curve
+     *
+     * \return prototype of this
+     */
     virtual curve_prototype proto() const = 0;
 };
 
