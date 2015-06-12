@@ -1,5 +1,5 @@
 /**
- *  \brief     sensor_observer.hpp
+ *  \file     sensor_observer.hpp
  *  \details   This file contains sensor_observer class
  *  \author    Michal Zakowski
  */

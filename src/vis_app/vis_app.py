@@ -87,13 +87,13 @@ import vis_ui as ui
 window = ui.MainWindow()
 window.show()
 
-grid = makeGrid(1000000)
-axisSize=30000
+grid = makeGrid(100000)
+axisSize=3000
 axis = gl.GLAxisItem(antialias=True)
 axis.setSize(axisSize, axisSize, axisSize)
 
 for view in [window.real, window.track]:
-	view.opts['distance'] = 50000
+	view.opts['distance'] = 5000
 	view.addItem(grid)
 	view.addItem(axis)
 	view.show()
