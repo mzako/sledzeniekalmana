@@ -33,3 +33,9 @@ build/*
 /.autotools
 /.cproject
 /.project
+
+#Temporary files
+*~
+
+#Python compiled
+*.pyc

@@ -1,7 +1,7 @@
 /**
  *  \file     simulation_module.cpp
  *  \details   This file contains simulation_module class' functions definitions
- *  \author    Michal Zakowski
+ *  \author    Michal Zakowski, Jan Kumor
  */
 #include <iostream>
 #include <cmath>
@@ -30,10 +30,7 @@ namespace generator_app {
 const float simulation_module::TIME_STEP_ = 1;
 
 shared_ptr<simulation_module> simulation_module::instance_;
-/**
- * Function prepare_environment
- * Prepares environment to simulation by setting targets and sensors. If it isn't first simulation, it deletes old environment
- */
+
 void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_ptr<target>>> targets, std::shared_ptr<vector<std::shared_ptr<sensor_observer>>> sensors)
 {
     environment_.reset(new environment);
@@ -73,10 +70,6 @@ string simulation_module::initialize(std::fstream& init_file) {
     return initial_message();
 }
 
-/**
- * Function run
- * Runs main simulation thread
- */
 void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, shared_ptr<sending_buffer> comparator_sending_buf)
 {
     if(initialized_) {

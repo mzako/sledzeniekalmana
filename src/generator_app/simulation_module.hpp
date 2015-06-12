@@ -1,7 +1,7 @@
 /**
  *  \file     simulation_module.hpp
  *  \details   This file contains simulation_module class
- *  \author    Michal Zakowski
+ *  \author    Michal Zakowski, Jan Kumor
  */
 #ifndef _SIMULATION_MODULE_HPP
 #define _SIMULATION_MODULE_HPP
@@ -16,25 +16,52 @@
 
 namespace generator_app {
 /**
- * Class simulation_module
- * Manages whole simulation module
+ * \brief Simulation module main class
+ *
+ * Manages whole simulation module.
  */
 class simulation_module {
 public:
+    /**
+     * \brief simulation_module singleton class instance access
+     *
+     * \return smart pointer to instance of simulation_module
+     */
     static std::shared_ptr<simulation_module> get_instance() {
         if (!instance_)
             instance_ = std::shared_ptr<simulation_module>(new simulation_module);
         return instance_;
     }
-
-    void prepare_environment(std::shared_ptr<std::vector<std::shared_ptr<target>>>, std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>>);
-
+    /**
+     * \brief prepares and initialize simulation environment
+     *
+     * Prepares environment to simulation by setting targets and sensors.
+     * If it isn't first simulation, it deletes old environment.
+     * \param targets smart pointer to vector of all targets existing in simulation
+     * \param sensors smart pointer to vector of all sensors existing in simulation
+     */
+    void prepare_environment(std::shared_ptr<std::vector<std::shared_ptr<target>>> targets, std::shared_ptr<std::vector<std::shared_ptr<sensor_observer>>> sensors);
+    /**
+     * \brief initialize simulation with data from given std::fstream
+     *
+     * \param init_file reference to file stream containing simulation data in JSON format
+     * \return string containing initialization data about sensors parameters, which is used by servers as initial message
+     */
     std::string initialize(std::fstream& init_file);
+    /**
+     * \brief Starts simulation module computation loop.
+     *
+     * \param filter_sending_buf smart pointer to buffer to which will be used to write data for filter module
+     * \param comparator_sending_buf smart pointer to buffer to which will be used to write data for comparator module
+     */
     void run(std::shared_ptr<network::sending_buffer> filter_sending_buf, std::shared_ptr<network::sending_buffer> comparator_sending_buf);
     /**
      * stops the simulation
      */
     void stop();
+    /**
+     * \brief Length of one step of simulation
+     */
     const static float TIME_STEP_;
 private:
     simulation_module() : initialized_(false) {}

@@ -18,8 +18,9 @@ namespace comparator_app
 {
 
 /**
- * Class comparator_module
- * Manages whole comparator_module
+ * \brief Comparator module main class
+ *
+ * Manages whole Comparator module.
  */
 class comparator_module
 {
@@ -45,7 +46,7 @@ public:
      */
     void run(std::shared_ptr<network::blocking_queue> generator_queue, std::shared_ptr<network::blocking_queue> filter_queue);
     /**
-     * \brief Breaks comparato module computation loop.
+     * \brief Breaks comparator_module computation loop.
      */
     void stop(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::blocking_queue>);
 
