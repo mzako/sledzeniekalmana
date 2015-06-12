@@ -20,12 +20,14 @@ namespace curves {
  */
 class line : public curve {
 public:
-    line(commons::vect3f velocity = commons::vect3f()) : velocity_(velocity) {}
+    line(commons::vect3f velocity = commons::vect3f())
+            : velocity_(velocity) {
+    }
     /**
-    * \brief compute position
-    *
-    * \sa commons::vect3f curve::get_position(float time) const
-    */
+     * \brief compute position
+     *
+     * \sa commons::vect3f curve::get_position(float time) const
+     */
     commons::vect3f get_position(float time) const;
     /**
      * \brief factory method
@@ -33,20 +35,19 @@ public:
      * \param proto reference to prototype from which line will be created
      * \return smart pointer to created instance of line
      */
-    static p_curve create( curve_prototype& proto )
-    {
+    static p_curve create(curve_prototype& proto) {
         float vx = proto.find_attribute("velocity.x");
         float vy = proto.find_attribute("velocity.y");
         float vz = proto.find_attribute("velocity.z");
-        return p_curve( new line( commons::vect3f(vx, vy, vz) ) );
-    };
+        return p_curve(new line(commons::vect3f(vx, vy, vz)));
+    }
+    ;
     /**
      * \brief create prototype of line
      *
      * \sa virtual curve_prototype curve::proto() const
      */
-    virtual curve_prototype proto() const
-    {
+    virtual curve_prototype proto() const {
         curve_prototype proto;
         proto.set_type("line");
         proto.insert_attribute("velocity.x", velocity_.x_);

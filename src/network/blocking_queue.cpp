@@ -13,7 +13,7 @@ blocking_queue::blocking_queue() {
 
 std::string blocking_queue::pop() {
     boost::mutex::scoped_lock s_safe(safe_);
-    while(messages.empty()) {
+    while (messages.empty()) {
         wait_.wait(s_safe);
     }
     std::string result;

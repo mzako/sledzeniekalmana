@@ -19,5 +19,4 @@ cout_writer::~cout_writer() {
     // TODO Auto-generated destructor stub
 }
 
-
 } /* namespace commons */

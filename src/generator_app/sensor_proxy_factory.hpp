@@ -23,7 +23,8 @@ public:
      *
      * \param smart pointer to \ref sensor_observer which will be proxied
      */
-    static sensor_measurement_proxy get_measurement_proxy(std::shared_ptr<sensor_observer> real) {
+    static sensor_measurement_proxy get_measurement_proxy(
+            std::shared_ptr<sensor_observer> real) {
         return sensor_measurement_proxy(real);
     }
     /**
@@ -31,7 +32,8 @@ public:
      *
      * \param smart pointer to \ref sensor_observer which will be proxied
      */
-    static sensor_position_proxy get_position_proxy(std::shared_ptr<sensor_observer> real) {
+    static sensor_position_proxy get_position_proxy(
+            std::shared_ptr<sensor_observer> real) {
         return sensor_position_proxy(real);
     }
 };

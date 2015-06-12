@@ -21,7 +21,9 @@ struct sensor_parameters_dto {
     /**
      * \defcon
      */
-    sensor_parameters_dto() {};
+    sensor_parameters_dto() {
+    }
+    ;
     /**
      * \brief creates sensor_parameters_dto from given values
      *
@@ -31,12 +33,17 @@ struct sensor_parameters_dto {
      * \param r given value of radius, sets #radius_
      * \param pos given value of position, sets #position_
      */
-    sensor_parameters_dto( unsigned id, float mn, float pn, float r, vect3f pos) :
-        id_(id), measurement_noise_(mn), process_noise_(pn) , radius_(r), position_(pos) {};
+    sensor_parameters_dto(unsigned id, float mn, float pn, float r, vect3f pos)
+            : id_(id), measurement_noise_(mn), process_noise_(pn), radius_(r), position_(
+                    pos) {
+    }
+    ;
     /**
      * \defdtr
      */
-    virtual ~sensor_parameters_dto() {};
+    virtual ~sensor_parameters_dto() {
+    }
+    ;
     /**
      * \cerealbrief
      *
@@ -49,15 +56,12 @@ struct sensor_parameters_dto {
      * }
      */
     template<class Archive>
-    void serialize(Archive& archive)
-    {
-        archive(
-                cereal::make_nvp("id", id_ ),
-                cereal::make_nvp("measurement_noise", measurement_noise_ ),
-                cereal::make_nvp("process_noise", process_noise_ ),
+    void serialize(Archive& archive) {
+        archive(cereal::make_nvp("id", id_),
+                cereal::make_nvp("measurement_noise", measurement_noise_),
+                cereal::make_nvp("process_noise", process_noise_),
                 cereal::make_nvp("radius", radius_),
-                cereal::make_nvp("position", position_)
-        );
+                cereal::make_nvp("position", position_));
     }
     /**
      * Id of represented sensor

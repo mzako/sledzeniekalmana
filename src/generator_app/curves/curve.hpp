@@ -24,6 +24,10 @@ namespace curves {
 class curve {
 public:
     /**
+     * \defdtr
+     */
+    virtual ~curve();
+    /**
      * \brief computation of position in given time
      *
      * \param time given time

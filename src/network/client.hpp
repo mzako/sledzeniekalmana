@@ -6,7 +6,6 @@
 #ifndef _CLIENT_HPP
 #define _CLIENT_HPP
 
-
 #include <exception>
 #include <array>
 #include <iostream>
@@ -29,7 +28,8 @@ public:
      * \param port given port
      * \param queue blocking_queue where client push received data
      */
-    client(std::string host, std::string port, std::shared_ptr<blocking_queue> queue);
+    client(std::string host, std::string port,
+            std::shared_ptr<blocking_queue> queue);
     /**
      * \brief Start a client
      */

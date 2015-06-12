@@ -31,7 +31,8 @@ const float simulation_module::TIME_STEP_ = 0.1;
 
 shared_ptr<simulation_module> simulation_module::instance_;
 
-void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_ptr<target>>> targets, std::shared_ptr<vector<std::shared_ptr<sensor_observer>>> sensors)
+void simulation_module::prepare_environment(
+        std::shared_ptr<vector<std::shared_ptr<target>>> targets, std::shared_ptr<vector<std::shared_ptr<sensor_observer>>> sensors)
 {
     environment_.reset(new environment);
     environment_->set_targets(targets);
@@ -40,25 +41,23 @@ void simulation_module::prepare_environment(std::shared_ptr<vector<std::shared_p
 }
 
 string simulation_module::initialize(std::fstream& init_file) {
-    shared_ptr<vector<p_target> > targets( new vector<p_target>);
-    shared_ptr<vector<p_sensor_observer > > sensors( new vector<p_sensor_observer> );
+    shared_ptr<vector<p_target> > targets(new vector<p_target>);
+    shared_ptr<vector<p_sensor_observer> > sensors(
+            new vector<p_sensor_observer>);
 
     vector<sensor_load_proxy> sensor_proxies;
     vector<target_load_proxy> target_proxies;
 
     {
         cereal::JSONInputArchive iarchive(init_file);
-        iarchive(
-                target_proxies,
-                sensor_proxies
-        );
+        iarchive(target_proxies, sensor_proxies);
     }
     //populate sensors list
-    for( auto element : sensor_proxies ) {
+    for (auto element : sensor_proxies) {
         sensors->push_back(element.get_real());
     }
     //populate targets list
-    for( auto element : target_proxies ) {
+    for (auto element : target_proxies) {
         p_target tar = element.get_real();
         tar->set_sensor_observers(sensors);
         targets->push_back(tar);
@@ -70,11 +69,10 @@ string simulation_module::initialize(std::fstream& init_file) {
     return initial_message();
 }
 
-void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, shared_ptr<sending_buffer> comparator_sending_buf)
-{
-    if(initialized_) {
-        while(is_started_)
-        {
+void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf,
+        shared_ptr<sending_buffer> comparator_sending_buf) {
+    if (initialized_) {
+        while (is_started_) {
             environment_->update(float(time_));
             send_data_to_filter(filter_sending_buf);
             send_data_to_comparator(comparator_sending_buf);
@@ -85,23 +83,19 @@ void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, share
     }
 }
 
-void simulation_module::stop()
-{
+void simulation_module::stop() {
     is_started_ = false;
 }
 
 string simulation_module::initial_message() const {
     vector<sensor_parameters_dto> parameters;
-    for( auto sensor : *(environment_->get_sensors()) )
-    {
-        parameters.push_back(sensor->get_parameters() );
+    for (auto sensor : *(environment_->get_sensors())) {
+        parameters.push_back(sensor->get_parameters());
     }
     stringstream ss;
     {
         cereal::JSONOutputArchive oarchive(ss);
-        oarchive(
-                cereal::make_nvp("sensors_parameters", parameters)
-        );
+        oarchive(cereal::make_nvp("sensors_parameters", parameters));
 
     }
 #ifdef DEBUG
@@ -110,13 +104,14 @@ string simulation_module::initial_message() const {
     return ss.str();
 }
 
-void simulation_module::send_data_to_filter(shared_ptr<sending_buffer> sending_buf) {
+void simulation_module::send_data_to_filter(
+        shared_ptr<sending_buffer> sending_buf) {
     stringstream ss;
     {
         cereal::JSONOutputArchive oarchive(ss);
         oarchive(
-                cereal::make_nvp("sensors_measurements", environment_->get_measurements() )
-        );
+                cereal::make_nvp("sensors_measurements",
+                        environment_->get_measurements()));
     }
 #ifdef DEBUG
     cout_writer() << "SENDING DATA:\n" << ss.str() << "\nEND DATA\n";
@@ -124,15 +119,17 @@ void simulation_module::send_data_to_filter(shared_ptr<sending_buffer> sending_b
     sending_buf->send(ss.str());
 }
 
-void simulation_module::send_data_to_comparator(shared_ptr<sending_buffer> sending_buf) {
+void simulation_module::send_data_to_comparator(
+        shared_ptr<sending_buffer> sending_buf) {
     stringstream ss;
     {
         cereal::JSONOutputArchive oarchive(ss);
         oarchive(
                 //cereal::make_nvp("sensors_positions", environment_->get_positions() ),
-                cereal::make_nvp("target_positions", environment_->get_positions2() ),
-                cereal::make_nvp("sensors_measurments", environment_->get_measurements() )
-        );
+                cereal::make_nvp("target_positions",
+                        environment_->get_positions2()),
+                cereal::make_nvp("sensors_measurments",
+                        environment_->get_measurements()));
     }
 #ifdef DEBUG
     cout_writer() << "SENDING DATA:\n" << ss.str() << "\nEND DATA\n";

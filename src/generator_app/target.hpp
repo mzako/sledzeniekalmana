@@ -33,7 +33,10 @@ public:
      *
      * Automatically sets id_ and increments main id counter of targets.
      */
-    target() : id_(gId_++){};
+    target()
+            : id_(gId_++) {
+    }
+    ;
     /**
      * \brief create target from given data
      *
@@ -41,7 +44,11 @@ public:
      * \param curve given curve
      * \param initial_position given initial position of target in 3D space
      */
-    target(curves::p_curve curve, commons::vect3f initial_position = commons::vect3f()) :curve_(curve), initial_position_(initial_position), current_position_(initial_position), id_(gId_++) {}
+    target(curves::p_curve curve, commons::vect3f initial_position =
+            commons::vect3f())
+            : curve_(curve), initial_position_(initial_position), current_position_(
+                    initial_position), id_(gId_++) {
+    }
     /**
      * \defdtr
      */
@@ -59,7 +66,8 @@ public:
      * Sets a pointer to vector to all observers available in current simulation.
      * \param observers smart pointer to vector of observers
      */
-    void set_sensor_observers(std::shared_ptr<std::vector<p_sensor_observer> > observers);
+    void set_sensor_observers(
+            std::shared_ptr<std::vector<p_sensor_observer> > observers);
     /**
      * \brief extract target's current position
      *
@@ -79,7 +87,9 @@ public:
     /**
      * \getter{curve_}
      */
-    curves::p_curve get_curve() const { return curve_; }
+    curves::p_curve get_curve() const {
+        return curve_;
+    }
     /**
      * \cerealbrief_save
      *
@@ -88,14 +98,12 @@ public:
      * - curve_prototype from curve_ as "curve" nvp\n
      * }
      */
-    template <class Archive>
-    void save( Archive& archiver ) const
-    {
-        archiver(
-                cereal::make_nvp("initial_position", initial_position_),
-                cereal::make_nvp("curve", curve_->proto() )
-        );
-    };
+    template<class Archive>
+    void save(Archive& archiver) const {
+        archiver(cereal::make_nvp("initial_position", initial_position_),
+                cereal::make_nvp("curve", curve_->proto()));
+    }
+    ;
     /**
      * \cerealbrief_load
      *
@@ -104,16 +112,14 @@ public:
      * - curve_prototype as "curve" nvp which is later used to set curve_\n
      * }
      */
-    template <class Archive>
-    void load( Archive& archiver )
-    {
+    template<class Archive>
+    void load(Archive& archiver) {
         curves::curve_prototype cp;
-        archiver(
-                cereal::make_nvp("initial_position", initial_position_),
-                cereal::make_nvp("curve", cp )
-        );
+        archiver(cereal::make_nvp("initial_position", initial_position_),
+                cereal::make_nvp("curve", cp));
         curve_ = curves::curve_factory::get_instance().create(cp);
-    };
+    }
+    ;
 private:
     void notify();
 
@@ -136,19 +142,24 @@ public:
     /**
      * \defctr
      */
-    target_load_proxy() {}
+    target_load_proxy() {
+    }
     /**
      * \brief creates proxy to pointed \ref target
      *
      * \param real smart pointer to object which will be proxied
      */
-    target_load_proxy(p_target real) : real_(real) {}
+    target_load_proxy(p_target real)
+            : real_(real) {
+    }
     /**
      * \brief get pointer to proxied \ref target
      *
      * \return smart pointer to \ref target which is proxied by this
      */
-    p_target get_real() const { return real_; }
+    p_target get_real() const {
+        return real_;
+    }
     /**
      * \cerealbrief_save
      *
@@ -157,11 +168,8 @@ public:
      * }
      */
     template<class Archive>
-    void save(Archive& archive) const
-    {
-        archive(
-                cereal::make_nvp("target", *real_)
-        );
+    void save(Archive& archive) const {
+        archive(cereal::make_nvp("target", *real_));
     }
     /**
      * \cerealbrief_save
@@ -172,13 +180,10 @@ public:
      * Existing pointer will be override.
      */
     template<class Archive>
-    void load(Archive& archive)
-    {
+    void load(Archive& archive) {
         real_.reset();
-        real_ = p_target( new target() );
-        archive(
-                cereal::make_nvp("target", *real_)
-        );
+        real_ = p_target(new target());
+        archive(cereal::make_nvp("target", *real_));
     }
 
 private:

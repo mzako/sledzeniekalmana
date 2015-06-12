@@ -14,27 +14,24 @@
 #include "../commons/sensor_dto.hpp"
 #include "../commons/sensor_parameters_dto.hpp"
 
-namespace comparator_app
-{
+namespace comparator_app {
 
 /**
  * \brief Comparator module main class
  *
  * Manages whole Comparator module.
  */
-class comparator_module
-{
+class comparator_module {
 public:
     /**
      * \brief comparator_module singleton class instance access
      *
      * \return smart pointer to instance of comparator_module
      */
-    static std::shared_ptr<comparator_module> get_instance()
-    {
-        if (!instance_)
-        {
-            instance_ = std::shared_ptr<comparator_module>(new comparator_module);
+    static std::shared_ptr<comparator_module> get_instance() {
+        if (!instance_) {
+            instance_ = std::shared_ptr<comparator_module>(
+                    new comparator_module);
         }
         return instance_;
     }
@@ -44,18 +41,21 @@ public:
      * \param generator_queue pointer to blocking queue of \ref client listening for data from GeneratorModule
      * \param filter_queue pointer to blocking queue of \ref client listening for data from FilterModule
      */
-    void run(std::shared_ptr<network::blocking_queue> generator_queue, std::shared_ptr<network::blocking_queue> filter_queue);
+    void run(std::shared_ptr<network::blocking_queue> generator_queue,
+            std::shared_ptr<network::blocking_queue> filter_queue);
     /**
      * \brief Breaks comparator_module computation loop.
      */
-    void stop(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::blocking_queue>);
-
+    void stop(std::shared_ptr<network::blocking_queue>,
+            std::shared_ptr<network::blocking_queue>);
 
 private:
-    comparator_module() : is_started_(true){}
+    comparator_module()
+            : is_started_(true) {
+    }
     comparator_module(const comparator_module &) = delete;
     comparator_module & operator=(const comparator_module &) = delete;
-    static std::shared_ptr<comparator_module>  instance_;
+    static std::shared_ptr<comparator_module> instance_;
 
     static const char sep_ = ',';
     static const char line_sep_ = ';';
@@ -67,9 +67,11 @@ private:
     std::vector<commons::measurement_dto> positions2_;
     std::vector<commons::sensor_parameters_dto> sensors_;
 
-    void get_initial_generator_data(std::shared_ptr<network::blocking_queue> generator_queue);
+    void get_initial_generator_data(
+            std::shared_ptr<network::blocking_queue> generator_queue);
     void get_filter_data(std::shared_ptr<network::blocking_queue> filter_queue);
-    void get_generator_data(std::shared_ptr<network::blocking_queue> qenerator_queue);
+    void get_generator_data(
+            std::shared_ptr<network::blocking_queue> qenerator_queue);
     void send_initial_plot_data();
     void send_plot_data();
     void send_to_vis(std::string data);

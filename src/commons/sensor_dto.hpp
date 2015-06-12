@@ -24,11 +24,15 @@ struct sensor_dto {
     /**
      * \defcon
      */
-    sensor_dto() {};
+    sensor_dto() {
+    }
+    ;
     /**
      * \defdtr
      */
-    virtual ~sensor_dto() {};
+    virtual ~sensor_dto() {
+    }
+    ;
     /**
      * \refgetter{#measurements_}
      */
@@ -38,7 +42,9 @@ struct sensor_dto {
     /**
      * \getter{#id_}
      */
-    int get_id() const { return id_; }
+    int get_id() const {
+        return id_;
+    }
     /**
      * \cerealbrief
      *
@@ -48,12 +54,10 @@ struct sensor_dto {
      * }
      */
     template<class Archive>
-    void serialize( Archive& archive) {
-        archive(
-                cereal::make_nvp("id", id_ ),
-                //TODO: [JKU] maybe this should always be nvp target and add field telling about type
-                measurements_
-        );
+    void serialize(Archive& archive) {
+        archive(cereal::make_nvp("id", id_),
+        //TODO: [JKU] maybe this should always be nvp target and add field telling about type
+                measurements_);
     }
     /**
      * Id of represented sensor

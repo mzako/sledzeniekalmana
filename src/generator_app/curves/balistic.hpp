@@ -29,11 +29,14 @@ public:
     /**
      * Creates balistic with given velocity and air_resistance factor.
      */
-    balistic(commons::vect3f velocity = commons::vect3f(), float air_resistance = 1.0);
+    balistic(commons::vect3f velocity = commons::vect3f(),
+            float air_resistance = 1.0);
     /**
      * \defdtr
      */
-    virtual ~balistic() {};
+    virtual ~balistic() {
+    }
+    ;
     /**
      * \brief compute position
      *

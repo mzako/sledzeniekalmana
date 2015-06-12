@@ -4,7 +4,6 @@
  *  \author    Jan Kumor
  */
 
-
 #ifndef SENSOR_POSITION_PROXY_HPP
 #define SENSOR_POSITION_PROXY_HPP
 
@@ -13,7 +12,6 @@
 #include "sensor_observer.hpp"
 
 namespace generator_app {
-
 
 /**
  * \brief Proxy allows load and save real sensors positions from JSON format
@@ -30,7 +28,10 @@ public:
      *
      * \param real smart pointer to sensor observer object
      */
-    sensor_position_proxy( std::shared_ptr<sensor_observer> real) : real_(real) {};
+    sensor_position_proxy(std::shared_ptr<sensor_observer> real)
+            : real_(real) {
+    }
+    ;
 
     /**
      * \brief load method needed by Cereal to deserialize real positons
@@ -45,10 +46,8 @@ public:
      */
     template<class Archive>
     void save(Archive& archive) const {
-        archive (
-                cereal::make_nvp("id", real_->get_id() ),
-                cereal::make_nvp("positions", real_->get_positions() )
-        );
+        archive(cereal::make_nvp("id", real_->get_id()),
+                cereal::make_nvp("positions", real_->get_positions()));
     }
 
 private:

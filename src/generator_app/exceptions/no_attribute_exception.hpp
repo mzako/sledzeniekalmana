@@ -21,7 +21,7 @@ namespace exceptions {
 /**
  * \brief Exception raised when curve prototype load from file is lacking of needed attribute
  */
-class no_attribute_exception: public std::runtime_error {
+class no_attribute_exception : public std::runtime_error {
 public:
     /**
      * \brief Creates no_attribute_exception with given raising reason.
@@ -29,11 +29,17 @@ public:
      * Calls std::runtime_error() passing "No attribute named: " concatenated with reason parameter.
      * \param reason which parameter is lacking
      */
-    no_attribute_exception(std::string attribute_name) : std::runtime_error(std::string("No attribute named: ").append(attribute_name).c_str()) {};
+    no_attribute_exception(std::string attribute_name)
+            : std::runtime_error(
+                    std::string("No attribute named: ").append(attribute_name).c_str()) {
+    }
+    ;
     /**
      * \defdtr
      */
-    virtual ~no_attribute_exception() NOEXCEPT {};
+    virtual ~no_attribute_exception() NOEXCEPT {
+    }
+    ;
 };
 
 } /* namespace exceptions */

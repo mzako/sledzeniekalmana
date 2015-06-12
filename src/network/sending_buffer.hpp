@@ -24,7 +24,9 @@ public:
     /**
      * \defcon
      */
-    sending_buffer() {};
+    sending_buffer() {
+    }
+    ;
     /**
      * \brief Add thread to buffer thread pool
      *
@@ -51,5 +53,4 @@ private:
 
 }
 #endif
-
 

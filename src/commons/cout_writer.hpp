@@ -36,14 +36,15 @@ public:
      * \code
      * cout_writer() << something << '\n';
      * \endcode
-     * \b Note: std::endl is not supported, although in most cases what you really mean is end of line ( in explicit '\\n') not manual buffer flush, so i don't consider it as flaw.
+     * \b Note: std::endl is not supported, although in most cases what you really
+     *  mean is end of line ( in explicit '\\n') not manual buffer flush,
+     *  so i don't consider it as flaw.
      *
      * \param t object which will be passed to std::cout stream
      * \return reference to this
      */
     template<typename T>
-    cout_writer& operator<<(T t)
-    {
+    cout_writer& operator<<(T t) {
         std::lock_guard<std::mutex> lock(mtx_);
         std::cout << t;
         return *this;

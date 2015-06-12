@@ -4,7 +4,6 @@
  *  \author     Jan Kumor
  */
 
-
 #include "curve_factory.hpp"
 
 #include <utility>
@@ -29,8 +28,7 @@ curve_factory::~curve_factory() {
 
 curve_factory& curve_factory::get_instance() {
     static curve_factory instance;
-    if(!is_initialized_)
-    {
+    if (!is_initialized_) {
         instance.register_curve("line", line::create);
         instance.register_curve("balistic", balistic::create);
         is_initialized_ = true;
@@ -38,20 +36,23 @@ curve_factory& curve_factory::get_instance() {
     return instance;
 }
 
-bool curve_factory::register_curve(std::string type, create_curve_function fun) {
-    return ( callbacks_.insert( std::pair<std::string, create_curve_function>(type, fun) ) ).second;
+bool curve_factory::register_curve(std::string type,
+        create_curve_function fun) {
+    return (callbacks_.insert(
+            std::pair<std::string, create_curve_function>(type, fun))).second;
 }
 
 p_curve curve_factory::create(curve_prototype& proto) {
     auto it = callbacks_.find(proto.get_type());
     if (it == callbacks_.end()) {
-        throw( std::runtime_error((proto.get_type()+": no such curve type registered in factory.").c_str()) );
+        throw(std::runtime_error(
+                (proto.get_type()
+                        + ": no such curve type registered in factory.").c_str()));
     } else {
-        try
-        {
+        try {
             return (it->second)(proto);
         } catch (exceptions::no_attribute_exception& e) {
-            throw exceptions::invalid_curve_proto_exception( e.what() );
+            throw exceptions::invalid_curve_proto_exception(e.what());
         }
 
     }

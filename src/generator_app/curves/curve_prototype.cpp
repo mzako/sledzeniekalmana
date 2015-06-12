@@ -21,16 +21,15 @@ curve_prototype::~curve_prototype() {
 
 float curve_prototype::find_attribute(std::string key) {
     std::map<std::string, float>::const_iterator it = attributes_.find(key);
-    if( it == attributes_.end() )
-    {
-        throw( exceptions::no_attribute_exception(key) );
+    if (it == attributes_.end()) {
+        throw(exceptions::no_attribute_exception(key));
     } else {
         return it->second;
     }
 }
 
 void curve_prototype::insert_attribute(std::string key, float value) {
-    attributes_.insert( std::pair<std::string, float>(key, value) );
+    attributes_.insert(std::pair<std::string, float>(key, value));
 }
 
 } /* namespace curve */

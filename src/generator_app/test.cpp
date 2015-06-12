@@ -1,8 +1,8 @@
 /**
-*  \brief     test.cpp
-*  \details   This file contains generator_app test suites
-*  \author    Michal Zakowski
-*/
+ *  \brief     test.cpp
+ *  \details   This file contains generator_app test suites
+ *  \author    Michal Zakowski
+ */
 #ifdef TEST
 
 #define BOOST_TEST_MAIN
@@ -21,8 +21,8 @@ using namespace curves;
 using namespace commons;
 using namespace std;
 /**
-* balistic class unit test
-*/
+ * balistic class unit test
+ */
 BOOST_AUTO_TEST_CASE(balistic_test)
 {
     boost::mt19937 rng;
@@ -59,8 +59,8 @@ BOOST_AUTO_TEST_CASE(balistic_test)
     }
 }
 /**
-* line class unit test
-*/
+ * line class unit test
+ */
 BOOST_AUTO_TEST_CASE(line_test)
 {
     boost::mt19937 rng;
@@ -87,14 +87,14 @@ BOOST_AUTO_TEST_CASE(line_test)
     for (float time = 0; time < 100; time += 1.0)
     {
         BOOST_CHECK_MESSAGE(line_t.get_position(time).x_ == line_t.get_position(time).z_
-            && line_t.get_position(time).x_ == line_t.get_position(time).y_
-            && line_t.get_position(time).y_ == line_t.get_position(time).z_
-            , "Zla pozycja dla tych samych vx, vy i vz");
+                && line_t.get_position(time).x_ == line_t.get_position(time).y_
+                && line_t.get_position(time).y_ == line_t.get_position(time).z_
+                , "Zla pozycja dla tych samych vx, vy i vz");
     }
 }
 /**
-* target class unit test
-*/
+ * target class unit test
+ */
 BOOST_AUTO_TEST_CASE(target_test)
 {
     for (int i = 1; i < 100; i++)
@@ -118,8 +118,8 @@ BOOST_AUTO_TEST_CASE(target_test)
     BOOST_CHECK_MESSAGE(curve_t == line_t, "Zly obiekt krzywej");
 }
 /**
-* sensor_observer class unit test
-*/
+ * sensor_observer class unit test
+ */
 BOOST_AUTO_TEST_CASE(sensor_observer_test)
 {
     for (int i = 1; i < 100; i++)
@@ -134,8 +134,8 @@ BOOST_AUTO_TEST_CASE(sensor_observer_test)
     BOOST_CHECK_MESSAGE(sensor_observer_t.get_process_noise() == 2.0, "Zla inicjacja szumu procesu");
 }
 /**
-* target and sensor_observer classes test
-*/
+ * target and sensor_observer classes test
+ */
 BOOST_AUTO_TEST_CASE(target_sensor_observer_test)
 {
     shared_ptr<curve> line_t(new line(vect3f(1.0, 1.0, 1.0)));
@@ -168,12 +168,12 @@ BOOST_AUTO_TEST_CASE(target_sensor_observer_test)
         }
         if (time == 10.0)
         {
-            BOOST_CHECK_MESSAGE(sensor_observer_t1.get_positions().size() == 1 
-                && sensor_observer_t2.get_positions().size() == 1, "Zla aktualizacja pozycji");
+            BOOST_CHECK_MESSAGE(sensor_observer_t1.get_positions().size() == 1
+                    && sensor_observer_t2.get_positions().size() == 1, "Zla aktualizacja pozycji");
         }
     }
     BOOST_CHECK_MESSAGE(sensor_observer_t1.get_positions().size() == 0
-        && sensor_observer_t2.get_positions().size() == 0, "Zla aktualizacja pozycji");
+            && sensor_observer_t2.get_positions().size() == 0, "Zla aktualizacja pozycji");
 }
 
 #endif

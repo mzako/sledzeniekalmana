@@ -22,7 +22,9 @@ struct vect3f {
      * \param y given y coordinate, sets #y_
      * \param z given z coordinate, sets #z_
      */
-    vect3f(float x = 0.f, float y = 0.f, float z = 0.f) : x_(x), y_(y), z_(z) {}
+    vect3f(float x = 0.f, float y = 0.f, float z = 0.f)
+            : x_(x), y_(y), z_(z) {
+    }
     /**
      * \brief Euclidean distance between two points in space
      *
@@ -62,13 +64,9 @@ struct vect3f {
      * }
      */
     template<class Archive>
-    void serialize(Archive& archive)
-    {
-        archive(
-                cereal::make_nvp("x", x_),
-                cereal::make_nvp("y", y_),
-                cereal::make_nvp("z", z_)
-        );
+    void serialize(Archive& archive) {
+        archive(cereal::make_nvp("x", x_), cereal::make_nvp("y", y_),
+                cereal::make_nvp("z", z_));
     }
     /**
      * x coordinate in three-dimensional CCS

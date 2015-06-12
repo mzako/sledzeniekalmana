@@ -15,7 +15,8 @@ void sending_buffer::addThread(boost::thread::id id) {
 
 void sending_buffer::send(std::string message) {
     safe.lock();
-    for (auto it = buffersForThreads.begin(); it != buffersForThreads.end(); it++) {
+    for (auto it = buffersForThreads.begin(); it != buffersForThreads.end();
+            it++) {
         it->second->push(message);
     }
     safe.unlock();
@@ -31,7 +32,7 @@ std::string sending_buffer::pop(boost::thread::id id) {
     safe.lock();
     threadBuffer = buffersForThreads[id];
     safe.unlock();
-    return  threadBuffer->pop();
+    return threadBuffer->pop();
 }
 
 } /* namespace network */

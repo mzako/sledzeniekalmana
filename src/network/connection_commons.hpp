@@ -19,11 +19,11 @@ struct connection_commons {
     /**
      * string which marks the end of message
      */
-	static const std::string END_OF_MESSAGE;
-	/**
-	 * end of connections, client will stop the main thread after receiving this message
-	 */
-	static const std::string CLOSE_CONNECTION;
+    static const std::string END_OF_MESSAGE;
+    /**
+     * end of connections, client will stop the main thread after receiving this message
+     */
+    static const std::string CLOSE_CONNECTION;
 };
 
 }

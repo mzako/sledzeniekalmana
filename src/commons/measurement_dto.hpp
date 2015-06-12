@@ -22,14 +22,19 @@ struct measurement_dto {
     /**
      * \defcon
      */
-    measurement_dto() {};
+    measurement_dto() {
+    }
+    ;
     /**
      * \brief Constructor creating measurement_dto from given point and id.
      *
      *  \param point given point
      *  \param id given id
      */
-    measurement_dto(vect3f point, unsigned id) : point_(point), id_(id) {};
+    measurement_dto(vect3f point, unsigned id)
+            : point_(point), id_(id) {
+    }
+    ;
     /**
      * \cerealbrief
      *
@@ -40,10 +45,8 @@ struct measurement_dto {
      */
     template<class Archive>
     void serialize(Archive& archive) {
-        archive(
-                cereal::make_nvp("id", id_),
-                cereal::make_nvp("coordinates", point_)
-        );
+        archive(cereal::make_nvp("id", id_),
+                cereal::make_nvp("coordinates", point_));
     }
     /**
      * Id of represented target

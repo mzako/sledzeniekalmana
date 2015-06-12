@@ -20,7 +20,7 @@ namespace exceptions {
 /**
  * \brief Exception raised when curve prototype load from file is invalid
  */
-class invalid_curve_proto_exception: public std::runtime_error {
+class invalid_curve_proto_exception : public std::runtime_error {
 public:
     /**
      * \brief Creates invalid_curve_proto_exception with given raising reason.
@@ -28,12 +28,17 @@ public:
      * Calls std::runtime_error() passing "Curve prototype is invalid:" concatenated with reason parameter.
      * \param reason why curve prototype is invalid
      */
-    invalid_curve_proto_exception(std::string reason) :
-        std::runtime_error(("Curve prototype is invalid: "+reason).c_str() ) {};
+    invalid_curve_proto_exception(std::string reason)
+            : std::runtime_error(
+                    ("Curve prototype is invalid: " + reason).c_str()) {
+    }
+    ;
     /**
      * \deftr
      */
-    virtual ~invalid_curve_proto_exception() NOEXCEPT {};
+    virtual ~invalid_curve_proto_exception() NOEXCEPT {
+    }
+    ;
 };
 
 } /* namespace exceptions */

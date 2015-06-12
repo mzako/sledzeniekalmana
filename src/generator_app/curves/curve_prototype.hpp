@@ -35,11 +35,15 @@ public:
     /**
      * \getter{type_}
      */
-    std::string get_type() const { return type_; }
+    std::string get_type() const {
+        return type_;
+    }
     /**
      * \setter{type_}
      */
-    void set_type(const std::string type) { type_ = type; }
+    void set_type(const std::string type) {
+        type_ = type;
+    }
     /**
      * \brief find attribute in attribute map
      *
@@ -68,12 +72,9 @@ public:
      * }
      */
     template<class Archive>
-    void save(Archive& archive) const
-    {
-        archive(
-                cereal::make_nvp("type", type_),
-                cereal::make_nvp("attributes", attributes_)
-        );
+    void save(Archive& archive) const {
+        archive(cereal::make_nvp("type", type_),
+                cereal::make_nvp("attributes", attributes_));
     }
     /**
      * \cerealbrief_load
@@ -84,12 +85,9 @@ public:
      * }
      */
     template<class Archive>
-    void load(Archive& archive)
-    {
-        archive(
-                cereal::make_nvp("type", type_),
-                cereal::make_nvp("attributes", attributes_)
-        );
+    void load(Archive& archive) {
+        archive(cereal::make_nvp("type", type_),
+                cereal::make_nvp("attributes", attributes_));
     }
 
 private:
