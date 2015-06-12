@@ -1,5 +1,5 @@
 /**
- *  \brief     simulation_module.hpp
+ *  \file     simulation_module.hpp
  *  \details   This file contains simulation_module class
  *  \author    Michal Zakowski
  */

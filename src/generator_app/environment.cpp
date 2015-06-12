@@ -1,5 +1,5 @@
 /**
- *  \brief     environment.cpp
+ *  \file     environment.cpp
  *  \details   This file contains environment class' functions definitions
  *  \author    Michal Zakowski
  */

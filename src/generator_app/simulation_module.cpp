@@ -1,5 +1,5 @@
 /**
- *  \brief     simulation_module.cpp
+ *  \file     simulation_module.cpp
  *  \details   This file contains simulation_module class' functions definitions
  *  \author    Michal Zakowski
  */

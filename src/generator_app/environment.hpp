@@ -1,5 +1,5 @@
 /**
- *  \brief     environment.hpp
+ *  \file environment.hpp
  *  \details   This file contains environment class
  *  \author    Michal Zakowski
  */
