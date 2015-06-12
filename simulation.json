@@ -3,8 +3,8 @@
         {
     	"target" : {
 	            "initial_position": {
-	                "x": -5000,
-	                "y": -5000,
+	                "x": -500,
+	                "y": -500,
 	                "z": 0
 	            },
 	            "curve": {
@@ -16,15 +16,41 @@
 	                	},
 	                    {
 	                        "key": "velocity.x",
-	                        "value": 300
+	                        "value": 80
 	                    },
 	                    {
 	                        "key": "velocity.y",
-	                        "value": 300
+	                        "value": 80
 	                    },
 	                    {
 	                        "key": "velocity.z",
-	                        "value": 300
+	                        "value": 80
+	                    }
+	                ]
+	            }
+            }
+        },
+        {
+    	"target" : {
+	            "initial_position": {
+	                "x": 0,
+	                "y": 500,
+	                "z": 200
+	            },
+	            "curve": {
+	                "type": "line",
+	                "attributes": [
+	                    {
+	                        "key": "velocity.x",
+	                        "value": 80
+	                    },
+	                    {
+	                        "key": "velocity.y",
+	                        "value": -120
+	                    },
+	                    {
+	                        "key": "velocity.z",
+	                        "value": 0
 	                    }
 	                ]
 	            }
@@ -41,35 +67,35 @@
                     "y": 0,
                     "z": 0
                 },
-                "radius": 10000,
-                "measurement_noise": 500,
-                "process_noise": 11040
+                "radius": 1000,
+                "measurement_noise": 15000,
+                "process_noise": 10000
             }
         },
         {
             "sensor": {
                 "id": 2,
                 "position": {
-                    "x": 10000,
+                    "x": 1000,
                     "y": 0,
                     "z": 0
                 },
-                "radius": 10000,
-                "measurement_noise": 500,
-                "process_noise": 11040
+                "radius": 1000,
+                "measurement_noise": 15000,
+                "process_noise": 10000
             }
         },
         {
             "sensor": {
                 "id": 3,
                 "position": {
-                    "x": 10000,
-                    "y": 10000,
+                    "x": 1000,
+                    "y": 1000,
                     "z": 0
                 },
-                "radius": 10000,
-                "measurement_noise": 500,
-                "process_noise": 11040
+                "radius": 1000,
+                "measurement_noise": 15000,
+                "process_noise": 10000
             }
         },
         {
@@ -77,12 +103,12 @@
                 "id": 4,
                 "position": {
                     "x": 0,
-                    "y": 10000,
+                    "y": 1000,
                     "z": 0
                 },
-                "radius": 10000,
-                "measurement_noise": 500,
-                "process_noise": 11040
+                "radius": 1000,
+                "measurement_noise": 15000,
+                "process_noise": 10000
             }
         }
     ]
