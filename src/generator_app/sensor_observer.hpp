@@ -1,7 +1,7 @@
 /**
  *  \file     sensor_observer.hpp
  *  \details   This file contains sensor_observer class
- *  \author    Michal Zakowski
+ *  \author    Michal Zakowski, Jan Kumor
  */
 
 #ifndef SENSOROBSERVER_HPP
@@ -114,15 +114,38 @@ private:
     commons::measurement_dto make_measurement(std::shared_ptr<target>) const;
 
 };
-
+/**
+ * \brief Abbreviation for std::shared_ptr<\ref sensor_observer>
+ */
 typedef std::shared_ptr<sensor_observer> p_sensor_observer;
-
+/**
+ * \brief Proxy to sensor_observer class allowing loading from JSON format.
+ */
 class sensor_load_proxy {
 public:
+    /**
+     * \defctr
+     */
     sensor_load_proxy() {}
+    /**
+     * \brief creates proxy to pointed \ref sensor_observer
+     *
+     * \param real smart pointer to object which will be proxied
+     */
     sensor_load_proxy(p_sensor_observer real) : real_(real) {}
+    /**
+     * \brief get pointer to proxied \ref sensor_observer
+     *
+     * \return smart pointer to \ref sensor_observer which is proxied by this
+     */
     p_sensor_observer get_real() const { return real_; }
-
+    /**
+     * \cerealbrief_save
+     *
+     * \cerealdoc_save{
+     * - proxied object as "sensor" nvp\n
+     * }
+     */
     template<class Archive>
     void save(Archive& archive) const
     {
@@ -130,7 +153,14 @@ public:
                 cereal::make_nvp("sensor", *real_)
         );
     }
-
+    /**
+     * \cerealbrief_save
+     *
+     * \cerealdoc_save{
+     * - new proxied object as "sensor" nvp\n
+     * }
+     * Existing pointer will be override.
+     */
     template<class Archive>
     void load(Archive& archive)
     {

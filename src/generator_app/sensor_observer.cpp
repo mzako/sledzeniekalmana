@@ -1,7 +1,7 @@
 /**
  *  \file     sensor_observer.cpp
  *  \details   This file contains SensorObserver class' functions definitions
- *  \author    Michal Zakowski
+ *  \author    Michal Zakowski, Jan Kumor
  */
 #include <map>
 #include <list>
