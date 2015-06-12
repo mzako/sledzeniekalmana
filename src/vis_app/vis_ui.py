@@ -46,5 +46,5 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
         QtGui.QMainWindow.__init__(self, parent, f)
 
-        self.setupUi(self)
+        self.setupUi(self) 
 

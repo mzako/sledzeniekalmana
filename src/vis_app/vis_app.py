@@ -56,14 +56,18 @@ window = ui.MainWindow()
 window.show()
 
 trackView = window.track
-trackView.opts['distance'] = 50000
-trackView.show()
-trackView.setWindowTitle('Target tracking')
-
 realView = window.real
+
+trackView.opts['distance'] = 50000
 realView.opts['distance'] = 50000
+trackView.show()
 realView.show()
-realView.setWindowTitle('Real target')
+
+import vis_mousefilter as vmf
+myfilter = vmf.DopplegangerMouseFilter(window.track)
+#offfilter = vmf.OffMouseFilter()
+window.real.installEventFilter(myfilter)
+#window.track.installEventFilter(offfilter)
 
 grid = makeGrid(1000000)
 realView.addItem(grid)
