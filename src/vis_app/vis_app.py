@@ -27,9 +27,9 @@ class Worker(QtCore.QObject):
 		print dataSplit
 		while True:	
 			global rPlot, gPLot, bPlot
-			rPlot.setData(pos=np.matrix(redStr), color=(1.0,0.0,0.0,1.0), size=100, pxMode=True)
-			gPlot.setData(pos=np.matrix(greenStr), color=(0.0,1.0,0.0,1.0), size=100, pxMode=True)
-			bPlot.setData(pos=np.matrix(blueStr), color=(0.0,1.0,1.0,1.0), size=100, pxMode=True)
+			rPlot.setData(pos=np.matrix(redStr), color=(1.0,0.0,0.0,1.0), size=5, pxMode=True)
+			gPlot.setData(pos=np.matrix(greenStr), color=(0.0,1.0,0.0,1.0), size=5, pxMode=True)
+			bPlot.setData(pos=np.matrix(blueStr), color=(0.0,0.0,1.0,1.0), size=5, pxMode=True)
 			print "RPLOT " + redStr
 			print "GPLOT " + greenStr
 			print "BPLOT " + blueStr
@@ -63,19 +63,19 @@ realView.opts['distance'] = 50000
 trackView.show()
 realView.show()
 
-import vis_mousefilter as vmf
-myfilter = vmf.DopplegangerMouseFilter(window.track)
-#offfilter = vmf.OffMouseFilter()
-window.real.installEventFilter(myfilter)
-#window.track.installEventFilter(offfilter)
+import vis_controlfilter as vcf
+controlfilter = vcf.DopplegangerControlFilter(window.real, window.track)
+window.realMask.installEventFilter(controlfilter)
+window.trackMask.installEventFilter(controlfilter)
 
 grid = makeGrid(1000000)
 realView.addItem(grid)
 trackView.addItem(grid)
 
-rPlot = gl.GLScatterPlotItem()
-gPlot = gl.GLScatterPlotItem()
-bPlot = gl.GLScatterPlotItem()
+null_matrix = np.matrix('0,0,0')
+rPlot = gl.GLScatterPlotItem(pos=null_matrix)
+gPlot = gl.GLScatterPlotItem(pos=null_matrix)
+bPlot = gl.GLScatterPlotItem(pos=null_matrix)
 realView.addItem(rPlot)
 trackView.addItem(gPlot)
 trackView.addItem(bPlot)
