@@ -178,16 +178,18 @@ void comparator_module::stop(std::shared_ptr<blocking_queue> compartaor_queue, s
 
 double comparator_module::count_error()
 {
-    /** CHECK THIS OUT JKU **/
+     //cout_writer() << positions2_.size() << filter_output_.size();
     double error = 0.0f;
     for(auto it = positions2_.begin(); it != positions2_.end(); ++it) { //foreach point in real points
-        auto closest = filter_output_.begin();
-        for(auto itt = filter_output_.begin() + 1; itt != filter_output_.end(); ++itt) { //find the closest
-            if (it->point_.distance(*itt) < it->point_.distance(*closest)) {
-                closest = itt;
+        if(filter_output_.size() > 0) {
+            auto closest = filter_output_.begin();
+            for(auto itt = filter_output_.begin() + 1; itt != filter_output_.end(); ++itt) { //find the closest
+                if (it->point_.distance(*itt) < it->point_.distance(*closest)) {
+                    closest = itt;
+                }
             }
+            error += closest->distance(it->point_);
         }
-        error += closest->distance(it->point_);
     }
     return error;
 }
