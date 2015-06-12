@@ -78,6 +78,7 @@ def makeGrid(size, sqX=100, sqY=100, sqZ=100):
 	g = gl.GLGridItem()
 	g.setSize(x=size, y=size)
 	g.setSpacing(x=size/sqX, y=size/sqY, z=size)
+	g.setGLOptions('additive')
 	return g
 
 app = QtGui.QApplication([])
@@ -87,8 +88,9 @@ window = ui.MainWindow()
 window.show()
 
 grid = makeGrid(1000000)
-axis = gl.GLAxisItem()
-axis.setSize(20000)
+axisSize=30000
+axis = gl.GLAxisItem(antialias=True)
+axis.setSize(axisSize, axisSize, axisSize)
 
 for view in [window.real, window.track]:
 	view.opts['distance'] = 50000
@@ -104,8 +106,11 @@ window.trackMask.installEventFilter(controlfilter)
 null_matrix = np.matrix('0,0,0')
 null_color = (0,0,0,0)
 rPlot = gl.GLScatterPlotItem(pos=null_matrix, size=0, color=null_color)
+rPlot.setGLOptions('additive')
 gPlot = gl.GLScatterPlotItem(pos=null_matrix, size=0, color=null_color)
+gPlot.setGLOptions('additive')
 bPlot = gl.GLScatterPlotItem(pos=null_matrix, size=0, color=null_color)
+bPlot.setGLOptions('additive')
 window.real.addItem(rPlot)
 window.real.addItem(bPlot)
 window.track.addItem(gPlot)
