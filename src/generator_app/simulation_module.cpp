@@ -79,7 +79,7 @@ void simulation_module::run(shared_ptr<sending_buffer> filter_sending_buf, share
             send_data_to_filter(filter_sending_buf);
             send_data_to_comparator(comparator_sending_buf);
 
-            this_thread::sleep_for(chrono::milliseconds(1000));
+            this_thread::sleep_for(chrono::milliseconds(100));
             time_ += TIME_STEP_;
         }
     }
