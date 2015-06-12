@@ -39,7 +39,5 @@ int main(int argc, char ** argv){
         filter_main_thread.join();
 
     }
-
-
     return 0;
 }

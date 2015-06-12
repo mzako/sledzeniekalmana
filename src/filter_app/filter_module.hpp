@@ -29,6 +29,11 @@ namespace filter_app
 class filter_module
 {
 public:
+    /**
+    * \brief get the instance of singleton class
+    *
+    * \return smart pointer to filter module singleton instance
+    */
     static std::shared_ptr<filter_module> get_instance()
     {
         if (!instance_)
@@ -37,13 +42,25 @@ public:
         }
         return instance_;
     }
-    void run(std::shared_ptr<network::blocking_queue>, std::shared_ptr<network::sending_buffer>);
-    void prepare_kalman_filter();
-    void receive_data(std::vector<commons::vect3f>, std::vector<std::pair<float, float>>);
     /**
-     * Stop the main loop
-     */
-    void stop(std::shared_ptr<network::blocking_queue>);
+    * \brief run function, prepares kalman filter to use and starts main loop
+    *
+    * \param blocking_queue represents data being received from generator module
+    * \param sending_buf represents data being sent to comparator module
+    */
+    void run(std::shared_ptr<network::blocking_queue> blocking_queue, std::shared_ptr<network::sending_buffer> sending_buf);
+    /**
+    * \brief prepares kalman filter by setting targets
+    *
+    * \sa void filter_module::prepare_kalman_filter()
+    */
+    void prepare_kalman_filter();
+    /**
+    * \brief stops filter module, unlocks blocking queue if blocked
+    *
+    * \param queue blocking queue to unlock
+    */
+    void stop(std::shared_ptr<network::blocking_queue> queue);
 private:
     filter_module() : is_started_(true){}
     filter_module(const filter_module &) = delete;

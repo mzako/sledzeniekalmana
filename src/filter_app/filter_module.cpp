@@ -1,7 +1,7 @@
 ﻿/**
  *  \file     filter_module.cpp
  *  \details   This file contains filter_module class' functions definitions
- *  \author    Michal Zakowski
+ *  \author    Michal Zakowski, Jan Kumor
  */
 
 #include "filter_module.hpp"
@@ -31,10 +31,7 @@ using namespace commons;
 namespace filter_app {
 
 std::shared_ptr<filter_module>  filter_module::instance_;
-/**
- * Function prepare_kalman_filter
- * Prepares kalman filter by calling init_targets function. Uses initial positions in queue and sensor parameters
- */
+
 void filter_module::prepare_kalman_filter(){
     kalman_filter_.reset(new kalman_filter);
     vector<pair<int,vect3f>> initial_positions;
@@ -47,14 +44,7 @@ void filter_module::prepare_kalman_filter(){
         }
     }
     kalman_filter_->init_targets(initial_positions, sensor_parameters_);
-
-
 }
-
-/**
- * Function run
- * Runs main filter thread
- */
 void filter_module::run(std::shared_ptr<blocking_queue> blocking_queue, std::shared_ptr<network::sending_buffer> sending_buf)
 {
     if(!is_started_) {
@@ -127,9 +117,6 @@ void filter_module::work(const std::shared_ptr<blocking_queue> blocking_queue, s
         send_data_to_comparator(sending_buf);
     }
 }
-
-
-
 void filter_module::send_data_to_comparator(std::shared_ptr<network::sending_buffer> sending_buf)
 {
     stringstream ss;

@@ -15,14 +15,9 @@ using namespace commons;
 namespace ublas = boost::numeric::ublas;
 
 namespace filter_app {
-/**
-* Represents measurements time step
-*/
+
 const float kalman_filter::PERIOD_=0.1;
-/**
-* Function invert_matrix
-* Inverts square matrix
-*/
+
 template<class T>
 ublas::matrix<T> kalman_filter::invert_matrix(ublas::matrix<T>& input){
     using namespace ublas;
@@ -36,23 +31,6 @@ ublas::matrix<T> kalman_filter::invert_matrix(ublas::matrix<T>& input){
     lu_substitute(A, pm, inverse);
     return inverse;
 }
-/**
-* Function print
-* Prints matrix
-*/
-void kalman_filter::print(boost::numeric::ublas::matrix<float>& tmp_matrix){
-    cout << endl;
-    for (int i = 0; i < tmp_matrix.size1(); i++){
-        for (int j = 0; j < tmp_matrix.size2(); j++){
-            cout << setprecision(2) << tmp_matrix(i, j) << " ";
-        }
-        cout << endl;
-    }
-}
-/**
-* Function get_current_positions
-* Return current positions of all targets
-*/
 vector<vect3f> kalman_filter::get_current_positions() const{
     std::vector<vect3f> pos;
     for (auto it = targets_.begin(); it != targets_.end(); ++it){
@@ -60,11 +38,6 @@ vector<vect3f> kalman_filter::get_current_positions() const{
     }
     return pos;
 }
-/**
-* Function init_targets
-* Inits targets in kalman filter by setting states and corresponding process and measurement covariances matrices
-* Sets transition and output matrices
-*/
 void kalman_filter::init_targets(vector<pair<int, vect3f>> positions, std::vector<sensor_parameters_dto> sensor_parameters)
 {
     for (auto it = sensor_parameters.begin(); it != sensor_parameters.end(); ++it)
@@ -100,10 +73,6 @@ void kalman_filter::init_targets(vector<pair<int, vect3f>> positions, std::vecto
     output_(1, 1) = 1;
     output_(2, 2) = 1;
 }
-/**
-* Function compute
-* Main kalman filter function. Prepares all calculations and updates targets' states
-*/
 void kalman_filter::compute(vector<vect3f> new_positions){
     //Comment info: Assume that current state is k+1 and previous state is k
     //Prediction of state k+1 based on historical knowledge

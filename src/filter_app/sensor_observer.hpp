@@ -24,27 +24,30 @@ namespace filter_app {
         sensor_observer(int id, boost::numeric::ublas::matrix<float> measurement_covariance, 
             boost::numeric::ublas::matrix<float> process_covariance):measurement_covariance_(measurement_covariance),
             process_covariance_(process_covariance), id_(id) {}
+        /**
+        * \brief returns uniqe sensor id
+        *
+        * \return sensor id
+        */
         unsigned get_id() const { return id_; }
-        /*void set_measurement_covariance(boost::numeric::ublas::matrix<float> measurement_covariance)
-        {
-            measurement_covariance_ = measurement_covariance;
-        }
-        void set_process_covariance(boost::numeric::ublas::matrix<float> process_covariance)
-        {
-            process_covariance_ = process_covariance;
-        }*/
+        /**
+        * \brief return measurement covariance matrix characteristic for each sensor
+        *
+        * \return sensor measurement covariance matrix
+        */
         boost::numeric::ublas::matrix<float> get_measurement_covariance() const
         {
             return measurement_covariance_;
         }
+        /**
+        * \brief return process covariance matrix characteristic for each sensor
+        *
+        * \return sensor process covariance matrix
+        */
         boost::numeric::ublas::matrix<float> get_process_covariance() const
         {
             return process_covariance_;
         }
-        /*std::list<std::shared_ptr<target>> get_targets() { return targets_; }
-        void add_target(std::shared_ptr<target> target){
-            targets_.push_back(target);
-        }*/
     private:
         unsigned id_;
         boost::numeric::ublas::matrix<float> process_covariance_;
